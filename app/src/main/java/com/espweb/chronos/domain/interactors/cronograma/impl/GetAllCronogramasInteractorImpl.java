@@ -1,18 +1,18 @@
-package com.espweb.chronos.domain.interactors.impl;
+package com.espweb.chronos.domain.interactors.cronograma.impl;
 
-import com.espweb.chronos.domain.exceptions.GetAllCronogramasException;
 import com.espweb.chronos.domain.executor.Executor;
 import com.espweb.chronos.domain.executor.MainThread;
-import com.espweb.chronos.domain.interactors.GetAllCronogramasInteractor;
+import com.espweb.chronos.domain.interactors.cronograma.GetAllCronogramasInteractor;
 import com.espweb.chronos.domain.interactors.base.AbstractInteractor;
 import com.espweb.chronos.domain.model.Cronograma;
 import com.espweb.chronos.domain.repository.CronogramaRepository;
+import com.espweb.chronos.domain.repository.Repository;
 
 import java.util.List;
 
 public class GetAllCronogramasInteractorImpl extends AbstractInteractor implements GetAllCronogramasInteractor {
 
-    private GetAllCronogramasInteractor.Callback callback;
+    private Callback callback;
     private CronogramaRepository cronogramaRepository;
 
     public GetAllCronogramasInteractorImpl(Executor threadExecutor,
@@ -31,7 +31,7 @@ public class GetAllCronogramasInteractorImpl extends AbstractInteractor implemen
 
     @Override
     public void run() {
-        final List<Cronograma> cronogramas = cronogramaRepository.getAllCronogramas();
+        final List<Cronograma> cronogramas = cronogramaRepository.getAll();
         if(cronogramas.size() == 0) {
             mainThread.post(() -> callback.onCronogramasRetrieved(cronogramas));
         } else {

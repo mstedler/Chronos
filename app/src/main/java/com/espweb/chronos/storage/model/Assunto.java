@@ -1,15 +1,53 @@
-package com.espweb.chronos.domain.model;
+package com.espweb.chronos.storage.model;
 
 import java.util.List;
 
+import io.objectbox.annotation.Backlink;
+import io.objectbox.annotation.Entity;
+import io.objectbox.annotation.Id;
+import io.objectbox.relation.ToMany;
+import io.objectbox.relation.ToOne;
+
+@Entity
 public class Assunto {
+
+    @Id
+    private long id;
+
     private String descricao;
-    private List<Material> materiais;
-    private List<Revisao> revisoes;
-    private List<Exercicio> exercicios;
     private String anotacao;
 
+    @Backlink(to = "assunto")
+    private ToMany<Material> materiais;
+    @Backlink(to = "assunto")
+    private ToMany<Revisao> revisoes;
+    @Backlink(to = "assunto")
+    private ToMany<Exercicio> exercicios;
+
+    private ToOne<Disciplina> disciplina;
+
+    public Assunto(long id, String descricao, String anotacao, long disciplinaId) {
+        this.id = id;
+        this.descricao = descricao;
+        this.anotacao = anotacao;
+        this.disciplina.setTargetId(disciplinaId);
+    }
+
+    public Assunto(String descricao, String anotacao, long disciplinaId) {
+        this.descricao = descricao;
+        this.anotacao = anotacao;
+        this.disciplina.setTargetId(disciplinaId);
+    }
+
     public Assunto() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getDescricao() {
@@ -20,35 +58,43 @@ public class Assunto {
         this.descricao = descricao;
     }
 
-    public List<Material> getMateriais() {
-        return materiais;
-    }
-
-    public void setMateriais(List<Material> materiais) {
-        this.materiais = materiais;
-    }
-
-    public List<Revisao> getRevisoes() {
-        return revisoes;
-    }
-
-    public void setRevisoes(List<Revisao> revisoes) {
-        this.revisoes = revisoes;
-    }
-
-    public List<Exercicio> getExercicios() {
-        return exercicios;
-    }
-
-    public void setExercicios(List<Exercicio> exercicios) {
-        this.exercicios = exercicios;
-    }
-
     public String getAnotacao() {
         return anotacao;
     }
 
     public void setAnotacao(String anotacao) {
         this.anotacao = anotacao;
+    }
+
+    public ToMany<Material> getMateriais() {
+        return materiais;
+    }
+
+    public void setMateriais(ToMany<Material> materiais) {
+        this.materiais = materiais;
+    }
+
+    public ToMany<Revisao> getRevisoes() {
+        return revisoes;
+    }
+
+    public void setRevisoes(ToMany<Revisao> revisoes) {
+        this.revisoes = revisoes;
+    }
+
+    public ToMany<Exercicio> getExercicios() {
+        return exercicios;
+    }
+
+    public void setExercicios(ToMany<Exercicio> exercicios) {
+        this.exercicios = exercicios;
+    }
+
+    public ToOne<Disciplina> getDisciplina() {
+        return disciplina;
+    }
+
+    public void setDisciplina(ToOne<Disciplina> disciplina) {
+        this.disciplina = disciplina;
     }
 }

@@ -1,17 +1,16 @@
-package com.espweb.chronos.domain.interactors.impl;
+package com.espweb.chronos.domain.interactors.cronograma.impl;
 
 import com.espweb.chronos.domain.executor.Executor;
 import com.espweb.chronos.domain.executor.MainThread;
 import com.espweb.chronos.domain.interactors.base.AbstractInteractor;
-import com.espweb.chronos.domain.interactors.CreateCronogramaInteractor;
+import com.espweb.chronos.domain.interactors.cronograma.CreateCronogramaInteractor;
 import com.espweb.chronos.domain.model.Cronograma;
 import com.espweb.chronos.domain.repository.CronogramaRepository;
-
-import java.util.Date;
+import com.espweb.chronos.domain.repository.Repository;
 
 public class CreateCronogramaInteractorImpl extends AbstractInteractor implements CreateCronogramaInteractor {
 
-    private CreateCronogramaInteractor.Callback callback;
+    private Callback callback;
     private CronogramaRepository cronogramaRepository;
     private Cronograma cronograma;
 
@@ -32,10 +31,10 @@ public class CreateCronogramaInteractorImpl extends AbstractInteractor implement
 
     @Override
     public void run() {
-        boolean success = cronogramaRepository.insert(cronograma);
+        long cronogramaId = cronogramaRepository.insert(cronograma);
 
-        if (success) {
-            mainThread.post(() -> callback.onCronogramaCreated());
+        if (cronogramaId != 0) {
+            mainThread.post(() -> callback.onCronogramaCreated(cronogramaId));
         } else {
             mainThread.post(() -> callback.onError("Erro ao criar cronograma"));
         }

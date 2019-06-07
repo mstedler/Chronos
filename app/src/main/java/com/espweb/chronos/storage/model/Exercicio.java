@@ -1,11 +1,44 @@
-package com.espweb.chronos.domain.model;
+package com.espweb.chronos.storage.model;
 
+import io.objectbox.annotation.Entity;
+import io.objectbox.annotation.Id;
+import io.objectbox.relation.ToOne;
+
+@Entity
 public class Exercicio {
+    @Id
+    private long id;
+
     private String descricao;
     private int quantidade;
     private int acertos;
 
+    private ToOne<Assunto> assunto;
+
+    public Exercicio(long id, String descricao, int quantidade, int acertos, long assuntoId) {
+        this.id = id;
+        this.descricao = descricao;
+        this.quantidade = quantidade;
+        this.acertos = acertos;
+        this.assunto.setTargetId(assuntoId);
+    }
+
+    public Exercicio(String descricao, int quantidade, int acertos, long assuntoId) {
+        this.descricao = descricao;
+        this.quantidade = quantidade;
+        this.acertos = acertos;
+        this.assunto.setTargetId(assuntoId);
+    }
+
     public Exercicio() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getDescricao() {
@@ -30,5 +63,13 @@ public class Exercicio {
 
     public void setAcertos(int acertos) {
         this.acertos = acertos;
+    }
+
+    public ToOne<Assunto> getAssunto() {
+        return assunto;
+    }
+
+    public void setAssunto(ToOne<Assunto> assunto) {
+        this.assunto = assunto;
     }
 }

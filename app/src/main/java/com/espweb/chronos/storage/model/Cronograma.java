@@ -1,26 +1,58 @@
-package com.espweb.chronos.domain.model;
+package com.espweb.chronos.storage.model;
 
 import java.util.Date;
 import java.util.List;
 
+import io.objectbox.annotation.Backlink;
+import io.objectbox.annotation.Entity;
+import io.objectbox.annotation.Id;
+import io.objectbox.relation.ToMany;
+
+@Entity
 public class Cronograma {
 
+    @Id
     private long id;
+
+    private String uid;
+
     private String titulo;
     private String descricao;
     private Date inicio;
     private Date fim;
-    private List<Disciplina> disciplinas;
+    private boolean synced;
 
-    public Cronograma(String titulo, String descricao, Date inicio, Date fim) {
+    @Backlink(to = "cronograma")
+    private ToMany<Disciplina> disciplinas;
+
+    public Cronograma(long id, String uid, String titulo, String descricao, Date inicio, Date fim, boolean synced) {
+        this.id = id;
+        this.uid = uid;
         this.titulo = titulo;
         this.descricao = descricao;
         this.inicio = inicio;
         this.fim = fim;
+        this.synced = synced;
+    }
+
+    public boolean isSynced() {
+        return synced;
+    }
+
+    public void setSynced(boolean synced) {
+        this.synced = synced;
     }
 
     public Cronograma() {
 
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public long getId() {
@@ -63,11 +95,11 @@ public class Cronograma {
         this.fim = fim;
     }
 
-    public List<Disciplina> getDisciplinas() {
+    public ToMany<Disciplina> getDisciplinas() {
         return disciplinas;
     }
 
-    public void setDisciplinas(List<Disciplina> disciplinas) {
+    public void setDisciplinas(ToMany<Disciplina> disciplinas) {
         this.disciplinas = disciplinas;
     }
 }

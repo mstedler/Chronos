@@ -1,22 +1,21 @@
-package com.espweb.chronos.domain.interactors.impl;
+package com.espweb.chronos.domain.interactors.cronograma.impl;
 
 import com.espweb.chronos.domain.executor.Executor;
 import com.espweb.chronos.domain.executor.MainThread;
-import com.espweb.chronos.domain.interactors.DeleteCronogramaInteractor;
+import com.espweb.chronos.domain.interactors.cronograma.DeleteCronogramaInteractor;
 import com.espweb.chronos.domain.interactors.base.AbstractInteractor;
-import com.espweb.chronos.domain.model.Cronograma;
 import com.espweb.chronos.domain.repository.CronogramaRepository;
 
 public class DeleteCronogramaInteractorImpl extends AbstractInteractor implements DeleteCronogramaInteractor {
 
     private CronogramaRepository cronogramaRepository;
     private Callback callback;
-    private Cronograma cronograma;
+    private long cronogramaId;
 
     public DeleteCronogramaInteractorImpl(Executor threadExecutor, MainThread mainThread,
                                           Callback callback,
                                           CronogramaRepository cronogramaRepository,
-                                          Cronograma cronograma) {
+                                          long cronogramaId) {
         super(threadExecutor, mainThread);
 
         if (cronogramaRepository == null || callback == null) {
@@ -25,12 +24,12 @@ public class DeleteCronogramaInteractorImpl extends AbstractInteractor implement
 
         this.callback = callback;
         this.cronogramaRepository = cronogramaRepository;
-        this.cronograma = cronograma;
+        this.cronogramaId = cronogramaId;
     }
 
     @Override
     public void run() {
-        boolean success = cronogramaRepository.delete(cronograma);
+        boolean success = cronogramaRepository.delete(cronogramaId);
 
         if(success) {
             mainThread.post(() -> callback.onCronogramaDeleted());

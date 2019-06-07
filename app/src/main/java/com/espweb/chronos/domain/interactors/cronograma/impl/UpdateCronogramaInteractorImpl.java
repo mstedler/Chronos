@@ -1,11 +1,12 @@
-package com.espweb.chronos.domain.interactors.impl;
+package com.espweb.chronos.domain.interactors.cronograma.impl;
 
 import com.espweb.chronos.domain.executor.Executor;
 import com.espweb.chronos.domain.executor.MainThread;
 import com.espweb.chronos.domain.interactors.base.AbstractInteractor;
-import com.espweb.chronos.domain.interactors.UpdateCronogramaInteractor;
+import com.espweb.chronos.domain.interactors.cronograma.UpdateCronogramaInteractor;
 import com.espweb.chronos.domain.model.Cronograma;
 import com.espweb.chronos.domain.repository.CronogramaRepository;
+import com.espweb.chronos.domain.repository.Repository;
 
 public class UpdateCronogramaInteractorImpl extends AbstractInteractor implements UpdateCronogramaInteractor {
 
