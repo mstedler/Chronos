@@ -14,6 +14,21 @@ public class Revisao {
         @SerializedName("3")
         MENSAL;
 
+        public int getValue(){
+            switch (this){
+                case DIARIA:
+                    return 0;
+                case SEMANAL:
+                    return 1;
+                case QUINZENAL:
+                    return 2;
+                case MENSAL:
+                    return 3;
+                default:
+                    return 0;
+            }
+        }
+
     }
     @SerializedName("escopo")
     private Escopo escopo;

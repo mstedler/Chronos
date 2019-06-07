@@ -3,13 +3,22 @@ package com.espweb.chronos.domain.model;
 import java.util.List;
 
 public class Assunto {
+    private long id;
     private String descricao;
+    private String anotacao;
     private List<Material> materiais;
     private List<Revisao> revisoes;
     private List<Exercicio> exercicios;
-    private String anotacao;
 
     public Assunto() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getDescricao() {

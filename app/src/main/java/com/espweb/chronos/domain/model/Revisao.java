@@ -2,16 +2,42 @@ package com.espweb.chronos.domain.model;
 
 public class Revisao {
 
+    private long id;
+
     public enum Escopo {
-        DIARIA,
-        SEMANAL,
-        QUINZENAL,
-        MENSAL;
+        DIARIA(0),
+        SEMANAL(1),
+        QUINZENAL(2),
+        MENSAL(3);
+
+        private int value;
+
+        public int getIntValue() {
+            return value;
+        }
+
+        Escopo(int value){
+            this.value = value;
+        }
+        public static Escopo fromInt(int i) {
+            for (Escopo b : Escopo.values()) {
+                if (b.getIntValue() == i) { return b; }
+            }
+            return null;
+        }
     }
     private Escopo escopo;
     private int quantidade;
 
     public Revisao() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Escopo getEscopo() {

@@ -1,115 +1,88 @@
 package com.espweb.chronos.network.converters;
 
-import com.espweb.chronos.domain.model.Assunto;
-import com.espweb.chronos.domain.model.Cronograma;
-import com.espweb.chronos.domain.model.Disciplina;
-import com.espweb.chronos.domain.model.Exercicio;
-import com.espweb.chronos.domain.model.Material;
-import com.espweb.chronos.domain.model.Revisao;
+
+import com.espweb.chronos.storage.model.Assunto;
+import com.espweb.chronos.storage.model.Cronograma;
+import com.espweb.chronos.storage.model.Disciplina;
+import com.espweb.chronos.storage.model.Exercicio;
+import com.espweb.chronos.storage.model.Material;
+import com.espweb.chronos.storage.model.Revisao;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.objectbox.relation.ToMany;
+
 public class RESTModelConverter {
 
-    public static List<Cronograma> convertCronogramasToDomainModel(List<com.espweb.chronos.network.model.Cronograma> cronogramas) {
+    public static List<Cronograma> convertCronogramasToStorageModel(List<com.espweb.chronos.network.model.Cronograma> cronogramas) {
         List<Cronograma> dCronogramas = new ArrayList<>();
         for (com.espweb.chronos.network.model.Cronograma cronograma: cronogramas) {
-            dCronogramas.add(convertToDomainModel(cronograma));
+            dCronogramas.add(convertToStorageModel(cronograma));
         }
         return dCronogramas;
     }
 
-    private static Cronograma convertToDomainModel(com.espweb.chronos.network.model.Cronograma cronograma) {
+    private static Cronograma convertToStorageModel(com.espweb.chronos.network.model.Cronograma cronograma) {
         Cronograma dCronograma = new Cronograma();
+        dCronograma.setUid(cronograma.getUid());
+        dCronograma.setTitulo(cronograma.getTitulo());
+        dCronograma.setDescricao(cronograma.getDescricao());
         dCronograma.setInicio(cronograma.getInicio());
         dCronograma.setFim(cronograma.getFim());
-        dCronograma.setDisciplinas(convertDisciplinasToDomainModel(cronograma.getDisciplinas()));
+        dCronograma.setSynced(true);
+        addDisciplinas(dCronograma, cronograma.getDisciplinas());
         return dCronograma;
     }
 
-    private static List<Disciplina> convertDisciplinasToDomainModel(List<com.espweb.chronos.network.model.Disciplina> disciplinas) {
-        List<Disciplina> dDisciplinas = new ArrayList<>();
+    private static void addDisciplinas(Cronograma dCronograma, List<com.espweb.chronos.network.model.Disciplina> disciplinas) {
         for (com.espweb.chronos.network.model.Disciplina disciplina: disciplinas) {
-            dDisciplinas.add(convertToDomainModel(disciplina));
+            Disciplina dDisciplina = new Disciplina();
+            dDisciplina.getCronograma().setTarget(dCronograma);
+            dDisciplina.setNome(disciplina.getNome());
+            addAssuntos(dDisciplina, disciplina.getAssuntos());
+            dCronograma.getDisciplinas().add(dDisciplina);
         }
-        return dDisciplinas;
     }
 
-    private static Disciplina convertToDomainModel(com.espweb.chronos.network.model.Disciplina disciplina) {
-        Disciplina dDisciplina = new Disciplina();
-        dDisciplina.setNome(disciplina.getNome());
-        dDisciplina.setAssuntos(convertAssuntosToDomainModel(disciplina.getAssuntos()));
-        return dDisciplina;
-    }
-
-    private static List<Assunto> convertAssuntosToDomainModel(List<com.espweb.chronos.network.model.Assunto> assuntos) {
-        List<Assunto> dAssuntos = new ArrayList<>();
+    private static void addAssuntos(Disciplina dDisciplina, List<com.espweb.chronos.network.model.Assunto> assuntos) {
         for (com.espweb.chronos.network.model.Assunto assunto: assuntos) {
-            dAssuntos.add(convertToDomainModel(assunto));
+            Assunto dAssunto = new Assunto();
+            dAssunto.setAnotacao(assunto.getAnotacao());
+            dAssunto.setDescricao(assunto.getDescricao());
+            addExercicios(dAssunto, assunto.getExercicios());
+            addMateriais(dAssunto, assunto.getMateriais());
+            addRevisoes(dAssunto, assunto.getRevisoes());
+            dDisciplina.getAssuntos().add(dAssunto);
         }
-
-        assuntos.clear();
-        assuntos = null;
-
-        return dAssuntos;
     }
 
-    private static Assunto convertToDomainModel(com.espweb.chronos.network.model.Assunto assunto) {
-        Assunto dAssunto = new Assunto();
-        dAssunto.setAnotacao(assunto.getAnotacao());
-        dAssunto.setDescricao(assunto.getDescricao());
-        dAssunto.setExercicios(convertExerciciosToDomainModel(assunto.getExercicios()));
-        dAssunto.setMateriais(convertMateriaisToDomainModel(assunto.getMateriais()));
-        dAssunto.setRevisoes(convertRevisoesToDomainModel(assunto.getRevisoes()));
-        return dAssunto;
-    }
-
-    private static List<Revisao> convertRevisoesToDomainModel(List<com.espweb.chronos.network.model.Revisao> revisoes) {
-        List<Revisao> dRevisoes = new ArrayList<>();
+    private static void addRevisoes(Assunto dAssunto, List<com.espweb.chronos.network.model.Revisao> revisoes) {
         for (com.espweb.chronos.network.model.Revisao revisao: revisoes) {
-            dRevisoes.add(convertToDomainModel(revisao));
+            Revisao dRevisao = new Revisao();
+            dRevisao.setEscopo(revisao.getEscopo().getValue());
+            dRevisao.setQuantidade(revisao.getQuantidade());
+            dAssunto.getRevisoes().add(dRevisao);
         }
-        return dRevisoes;
     }
 
-    private static Revisao convertToDomainModel(com.espweb.chronos.network.model.Revisao revisao) {
-        Revisao dRevisao = new Revisao();
-        //dRevisao.setEscopo();
-        dRevisao.setQuantidade(revisao.getQuantidade());
-        return dRevisao;
-    }
-
-    private static List<Material> convertMateriaisToDomainModel(List<com.espweb.chronos.network.model.Material> materiais) {
-        List<Material> dMateriais = new ArrayList<>();
-        for (com.espweb.chronos.network.model.Material material: materiais) {
-            dMateriais.add(convertToDomainModel(material));
+    private static void addMateriais(Assunto dAssunto, List<com.espweb.chronos.network.model.Material> materiais) {
+       for (com.espweb.chronos.network.model.Material material: materiais) {
+           Material dMaterial = new Material();
+           dMaterial.setDescricao(material.getDescricao());
+           dMaterial.setPorcentagem(material.getPorcentagem());
+           dAssunto.getMateriais().add(dMaterial);
         }
-        materiais.clear();
-
-        return dMateriais;
     }
 
-    private static Material convertToDomainModel(com.espweb.chronos.network.model.Material material) {
-        Material dMaterial = new Material();
-        dMaterial.setDescricao(material.getDescricao());
-        dMaterial.setPorcentagem(material.getPorcentagem());
-        return dMaterial;
-    }
 
-    private static List<Exercicio> convertExerciciosToDomainModel(List<com.espweb.chronos.network.model.Exercicio> exercicios) {
-        List<Exercicio> dExercicios = new ArrayList<>();
+    private static void addExercicios(Assunto dAssunto, List<com.espweb.chronos.network.model.Exercicio> exercicios) {
         for (com.espweb.chronos.network.model.Exercicio exercicio: exercicios) {
-            dExercicios.add(convertToDomainModel(exercicio));
+            Exercicio dExercicio = new Exercicio();
+            dExercicio.setAcertos(exercicio.getAcertos());
+            dExercicio.setDescricao(exercicio.getDescricao());
+            dExercicio.setQuantidade(exercicio.getQuantidade());
+            dAssunto.getExercicios().add(dExercicio);
         }
-        return dExercicios;
-    }
-
-    private static Exercicio convertToDomainModel(com.espweb.chronos.network.model.Exercicio exercicio) {
-        Exercicio dExercicio = new Exercicio();
-        dExercicio.setAcertos(exercicio.getAcertos());
-        dExercicio.setDescricao(exercicio.getDescricao());
-        dExercicio.setQuantidade(exercicio.getQuantidade());
-        return dExercicio;
     }
 }

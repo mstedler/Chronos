@@ -1,0 +1,179 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:4859975382027733960",
+      "lastPropertyId": "4:3567524658473406638",
+      "name": "Assunto",
+      "properties": [
+        {
+          "id": "1:2139795803118270430",
+          "name": "id"
+        },
+        {
+          "id": "2:6457211751952284635",
+          "name": "descricao"
+        },
+        {
+          "id": "3:5392434723847011437",
+          "name": "anotacao"
+        },
+        {
+          "id": "4:3567524658473406638",
+          "indexId": "1:6306730066501046262",
+          "name": "disciplinaId"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:2160619164476529022",
+      "lastPropertyId": "7:2108134954767149243",
+      "name": "Cronograma",
+      "properties": [
+        {
+          "id": "1:7177224369837044047",
+          "name": "id"
+        },
+        {
+          "id": "2:1604623890753185990",
+          "name": "uid"
+        },
+        {
+          "id": "3:3246962469087542877",
+          "name": "titulo"
+        },
+        {
+          "id": "4:7753545318188883292",
+          "name": "descricao"
+        },
+        {
+          "id": "5:7886362751111843744",
+          "name": "inicio"
+        },
+        {
+          "id": "6:3746953334552678418",
+          "name": "fim"
+        },
+        {
+          "id": "7:2108134954767149243",
+          "name": "synced"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:664133005502832780",
+      "lastPropertyId": "3:8934437884035000873",
+      "name": "Disciplina",
+      "properties": [
+        {
+          "id": "1:5878992376183372168",
+          "name": "id"
+        },
+        {
+          "id": "2:8639397081905300158",
+          "name": "nome"
+        },
+        {
+          "id": "3:8934437884035000873",
+          "indexId": "2:2855396254281161307",
+          "name": "cronogramaId"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:5733703349226939817",
+      "lastPropertyId": "5:248195380352999899",
+      "name": "Exercicio",
+      "properties": [
+        {
+          "id": "1:8472362774694846734",
+          "name": "id"
+        },
+        {
+          "id": "2:1138190458219382489",
+          "name": "descricao"
+        },
+        {
+          "id": "3:2090454540898531829",
+          "name": "quantidade"
+        },
+        {
+          "id": "4:6909049020066660510",
+          "name": "acertos"
+        },
+        {
+          "id": "5:248195380352999899",
+          "indexId": "3:2420598550490962381",
+          "name": "assuntoId"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "5:5070123215764507957",
+      "lastPropertyId": "4:6198785810795332671",
+      "name": "Material",
+      "properties": [
+        {
+          "id": "1:4014707927197456749",
+          "name": "id"
+        },
+        {
+          "id": "2:5448367159635499029",
+          "name": "descricao"
+        },
+        {
+          "id": "3:8960882439387158043",
+          "name": "porcentagem"
+        },
+        {
+          "id": "4:6198785810795332671",
+          "indexId": "4:224556629182143071",
+          "name": "assuntoId"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "6:3048606903859402705",
+      "lastPropertyId": "4:5530848375084547887",
+      "name": "Revisao",
+      "properties": [
+        {
+          "id": "1:1259942550512460357",
+          "name": "id"
+        },
+        {
+          "id": "2:2318225493297416137",
+          "name": "escopo"
+        },
+        {
+          "id": "3:8316242322355678912",
+          "name": "quantidade"
+        },
+        {
+          "id": "4:5530848375084547887",
+          "indexId": "5:3750880439641564063",
+          "name": "assuntoId"
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "6:3048606903859402705",
+  "lastIndexId": "5:3750880439641564063",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 4,
+  "modelVersionParserMinimum": 4,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

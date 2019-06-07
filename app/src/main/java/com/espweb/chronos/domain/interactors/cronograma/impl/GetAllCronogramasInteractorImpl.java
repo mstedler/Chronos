@@ -31,12 +31,11 @@ public class GetAllCronogramasInteractorImpl extends AbstractInteractor implemen
 
     @Override
     public void run() {
-        try {
-            final List<Cronograma> cronogramas = cronogramaRepository.getAllCronogramas();
-
+        final List<Cronograma> cronogramas = cronogramaRepository.getAllCronogramas();
+        if(cronogramas.size() == 0) {
             mainThread.post(() -> callback.onCronogramasRetrieved(cronogramas));
-        } catch (GetAllCronogramasException e) {
-            mainThread.post(() -> callback.onError(e.getMessage()));
+        } else {
+            mainThread.post(() -> callback.onError("Nao existem cronogramas."));
         }
     }
 }

@@ -3,17 +3,58 @@ package com.espweb.chronos.domain.model;
 import java.util.Date;
 import java.util.List;
 
-/**
- * A sample model. Replace this with your own.
- */
 public class Cronograma {
 
+    private long id;
+    private String uid;
+    private String titulo;
+    private String descricao;
     private Date inicio;
     private Date fim;
     private List<Disciplina> disciplinas;
 
+    public Cronograma(String titulo, String uid, String descricao, Date inicio, Date fim) {
+        this.uid = uid;
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.inicio = inicio;
+        this.fim = fim;
+    }
+
     public Cronograma() {
 
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public Date getInicio() {

@@ -2,8 +2,8 @@ package com.espweb.chronos.presentation.presenters.impl;
 
 import com.espweb.chronos.domain.executor.Executor;
 import com.espweb.chronos.domain.executor.MainThread;
-import com.espweb.chronos.domain.interactors.GetAllCronogramasInteractor;
-import com.espweb.chronos.domain.interactors.impl.GetAllCronogramasInteractorImpl;
+import com.espweb.chronos.domain.interactors.cronograma.GetAllCronogramasInteractor;
+import com.espweb.chronos.domain.interactors.cronograma.impl.GetAllCronogramasInteractorImpl;
 import com.espweb.chronos.domain.model.Cronograma;
 import com.espweb.chronos.domain.repository.CronogramaRepository;
 import com.espweb.chronos.presentation.presenters.base.AbstractPresenter;

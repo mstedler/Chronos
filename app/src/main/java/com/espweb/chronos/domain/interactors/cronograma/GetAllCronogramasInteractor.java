@@ -1,4 +1,4 @@
-package com.espweb.chronos.domain.interactors;
+package com.espweb.chronos.domain.interactors.cronograma;
 
 
 import com.espweb.chronos.domain.interactors.base.Interactor;

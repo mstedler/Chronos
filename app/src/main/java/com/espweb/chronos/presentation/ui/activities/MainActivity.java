@@ -20,13 +20,12 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View {
 
     private MainPresenter mainPresenter;
-    private CronogramaRepository cronogramaRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        cronogramaRepository = new CronogramaRepositoryImpl(this);
+        CronogramaRepository cronogramaRepository = new CronogramaRepositoryImpl(this);
         mainPresenter = new MainPresenterImpl(
                 ThreadExecutor.getInstance(),
                 MainThreadImpl.getInstance(), this,
