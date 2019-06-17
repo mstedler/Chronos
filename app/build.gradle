@@ -39,4 +39,13 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.14.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.14.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+
+    //view
+    implementation 'com.jakewharton:butterknife:10.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha06'
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+    //time
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
 }

@@ -1,20 +1,14 @@
 package com.espweb.chronos.domain.model;
 
-public class Exercicio {
-    private long id;
+import java.util.Date;
+
+public class Exercicio extends Artefato{
     private String descricao;
     private int quantidade;
     private int acertos;
 
     public Exercicio() {
-    }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getDescricao() {

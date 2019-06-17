@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Date;
+import java.util.UUID;
 
 import static org.mockito.Mockito.when;
 
@@ -33,7 +34,7 @@ public class UpdateCronogramaTest {
 
     @Test
     public void testCreateCronograma() throws Exception{
-        Cronograma cronograma = new Cronograma("Cronograma I", "012547825020-qgqgq0gq-gqgqgq",
+        Cronograma cronograma = new Cronograma(UUID.randomUUID().toString(), "CronogramaActivity I",
                 "Esse é um cronograma Teste",
                 new Date("01/01/2019"),
                 new Date("01/02/2019"));

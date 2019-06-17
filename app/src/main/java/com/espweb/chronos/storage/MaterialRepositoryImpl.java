@@ -9,6 +9,7 @@ import com.espweb.chronos.storage.database.ObjectBox;
 import com.espweb.chronos.storage.model.Material_;
 
 import java.util.List;
+import java.util.UUID;
 
 import io.objectbox.Box;
 
@@ -19,8 +20,10 @@ public class MaterialRepositoryImpl implements Repository<Material> {
     public long insert(long parentId, Material model) {
         com.espweb.chronos.storage.model.Material material =
                 new com.espweb.chronos.storage.model.Material(
+                        UUID.randomUUID().toString(),
+                        model.getData(),
                         model.getDescricao(),
-                        model.getPorcentagem(),
+                        model.getMinutos(),
                         parentId);
         return getBox().put(material);
     }
@@ -29,7 +32,8 @@ public class MaterialRepositoryImpl implements Repository<Material> {
     public boolean update(Material model) {
         com.espweb.chronos.storage.model.Material material = getBox().get(model.getId());
         material.setDescricao(model.getDescricao());
-        material.setPorcentagem(model.getPorcentagem());
+        material.setMinutos(model.getMinutos());
+        material.setData(model.getData());
         getBox().put(material);
         return true;
     }

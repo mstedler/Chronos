@@ -11,8 +11,6 @@ import com.espweb.chronos.storage.model.Revisao;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.objectbox.relation.ToMany;
-
 public class RESTModelConverter {
 
     public static List<Cronograma> convertCronogramasToStorageModel(List<com.espweb.chronos.network.model.Cronograma> cronogramas) {
@@ -25,7 +23,7 @@ public class RESTModelConverter {
 
     private static Cronograma convertToStorageModel(com.espweb.chronos.network.model.Cronograma cronograma) {
         Cronograma dCronograma = new Cronograma();
-        dCronograma.setUid(cronograma.getUid());
+        dCronograma.setUuid(cronograma.getUuid());
         dCronograma.setTitulo(cronograma.getTitulo());
         dCronograma.setDescricao(cronograma.getDescricao());
         dCronograma.setInicio(cronograma.getInicio());
@@ -40,6 +38,7 @@ public class RESTModelConverter {
             Disciplina dDisciplina = new Disciplina();
             dDisciplina.getCronograma().setTarget(dCronograma);
             dDisciplina.setNome(disciplina.getNome());
+            dDisciplina.setUuid(disciplina.getUuid());
             addAssuntos(dDisciplina, disciplina.getAssuntos());
             dCronograma.getDisciplinas().add(dDisciplina);
         }
@@ -50,6 +49,7 @@ public class RESTModelConverter {
             Assunto dAssunto = new Assunto();
             dAssunto.setAnotacao(assunto.getAnotacao());
             dAssunto.setDescricao(assunto.getDescricao());
+            dAssunto.setUuid(assunto.getUuid());
             addExercicios(dAssunto, assunto.getExercicios());
             addMateriais(dAssunto, assunto.getMateriais());
             addRevisoes(dAssunto, assunto.getRevisoes());
@@ -61,7 +61,8 @@ public class RESTModelConverter {
         for (com.espweb.chronos.network.model.Revisao revisao: revisoes) {
             Revisao dRevisao = new Revisao();
             dRevisao.setEscopo(revisao.getEscopo().getValue());
-            dRevisao.setQuantidade(revisao.getQuantidade());
+            dRevisao.setUuid(revisao.getUuid());
+            dRevisao.setData(revisao.getData());
             dAssunto.getRevisoes().add(dRevisao);
         }
     }
@@ -70,7 +71,9 @@ public class RESTModelConverter {
        for (com.espweb.chronos.network.model.Material material: materiais) {
            Material dMaterial = new Material();
            dMaterial.setDescricao(material.getDescricao());
-           dMaterial.setPorcentagem(material.getPorcentagem());
+           dMaterial.setMinutos(material.getMinutos());
+           dMaterial.setUuid(material.getUuid());
+           dMaterial.setData(material.getData());
            dAssunto.getMateriais().add(dMaterial);
         }
     }
@@ -82,6 +85,8 @@ public class RESTModelConverter {
             dExercicio.setAcertos(exercicio.getAcertos());
             dExercicio.setDescricao(exercicio.getDescricao());
             dExercicio.setQuantidade(exercicio.getQuantidade());
+            dExercicio.setUuid(exercicio.getUuid());
+            dExercicio.setData(exercicio.getData());
             dAssunto.getExercicios().add(dExercicio);
         }
     }

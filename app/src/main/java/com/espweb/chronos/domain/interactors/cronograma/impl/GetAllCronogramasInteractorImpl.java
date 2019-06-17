@@ -32,7 +32,7 @@ public class GetAllCronogramasInteractorImpl extends AbstractInteractor implemen
     @Override
     public void run() {
         final List<Cronograma> cronogramas = cronogramaRepository.getAll();
-        if(cronogramas.size() == 0) {
+        if(cronogramas.size() > 0) {
             mainThread.post(() -> callback.onCronogramasRetrieved(cronogramas));
         } else {
             mainThread.post(() -> callback.onError("Nao existem cronogramas."));

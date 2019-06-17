@@ -5,13 +5,22 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class Disciplina {
-
+    @SerializedName("uuid")
+    private String uuid;
     @SerializedName("nome")
     private String nome;
     @SerializedName("assuntos")
     private List<Assunto> assuntos;
 
     public Disciplina() {
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getNome() {

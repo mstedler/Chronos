@@ -9,6 +9,7 @@ import com.espweb.chronos.storage.database.ObjectBox;
 import com.espweb.chronos.storage.model.Disciplina_;
 
 import java.util.List;
+import java.util.UUID;
 
 import io.objectbox.Box;
 
@@ -18,7 +19,11 @@ public class DisciplinaRepositoryImpl implements Repository<Disciplina> {
 
     @Override
     public long insert(long parentId, Disciplina model) {
-        com.espweb.chronos.storage.model.Disciplina disciplina = new com.espweb.chronos.storage.model.Disciplina(model.getNome(), parentId);
+        com.espweb.chronos.storage.model.Disciplina disciplina =
+                new com.espweb.chronos.storage.model.Disciplina(
+                        UUID.randomUUID().toString(),
+                        model.getNome(),
+                        parentId);
         return getBox().put(disciplina);
     }
 

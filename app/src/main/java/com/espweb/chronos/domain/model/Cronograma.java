@@ -6,15 +6,15 @@ import java.util.List;
 public class Cronograma {
 
     private long id;
-    private String uid;
+    private String uuid;
     private String titulo;
     private String descricao;
     private Date inicio;
     private Date fim;
     private List<Disciplina> disciplinas;
 
-    public Cronograma(String titulo, String uid, String descricao, Date inicio, Date fim) {
-        this.uid = uid;
+    public Cronograma(String uuid, String titulo, String descricao, Date inicio, Date fim) {
+        this.uuid = uuid;
         this.titulo = titulo;
         this.descricao = descricao;
         this.inicio = inicio;
@@ -25,12 +25,12 @@ public class Cronograma {
 
     }
 
-    public String getUid() {
-        return uid;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public long getId() {

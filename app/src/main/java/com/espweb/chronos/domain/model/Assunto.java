@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Assunto {
     private long id;
+    private String uuid;
     private String descricao;
     private String anotacao;
     private List<Material> materiais;
@@ -15,6 +16,14 @@ public class Assunto {
 
     public long getId() {
         return id;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public void setId(long id) {

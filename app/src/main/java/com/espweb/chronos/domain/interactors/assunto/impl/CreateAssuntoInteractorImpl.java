@@ -5,18 +5,19 @@ import com.espweb.chronos.domain.executor.MainThread;
 import com.espweb.chronos.domain.interactors.base.AbstractInteractor;
 import com.espweb.chronos.domain.interactors.assunto.CreateAssuntoInteractor;
 import com.espweb.chronos.domain.model.Assunto;
+import com.espweb.chronos.domain.repository.AssuntoRepository;
 import com.espweb.chronos.domain.repository.Repository;
 
 public class CreateAssuntoInteractorImpl extends AbstractInteractor implements CreateAssuntoInteractor {
 
-    private Repository<Assunto> assuntoRepository;
+    private AssuntoRepository assuntoRepository;
     private Callback callback;
     private long disciplinaId;
     private Assunto assunto;
 
     public CreateAssuntoInteractorImpl(Executor threadExecutor, MainThread mainThread,
-                                       Repository<Assunto> assuntoRepository,
                                        Callback callback,
+                                       AssuntoRepository assuntoRepository,
                                        long disciplinaId,
                                        Assunto assunto) {
         super(threadExecutor, mainThread);

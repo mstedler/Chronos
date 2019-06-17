@@ -1,9 +1,8 @@
 package com.espweb.chronos.domain.model;
 
-public class Revisao {
+import java.util.Date;
 
-    private long id;
-
+public class Revisao extends Artefato {
     public enum Escopo {
         DIARIA(0),
         SEMANAL(1),
@@ -27,17 +26,8 @@ public class Revisao {
         }
     }
     private Escopo escopo;
-    private int quantidade;
 
     public Revisao() {
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public Escopo getEscopo() {
@@ -46,13 +36,5 @@ public class Revisao {
 
     public void setEscopo(Escopo escopo) {
         this.escopo = escopo;
-    }
-
-    public int getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(int quantidade) {
-        this.quantidade = quantidade;
     }
 }

@@ -11,7 +11,7 @@ public class Disciplina {
 
     @Id
     private long id;
-
+    private String uuid;
     private String nome;
 
     @Backlink(to = "disciplina")
@@ -19,18 +19,28 @@ public class Disciplina {
 
     private ToOne<Cronograma> cronograma;
 
-    public Disciplina(String nome, long cronogramaId) {
+    public Disciplina(String uuid, String nome, long cronogramaId) {
+        this.uuid = uuid;
         this.nome = nome;
         this.cronograma.setTargetId(cronogramaId);
     }
 
-    public Disciplina(long id, String nome, long cronogramaId) {
+    public Disciplina(long id, String uuid, String nome, long cronogramaId) {
         this.id = id;
+        this.uuid = uuid;
         this.nome = nome;
         this.cronograma.setTargetId(cronogramaId);
     }
 
     public Disciplina() {
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public long getId() {

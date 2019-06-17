@@ -9,6 +9,7 @@ import com.espweb.chronos.storage.database.ObjectBox;
 import com.espweb.chronos.storage.model.Revisao_;
 
 import java.util.List;
+import java.util.UUID;
 
 import io.objectbox.Box;
 
@@ -17,7 +18,12 @@ public class RevisaoRepositoryImpl implements Repository<Revisao> {
 
     @Override
     public long insert(long parentId, Revisao model) {
-        com.espweb.chronos.storage.model.Revisao revisao = new com.espweb.chronos.storage.model.Revisao(model.getEscopo().getIntValue(), model.getQuantidade(), parentId);
+        com.espweb.chronos.storage.model.Revisao revisao =
+                new com.espweb.chronos.storage.model.Revisao(
+                        UUID.randomUUID().toString(),
+                        model.getData(),
+                        model.getEscopo().getIntValue(),
+                        parentId);
         return getBox().put(revisao);
     }
 
@@ -25,7 +31,6 @@ public class RevisaoRepositoryImpl implements Repository<Revisao> {
     public boolean update(Revisao model) {
         com.espweb.chronos.storage.model.Revisao revisao = getBox().get(model.getId());
         revisao.setEscopo(model.getEscopo().getIntValue());
-        revisao.setQuantidade(model.getQuantidade());
         getBox().put(revisao);
         return true;
     }

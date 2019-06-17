@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class Assunto {
+    @SerializedName("uuid")
+    private String uuid;
     @SerializedName("descricao")
     private String descricao;
     @SerializedName("materiais")
@@ -17,6 +19,14 @@ public class Assunto {
     private String anotacao;
 
     public Assunto() {
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getDescricao() {

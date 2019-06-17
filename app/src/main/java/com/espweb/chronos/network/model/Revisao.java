@@ -2,7 +2,14 @@ package com.espweb.chronos.network.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class Revisao {
+
+    @SerializedName("uuid")
+    private String uuid;
+    @SerializedName("data")
+    private Date data;
 
     public enum Escopo {
         @SerializedName("0")
@@ -32,8 +39,22 @@ public class Revisao {
     }
     @SerializedName("escopo")
     private Escopo escopo;
-    @SerializedName("quantidade")
-    private int quantidade;
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }
 
     public Revisao() {
     }
@@ -44,13 +65,5 @@ public class Revisao {
 
     public void setEscopo(Escopo escopo) {
         this.escopo = escopo;
-    }
-
-    public int getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(int quantidade) {
-        this.quantidade = quantidade;
     }
 }

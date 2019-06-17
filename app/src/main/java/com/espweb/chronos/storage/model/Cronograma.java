@@ -1,7 +1,6 @@
 package com.espweb.chronos.storage.model;
 
 import java.util.Date;
-import java.util.List;
 
 import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
@@ -14,7 +13,7 @@ public class Cronograma {
     @Id
     private long id;
 
-    private String uid;
+    private String uuid;
 
     private String titulo;
     private String descricao;
@@ -25,9 +24,9 @@ public class Cronograma {
     @Backlink(to = "cronograma")
     private ToMany<Disciplina> disciplinas;
 
-    public Cronograma(long id, String uid, String titulo, String descricao, Date inicio, Date fim, boolean synced) {
+    public Cronograma(long id, String uuid, String titulo, String descricao, Date inicio, Date fim, boolean synced) {
         this.id = id;
-        this.uid = uid;
+        this.uuid = uuid;
         this.titulo = titulo;
         this.descricao = descricao;
         this.inicio = inicio;
@@ -47,12 +46,12 @@ public class Cronograma {
 
     }
 
-    public String getUid() {
-        return uid;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public long getId() {

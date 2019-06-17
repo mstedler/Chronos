@@ -35,15 +35,12 @@ public class ThreadExecutor implements Executor {
 
     @Override
     public void execute(final AbstractInteractor interactor) {
-        mThreadPoolExecutor.submit(new Runnable() {
-            @Override
-            public void run() {
-                // run the main logic
-                interactor.run();
+        mThreadPoolExecutor.submit(() -> {
+            // run the main logic
+            interactor.run();
 
-                // mark it as finished
-                interactor.onFinished();
-            }
+            // mark it as finished
+            interactor.onFinished();
         });
     }
 

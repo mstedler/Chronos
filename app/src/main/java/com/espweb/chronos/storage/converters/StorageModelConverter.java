@@ -8,16 +8,13 @@ import com.espweb.chronos.domain.model.Revisao;
 import com.espweb.chronos.storage.model.Cronograma;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
-import io.objectbox.relation.ToMany;
 
 public class StorageModelConverter {
     public static Cronograma ConvertToStorageModel(com.espweb.chronos.domain.model.Cronograma cronograma) {
         Cronograma sCronograma = new Cronograma();
         sCronograma.setTitulo(cronograma.getTitulo());
-        sCronograma.setUid(cronograma.getUid());
+        sCronograma.setUuid(cronograma.getUuid());
         sCronograma.setDescricao(cronograma.getDescricao());
         sCronograma.setInicio(cronograma.getInicio());
         sCronograma.setFim(cronograma.getFim());
@@ -28,7 +25,7 @@ public class StorageModelConverter {
         com.espweb.chronos.domain.model.Cronograma cronograma = new com.espweb.chronos.domain.model.Cronograma();
         cronograma.setId(sCronograma.getId());
         cronograma.setTitulo(sCronograma.getTitulo());
-        cronograma.setUid(sCronograma.getUid());
+        cronograma.setUuid(sCronograma.getUuid());
         cronograma.setDescricao(sCronograma.getDescricao());
         cronograma.setInicio(sCronograma.getInicio());
         cronograma.setFim(sCronograma.getFim());
@@ -39,6 +36,7 @@ public class StorageModelConverter {
         Disciplina disciplina = new Disciplina();
         disciplina.setId(sDisciplina.getId());
         disciplina.setNome(sDisciplina.getNome());
+        disciplina.setUuid(sDisciplina.getUuid());
         return disciplina;
     }
 
@@ -55,6 +53,7 @@ public class StorageModelConverter {
         dAssunto.setId(assunto.getId());
         dAssunto.setDescricao(assunto.getDescricao());
         dAssunto.setAnotacao(assunto.getAnotacao());
+        dAssunto.setUuid(assunto.getUuid());
         return dAssunto;
     }
 
@@ -72,6 +71,8 @@ public class StorageModelConverter {
         dExercicio.setDescricao(exercicio.getDescricao());
         dExercicio.setQuantidade(exercicio.getQuantidade());
         dExercicio.setAcertos(exercicio.getAcertos());
+        dExercicio.setData(exercicio.getData());
+        dExercicio.setUuid(exercicio.getUuid());
         return dExercicio;
     }
 
@@ -86,8 +87,9 @@ public class StorageModelConverter {
     public static Revisao ConvertToDomainModel(com.espweb.chronos.storage.model.Revisao revisao) {
         Revisao dRevisao = new Revisao();
         dRevisao.setId(revisao.getId());
-        dRevisao.setQuantidade(revisao.getQuantidade());
         dRevisao.setEscopo(Revisao.Escopo.fromInt(revisao.getEscopo()));
+        dRevisao.setData(revisao.getData());
+        dRevisao.setUuid(revisao.getUuid());
         return dRevisao;
     }
 
@@ -103,7 +105,9 @@ public class StorageModelConverter {
         Material dMaterial = new Material();
         dMaterial.setId(material.getId());
         dMaterial.setDescricao(material.getDescricao());
-        dMaterial.setPorcentagem(material.getPorcentagem());
+        dMaterial.setMinutos(material.getMinutos());
+        dMaterial.setData(material.getData());
+        dMaterial.setUuid(material.getUuid());
         return dMaterial;
     }
 

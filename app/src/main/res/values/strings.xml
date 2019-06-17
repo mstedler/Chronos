@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Chronos</string>
+    <string name="cronograma_not_found">Cronograma not found!</string>
 </resources>

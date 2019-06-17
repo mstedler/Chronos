@@ -1,29 +1,32 @@
 package com.espweb.chronos.storage.model;
 
+import java.util.Date;
+
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 import io.objectbox.relation.ToOne;
 
 @Entity
-public class Exercicio {
-    @Id
-    private long id;
-
+public class Exercicio extends Artefato{
     private String descricao;
     private int quantidade;
     private int acertos;
 
     private ToOne<Assunto> assunto;
 
-    public Exercicio(long id, String descricao, int quantidade, int acertos, long assuntoId) {
+    public Exercicio(long id, String uuid, Date data, String descricao, int quantidade, int acertos, long assuntoId) {
         this.id = id;
+        this.uuid = uuid;
+        this.data = data;
         this.descricao = descricao;
         this.quantidade = quantidade;
         this.acertos = acertos;
         this.assunto.setTargetId(assuntoId);
     }
 
-    public Exercicio(String descricao, int quantidade, int acertos, long assuntoId) {
+    public Exercicio(String uuid, Date data, String descricao, int quantidade, int acertos, long assuntoId) {
+        this.uuid = uuid;
+        this.data = data;
         this.descricao = descricao;
         this.quantidade = quantidade;
         this.acertos = acertos;
@@ -31,14 +34,6 @@ public class Exercicio {
     }
 
     public Exercicio() {
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getDescricao() {

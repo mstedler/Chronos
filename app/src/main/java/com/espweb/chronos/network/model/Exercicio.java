@@ -2,7 +2,13 @@ package com.espweb.chronos.network.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class Exercicio {
+    @SerializedName("uuid")
+    private String uuid;
+    @SerializedName("data")
+    private Date data;
     @SerializedName("descricao")
     private String descricao;
     @SerializedName("quantidade")
@@ -10,7 +16,24 @@ public class Exercicio {
     @SerializedName("acertos")
     private int acertos;
 
+
     public Exercicio() {
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
     }
 
     public String getDescricao() {

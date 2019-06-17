@@ -13,7 +13,7 @@ public class Assunto {
 
     @Id
     private long id;
-
+    private String uuid;
     private String descricao;
     private String anotacao;
 
@@ -26,20 +26,30 @@ public class Assunto {
 
     private ToOne<Disciplina> disciplina;
 
-    public Assunto(long id, String descricao, String anotacao, long disciplinaId) {
+    public Assunto(long id, String uuid, String descricao, String anotacao, long disciplinaId) {
         this.id = id;
+        this.uuid = uuid;
         this.descricao = descricao;
         this.anotacao = anotacao;
         this.disciplina.setTargetId(disciplinaId);
     }
 
-    public Assunto(String descricao, String anotacao, long disciplinaId) {
+    public Assunto(String uuid, String descricao, String anotacao, long disciplinaId) {
         this.descricao = descricao;
+        this.uuid = uuid;
         this.anotacao = anotacao;
         this.disciplina.setTargetId(disciplinaId);
     }
 
     public Assunto() {
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public long getId() {

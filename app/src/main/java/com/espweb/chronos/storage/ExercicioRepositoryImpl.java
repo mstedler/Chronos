@@ -9,6 +9,7 @@ import com.espweb.chronos.storage.database.ObjectBox;
 import com.espweb.chronos.storage.model.Exercicio_;
 
 import java.util.List;
+import java.util.UUID;
 
 import io.objectbox.Box;
 
@@ -18,7 +19,10 @@ public class ExercicioRepositoryImpl implements Repository<Exercicio> {
     @Override
     public long insert(long parentId, Exercicio model) {
         com.espweb.chronos.storage.model.Exercicio exercicio =
-                new com.espweb.chronos.storage.model.Exercicio(model.getDescricao(),
+                new com.espweb.chronos.storage.model.Exercicio(
+                        UUID.randomUUID().toString(),
+                        model.getData(),
+                        model.getDescricao(),
                         model.getQuantidade(),
                         model.getAcertos(),
                         parentId);
@@ -31,6 +35,7 @@ public class ExercicioRepositoryImpl implements Repository<Exercicio> {
         exercicio.setAcertos(model.getAcertos());
         exercicio.setDescricao(model.getDescricao());
         exercicio.setQuantidade(model.getQuantidade());
+        exercicio.setData(model.getData());
         getBox().put(exercicio);
         return true;
     }
