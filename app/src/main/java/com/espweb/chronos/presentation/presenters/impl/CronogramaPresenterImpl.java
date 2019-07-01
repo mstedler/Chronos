@@ -2,33 +2,62 @@ package com.espweb.chronos.presentation.presenters.impl;
 
 import com.espweb.chronos.domain.executor.Executor;
 import com.espweb.chronos.domain.executor.MainThread;
+import com.espweb.chronos.domain.interactors.assunto.CreateAssuntoInteractor;
+import com.espweb.chronos.domain.interactors.assunto.impl.CreateAssuntoInteractorImpl;
 import com.espweb.chronos.domain.interactors.cronograma.GetCronogramaInteractor;
 import com.espweb.chronos.domain.interactors.cronograma.impl.GetCronogramaInteractorImpl;
+import com.espweb.chronos.domain.interactors.disciplina.CreateDisciplinaInteractor;
+import com.espweb.chronos.domain.interactors.disciplina.DeleteDisciplinaInteractor;
 import com.espweb.chronos.domain.interactors.disciplina.GetAllDisciplinasInteractor;
+import com.espweb.chronos.domain.interactors.disciplina.UpdateDisciplinaInteractor;
+import com.espweb.chronos.domain.interactors.disciplina.impl.CreateDisciplinaInteractorImpl;
+import com.espweb.chronos.domain.interactors.disciplina.impl.DeleteDisciplinaInteractorImpl;
 import com.espweb.chronos.domain.interactors.disciplina.impl.GetAllDisciplinasInteractorImpl;
+import com.espweb.chronos.domain.interactors.disciplina.impl.UpdateDisciplinaInteractorImpl;
+import com.espweb.chronos.domain.model.Assunto;
 import com.espweb.chronos.domain.model.Cronograma;
 import com.espweb.chronos.domain.model.Disciplina;
 import com.espweb.chronos.domain.repository.CronogramaRepository;
 import com.espweb.chronos.domain.repository.Repository;
 import com.espweb.chronos.presentation.presenters.CronogramaPresenter;
 import com.espweb.chronos.presentation.presenters.base.AbstractPresenter;
-import com.espweb.chronos.storage.DisciplinaRepositoryImpl;
 
 import java.util.List;
 
 public class CronogramaPresenterImpl extends AbstractPresenter implements CronogramaPresenter,
         GetCronogramaInteractor.Callback,
-        GetAllDisciplinasInteractor.Callback {
+        GetAllDisciplinasInteractor.Callback, CreateAssuntoInteractor.Callback, DeleteDisciplinaInteractor.Callback, CreateDisciplinaInteractor.Callback, UpdateDisciplinaInteractor.Callback {
 
     private View view;
     private Repository<Disciplina> disciplinaRepository;
     private CronogramaRepository cronogramaRepository;
+    private Repository<Assunto> assuntoRepository;
 
-    public CronogramaPresenterImpl(Executor executor, MainThread mainThread, View view, CronogramaRepository cronogramaRepository, Repository<Disciplina> disciplinaRepository) {
+    public CronogramaPresenterImpl(Executor executor,
+                                   MainThread mainThread,
+                                   View view,
+                                   CronogramaRepository cronogramaRepository,
+                                   Repository<Disciplina> disciplinaRepository,
+                                   Repository<Assunto> assuntoRepository) {
         super(executor, mainThread);
         this.view = view;
         this.disciplinaRepository = disciplinaRepository;
         this.cronogramaRepository = cronogramaRepository;
+        this.assuntoRepository = assuntoRepository;
+    }
+
+    @Override
+    public void createAssunto(long disciplinaId, String descricao, String anotacao) {
+        CreateAssuntoInteractor createAssuntoInteractor = new CreateAssuntoInteractorImpl(
+                executor,
+                mainThread,
+                this,
+                assuntoRepository,
+                disciplinaId,
+                descricao,
+                anotacao);
+
+        createAssuntoInteractor.execute();
     }
 
     @Override
@@ -55,6 +84,29 @@ public class CronogramaPresenterImpl extends AbstractPresenter implements Cronog
     }
 
     @Override
+    public void deleteDisciplina(long disciplinaId) {
+        DeleteDisciplinaInteractor deleteDisciplinaInteractor = new DeleteDisciplinaInteractorImpl(
+                executor,
+                mainThread,
+                this,
+                disciplinaRepository,
+                disciplinaId);
+        deleteDisciplinaInteractor.execute();
+    }
+
+    @Override
+    public void createDisciplina(long cronogramaId, String nome) {
+        CreateDisciplinaInteractor createDisciplinaInteractor = new CreateDisciplinaInteractorImpl(
+                executor,
+                mainThread,
+                this,
+                disciplinaRepository,
+                cronogramaId,
+                nome);
+        createDisciplinaInteractor.execute();
+    }
+
+    @Override
     public void resume() {
 
     }
@@ -77,6 +129,38 @@ public class CronogramaPresenterImpl extends AbstractPresenter implements Cronog
     @Override
     public void onDisciplinasRetrieved(List<Disciplina> disciplinas) {
         view.showDisciplinas(disciplinas);
+    }
+
+    @Override
+    public void updateDisciplina(long disciplinaId, String nome) {
+        UpdateDisciplinaInteractor updateDisciplinaInteractor = new UpdateDisciplinaInteractorImpl(
+                executor,
+                mainThread,
+                this,
+                disciplinaRepository,
+                disciplinaId,
+                nome);
+        updateDisciplinaInteractor.execute();
+    }
+
+    @Override
+    public void onAssuntoCreated(Assunto assunto) {
+        view.addAssuntoToList(assunto);
+    }
+
+    @Override
+    public void onDisciplinaDeleted() {
+        view.onDisciplinaDeleted();
+    }
+
+    @Override
+    public void onDisciplinaCreated(Disciplina disciplina) {
+        view.addDisciplinaToList(disciplina);
+    }
+
+    @Override
+    public void onDisciplinaUpdated(Disciplina disciplina) {
+        view.updateDisciplinaOnList(disciplina);
     }
 
     @Override

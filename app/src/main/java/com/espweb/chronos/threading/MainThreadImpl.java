@@ -5,10 +5,6 @@ import android.os.Looper;
 
 import com.espweb.chronos.domain.executor.MainThread;
 
-
-/**
- * This class makes sure that the runnable we provide will be run on the main UI thread.
- */
 public class MainThreadImpl implements MainThread {
 
     private static MainThread sMainThread;

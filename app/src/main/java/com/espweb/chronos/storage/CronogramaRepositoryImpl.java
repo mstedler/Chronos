@@ -5,8 +5,12 @@ import android.util.Log;
 
 import com.espweb.chronos.domain.model.Cronograma;
 import com.espweb.chronos.domain.repository.CronogramaRepository;
-import com.espweb.chronos.storage.converters.StorageModelConverter;
+import com.espweb.chronos.storage.converters.DomainToStorageConverter;
+import com.espweb.chronos.storage.converters.StorageToDomainConverter;
 import com.espweb.chronos.storage.database.ObjectBox;
+import com.espweb.chronos.storage.model.Assunto;
+import com.espweb.chronos.storage.model.Disciplina;
+import com.espweb.chronos.storage.model.Exercicio;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,6 +46,35 @@ public class CronogramaRepositoryImpl implements CronogramaRepository {
                 cronograma.setFim(nextMonth);
                 cronograma.setSynced(false);
 
+                Disciplina disciplina = new Disciplina();
+                disciplina.setUuid(UUID.randomUUID().toString());
+                disciplina.setNome("Disciplina I");
+
+                Disciplina disciplina2 = new Disciplina();
+                disciplina2.setUuid(UUID.randomUUID().toString());
+                disciplina2.setNome("Disciplina II");
+
+                Assunto assunto = new Assunto();
+                assunto.setDescricao("Assunto I da Disciplina I");
+                assunto.setUuid(UUID.randomUUID().toString());
+                assunto.setAnotacao("Anotação completamente aleatória");
+
+                com.espweb.chronos.storage.model.Exercicio exercicio = new Exercicio();
+                exercicio.setDescricao("Exercício I do Assunto I");
+                exercicio.setAcertos(7);
+                exercicio.setQuantidade(25);
+                exercicio.setData(today);
+                exercicio.setUuid(UUID.randomUUID().toString());
+
+                assunto.getExercicios().add(exercicio);
+
+                disciplina.getAssuntos().add(assunto);
+
+
+
+                cronograma.getDisciplinas().add(disciplina);
+                cronograma.getDisciplinas().add(disciplina2);
+
                 com.espweb.chronos.storage.model.Cronograma cronograma2 = new com.espweb.chronos.storage.model.Cronograma();
                 String uuid2 = UUID.randomUUID().toString();
                 cronograma2.setUuid(uuid2);
@@ -62,7 +95,7 @@ public class CronogramaRepositoryImpl implements CronogramaRepository {
 
     @Override
     public long insert(Cronograma cronograma) {
-        com.espweb.chronos.storage.model.Cronograma sCronograma = StorageModelConverter.ConvertToStorageModel(cronograma);
+        com.espweb.chronos.storage.model.Cronograma sCronograma = DomainToStorageConverter.convert(cronograma);
         sCronograma.setSynced(false);
         return getBox().put(sCronograma);
     }
@@ -89,7 +122,7 @@ public class CronogramaRepositoryImpl implements CronogramaRepository {
             //getBox().put(sCronogramas);
 
             //Converter todos para o Domain Model
-            cronogramas.addAll(StorageModelConverter.ConvertCronogramasToDomainModel(getBox().getAll()));
+            cronogramas.addAll(StorageToDomainConverter.convertCronogramas(getBox().getAll()));
         } catch (Exception e){
             Log.e("GetAllCronogramasSvc", e.getMessage());
         }
@@ -110,7 +143,7 @@ public class CronogramaRepositoryImpl implements CronogramaRepository {
     @Override
     public Cronograma get(long id) {
         com.espweb.chronos.storage.model.Cronograma sCronograma = getBox().get(id);
-        return StorageModelConverter.ConvertToDomainModel(sCronograma);
+        return StorageToDomainConverter.convert(sCronograma);
     }
 
     @Override

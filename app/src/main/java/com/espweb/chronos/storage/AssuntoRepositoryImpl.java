@@ -4,22 +4,21 @@ import android.content.Context;
 
 import com.espweb.chronos.domain.model.Artefato;
 import com.espweb.chronos.domain.model.Assunto;
-import com.espweb.chronos.domain.repository.AssuntoRepository;
 import com.espweb.chronos.domain.repository.Repository;
-import com.espweb.chronos.storage.converters.StorageModelConverter;
+import com.espweb.chronos.storage.converters.StorageToDomainConverter;
 import com.espweb.chronos.storage.database.ObjectBox;
 import com.espweb.chronos.storage.model.Assunto_;
 import com.espweb.chronos.storage.model.Exercicio;
 import com.espweb.chronos.storage.model.Material;
 import com.espweb.chronos.storage.model.Revisao;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import io.objectbox.Box;
 
-public class AssuntoRepositoryImpl implements AssuntoRepository {
+public class AssuntoRepositoryImpl implements Repository<Assunto> {
 
     private Context context;
 
@@ -50,13 +49,13 @@ public class AssuntoRepositoryImpl implements AssuntoRepository {
 
     @Override
     public Assunto get(long id) {
-        return StorageModelConverter.ConvertToDomainModel(getBox().get(id));
+        return StorageToDomainConverter.convert(getBox().get(id));
     }
 
     @Override
     public List<Assunto> getAll(long parentId) {
         List<com.espweb.chronos.storage.model.Assunto> assuntos = getBox().query().equal(Assunto_.disciplinaId, parentId).build().find();
-        return StorageModelConverter.ConvertAssuntosToDomainModel(assuntos);
+        return StorageToDomainConverter.convertAssuntos(assuntos);
     }
 
     private Box<com.espweb.chronos.storage.model.Assunto> getBox() {
@@ -67,24 +66,4 @@ public class AssuntoRepositoryImpl implements AssuntoRepository {
         this.context = context;
     }
 
-    @Override
-    public List<Artefato> getAllArtefatos(long assuntoId) {
-        List<Artefato> artefatos = Collections.emptyList();
-
-        com.espweb.chronos.storage.model.Assunto assunto = getBox().get(assuntoId);
-
-        for (Revisao revisao: assunto.getRevisoes()) {
-            artefatos.add(StorageModelConverter.ConvertToDomainModel(revisao));
-        }
-
-        for(Material material: assunto.getMateriais()) {
-            artefatos.add(StorageModelConverter.ConvertToDomainModel(material));
-        }
-
-        for(Exercicio exercicio: assunto.getExercicios()) {
-            artefatos.add(StorageModelConverter.ConvertToDomainModel(exercicio));
-        }
-
-        return artefatos;
-    }
 }

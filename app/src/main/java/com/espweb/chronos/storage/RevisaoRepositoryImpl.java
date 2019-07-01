@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.espweb.chronos.domain.model.Revisao;
 import com.espweb.chronos.domain.repository.Repository;
-import com.espweb.chronos.storage.converters.StorageModelConverter;
+import com.espweb.chronos.storage.converters.StorageToDomainConverter;
 import com.espweb.chronos.storage.database.ObjectBox;
 import com.espweb.chronos.storage.model.Revisao_;
 
@@ -44,13 +44,13 @@ public class RevisaoRepositoryImpl implements Repository<Revisao> {
     @Override
     public Revisao get(long id) {
         com.espweb.chronos.storage.model.Revisao revisao = getBox().get(id);
-        return StorageModelConverter.ConvertToDomainModel(revisao);
+        return StorageToDomainConverter.convert(revisao);
     }
 
     @Override
     public List<Revisao> getAll(long parentId) {
         List<com.espweb.chronos.storage.model.Revisao> revisoes = getBox().query().equal(Revisao_.assuntoId, parentId).build().find();
-        return StorageModelConverter.ConvertRevisoesToDomainModel(revisoes);
+        return StorageToDomainConverter.convertRevisoes(revisoes);
     }
 
     private Box<com.espweb.chronos.storage.model.Revisao> getBox() {

@@ -3,4 +3,12 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="bg_delete">#db2828</color>
+    <color name="bg_edit">#eaae00</color>
+    <color name="bg_add">#21ba45</color>
+    <color name="bg_item_normal_state">#fff0f0f0</color>
+
+    <color name="transparent">@android:color/transparent</color>
+
+    <color name="expandable_item_indicator_color">#42000000</color>
 </resources>

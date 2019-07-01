@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.espweb.chronos.domain.model.Material;
 import com.espweb.chronos.domain.repository.Repository;
-import com.espweb.chronos.storage.converters.StorageModelConverter;
+import com.espweb.chronos.storage.converters.StorageToDomainConverter;
 import com.espweb.chronos.storage.database.ObjectBox;
 import com.espweb.chronos.storage.model.Material_;
 
@@ -47,13 +47,13 @@ public class MaterialRepositoryImpl implements Repository<Material> {
     @Override
     public Material get(long id) {
         com.espweb.chronos.storage.model.Material material = getBox().get(id);
-        return StorageModelConverter.ConvertToDomainModel(material);
+        return StorageToDomainConverter.convert(material);
     }
 
     @Override
     public List<Material> getAll(long parentId) {
         List<com.espweb.chronos.storage.model.Material> materiais = getBox().query().equal(Material_.assuntoId, parentId).build().find();
-        return StorageModelConverter.ConvertMateriaisToDomainModel(materiais);
+        return StorageToDomainConverter.convertMateriais(materiais);
     }
 
     private Box<com.espweb.chronos.storage.model.Material> getBox(){

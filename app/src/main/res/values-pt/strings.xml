@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="cronograma_not_found">Cronograma não encontrado!</string>
+    <string name="disciplina_not_found">Disciplina não encontrado!</string>
+    <string name="assunto_not_found">Assunto não encontrado!</string>
+    <string name="exercise">Exercício</string>
+    <string name="btn_delete_disciplina">Excluir disciplina.</string>
+    <string name="btn_edit_disciplina">Editar disciplina.</string>
+    <string name="description">Descrição</string>
+    <string name="annotation">Anotação</string>
+    <string name="create_topic">Criar Assunto</string>
+    <string name="save">Salvar</string>
+    <string name="cannot_be_empty">Não pode ser vazio!</string>
+    <string name="name">Nome</string>
+    <string name="create_subject">Criar Disciplina</string>
+    <string name="cancel">Cancelar</string>
+    <string name="edit">Editar</string>
+    <string name="edit_topic">Editar assunto</string>
+    <string name="initial_date">Initial Date</string>
+    <string name="final_date">Final Date</string>
+    <string name="title">Title</string>
+    <string name="create_cronograma">Create Cronogram</string>
 </resources>

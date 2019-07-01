@@ -12,13 +12,13 @@ public class CreateDisciplinaInteractorImpl extends AbstractInteractor implement
     private Repository<Disciplina> disciplinaRepository;
     private Callback callback;
     private long cronogramaId;
-    private Disciplina disciplina;
+    private String nome;
 
     public CreateDisciplinaInteractorImpl(Executor threadExecutor, MainThread mainThread,
                                           Callback callback,
                                           Repository<Disciplina> disciplinaRepository,
                                           long cronogramaId,
-                                          Disciplina disciplina) {
+                                          String nome) {
         super(threadExecutor, mainThread);
         if (disciplinaRepository == null || callback == null) {
             throw new IllegalArgumentException("Argumentos nao podem ser nulos!");
@@ -27,15 +27,19 @@ public class CreateDisciplinaInteractorImpl extends AbstractInteractor implement
         this.callback = callback;
         this.disciplinaRepository = disciplinaRepository;
         this.cronogramaId = cronogramaId;
-        this.disciplina = disciplina;
+        this.nome = nome;
     }
 
     @Override
     public void run() {
+        Disciplina disciplina = new Disciplina();
+        disciplina.setNome(nome);
+
         long disciplinaId = disciplinaRepository.insert(cronogramaId, disciplina);
 
         if(disciplinaId != 0) {
-            mainThread.post(() -> callback.onDisciplinaCreated(disciplinaId));
+            disciplina.setId(disciplinaId);
+            mainThread.post(() -> callback.onDisciplinaCreated(disciplina));
         } else {
             mainThread.post(() -> callback.onError("Erro ao criar disciplina."));
         }

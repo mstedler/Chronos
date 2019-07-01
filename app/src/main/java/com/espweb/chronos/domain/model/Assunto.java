@@ -7,11 +7,17 @@ public class Assunto {
     private String uuid;
     private String descricao;
     private String anotacao;
-    private List<Material> materiais;
-    private List<Revisao> revisoes;
-    private List<Exercicio> exercicios;
+    private List<Artefato> artefatos;
 
     public Assunto() {
+    }
+
+    public List<Artefato> getArtefatos() {
+        return artefatos;
+    }
+
+    public void setArtefatos(List<Artefato> artefatos) {
+        this.artefatos = artefatos;
     }
 
     public long getId() {
@@ -36,30 +42,6 @@ public class Assunto {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    public List<Material> getMateriais() {
-        return materiais;
-    }
-
-    public void setMateriais(List<Material> materiais) {
-        this.materiais = materiais;
-    }
-
-    public List<Revisao> getRevisoes() {
-        return revisoes;
-    }
-
-    public void setRevisoes(List<Revisao> revisoes) {
-        this.revisoes = revisoes;
-    }
-
-    public List<Exercicio> getExercicios() {
-        return exercicios;
-    }
-
-    public void setExercicios(List<Exercicio> exercicios) {
-        this.exercicios = exercicios;
     }
 
     public String getAnotacao() {

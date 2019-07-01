@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.espweb.chronos.R;
 import com.espweb.chronos.domain.model.Cronograma;
+import com.espweb.chronos.presentation.ui.utils.DateUtils;
 
 import org.w3c.dom.Text;
 
@@ -27,30 +28,34 @@ public class CronogramaAdapter extends RecyclerView.Adapter<CronogramaAdapter.Cr
 
     private CronogramaListListener cronogramaListListener;
     private List<Cronograma> cronogramas;
-    private final LayoutInflater inflater;
+    private final LayoutInflater layoutInflater;
 
     public CronogramaAdapter(Context context) {
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.cronogramas = Collections.emptyList();
     }
 
     public void setCronogramasList(List<Cronograma> cronogramas) {
         this.cronogramas = cronogramas;
-        this.notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
 
     @NonNull
     @Override
     public CronogramaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        final View view = inflater.inflate(R.layout.row_cronograma, parent, false);
-        return new CronogramaViewHolder(view, cronogramaListListener);
+        final View view = layoutInflater.inflate(R.layout.row_cronograma, parent, false);
+        return new CronogramaViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CronogramaViewHolder holder, int position) {
         final Cronograma cronograma = this.cronogramas.get(position);
-        holder.bind(cronograma);
+        holder.tvCronogramaTitle.setText(cronograma.getTitulo());
+        holder.tvCronogramaDescription.setText(cronograma.getDescricao());
+        holder.tvDataInicio.setText(DateUtils.formatDate(cronograma.getInicio()));
+        holder.tvDataFim.setText(DateUtils.formatDate(cronograma.getFim()));
+        holder.itemView.setOnClickListener(v -> cronogramaListListener.onCronogramaClicked(cronogramas.get(position)));
     }
 
     @Override
@@ -58,34 +63,24 @@ public class CronogramaAdapter extends RecyclerView.Adapter<CronogramaAdapter.Cr
         return (cronogramas != null) ? cronogramas.size() : 0;
     }
 
-    class CronogramaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        private  CronogramaListListener cronogramaListListener;
-
+    class CronogramaViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_cronograma_title)
         TextView tvCronogramaTitle;
 
         @BindView(R.id.tv_cronograma_description)
         TextView tvCronogramaDescription;
 
-        CronogramaViewHolder(@NonNull View itemView, CronogramaListListener cronogramaListListener) {
+        @BindView(R.id.tv_data_inicio)
+        TextView tvDataInicio;
+
+        @BindView(R.id.tv_data_fim)
+        TextView tvDataFim;
+
+        CronogramaViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(this);
-            this.cronogramaListListener = cronogramaListListener;
-        }
-
-        void bind(Cronograma cronograma) {
-            tvCronogramaTitle.setText(cronograma.getTitulo());
-            tvCronogramaDescription.setText(cronograma.getDescricao());
-        }
-
-        @Override
-        public void onClick(View v) {
-            cronogramaListListener.onCronogramaClicked(cronogramas.get(getAdapterPosition()));
         }
     }
-
 
     public void setCronogramaListListener(CronogramaListListener cronogramaListListener) {
         if(cronogramaListListener != null) {

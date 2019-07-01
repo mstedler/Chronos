@@ -1,4 +1,23 @@
 <resources>
     <string name="app_name">Chronos</string>
     <string name="cronograma_not_found">Cronograma not found!</string>
+    <string name="disciplina_not_found">Subject not found!</string>
+    <string name="assunto_not_found">Topic not found!</string>
+    <string name="exercise">Exercise</string>
+    <string name="btn_delete_disciplina">Delete subject.</string>
+    <string name="btn_edit_disciplina">Edit subject</string>
+    <string name="description">Description</string>
+    <string name="annotation">Annotation</string>
+    <string name="create_topic">Create Topic</string>
+    <string name="save">Save</string>
+    <string name="cannot_be_empty">Can\'t be empty</string>
+    <string name="name">Name</string>
+    <string name="create_subject">Create Subject</string>
+    <string name="cancel">Cancel</string>
+    <string name="edit">Edit</string>
+    <string name="edit_topic">Edit topic</string>
+    <string name="initial_date">Initial Date</string>
+    <string name="final_date">Final Date</string>
+    <string name="title">Title</string>
+    <string name="create_cronograma">Create Cronogram</string>
 </resources>

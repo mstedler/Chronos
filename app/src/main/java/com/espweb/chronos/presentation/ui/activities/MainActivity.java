@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,18 +13,21 @@ import com.espweb.chronos.domain.executor.impl.ThreadExecutor;
 import com.espweb.chronos.domain.model.Cronograma;
 import com.espweb.chronos.domain.repository.CronogramaRepository;
 import com.espweb.chronos.presentation.ui.adapters.CronogramaAdapter;
+import com.espweb.chronos.presentation.ui.fragments.CronogramaDialog;
 import com.espweb.chronos.storage.CronogramaRepositoryImpl;
 import com.espweb.chronos.presentation.presenters.MainPresenter;
 import com.espweb.chronos.presentation.presenters.MainPresenter.View;
 import com.espweb.chronos.presentation.presenters.impl.MainPresenterImpl;
 import com.espweb.chronos.threading.MainThreadImpl;
 
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements View, CronogramaAdapter.CronogramaListListener {
+public class MainActivity extends BaseActivity implements View, CronogramaAdapter.CronogramaListListener, CronogramaDialog.CronogramaDialogListener {
     private MainPresenter mainPresenter;
     private CronogramaAdapter cronogramaAdapter;
 
@@ -50,6 +54,8 @@ public class MainActivity extends BaseActivity implements View, CronogramaAdapte
         cronogramaAdapter = new CronogramaAdapter(this);
 
         setupRecyclerView();
+
+        mainPresenter.getAllCronogramas();
     }
 
     private void setupRecyclerView() {
@@ -61,7 +67,6 @@ public class MainActivity extends BaseActivity implements View, CronogramaAdapte
     @Override
     protected void onResume() {
         super.onResume();
-        mainPresenter.resume();
     }
 
     @Override
@@ -89,5 +94,21 @@ public class MainActivity extends BaseActivity implements View, CronogramaAdapte
         if(cronograma != null) {
             this.navigator.navigateToCronograma(this, cronograma.getId());
         }
+    }
+
+    @OnClick(R.id.fab_add_cronograma)
+    public void addCronogramaClick() {
+        DialogFragment dialogFragment = CronogramaDialog.newInstance(null);
+        dialogFragment.show(getSupportFragmentManager(), "CRONOGRAMA_ADD_DIALOG");
+    }
+
+    @Override
+    public void createCronograma(String titulo, String descricao, Date inicio, Date fim) {
+
+    }
+
+    @Override
+    public void updateCronograma(long id, String titulo, String descricao, Date inicio, Date fim) {
+
     }
 }

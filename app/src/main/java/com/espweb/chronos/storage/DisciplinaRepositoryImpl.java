@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.espweb.chronos.domain.model.Disciplina;
 import com.espweb.chronos.domain.repository.Repository;
-import com.espweb.chronos.storage.converters.StorageModelConverter;
+import com.espweb.chronos.storage.converters.StorageToDomainConverter;
 import com.espweb.chronos.storage.database.ObjectBox;
 import com.espweb.chronos.storage.model.Disciplina_;
 
@@ -44,13 +44,13 @@ public class DisciplinaRepositoryImpl implements Repository<Disciplina> {
     @Override
     public Disciplina get(long id) {
         com.espweb.chronos.storage.model.Disciplina sDisciplina = getBox().get(id);
-        return StorageModelConverter.ConvertToDomainModel(sDisciplina);
+        return StorageToDomainConverter.convert(sDisciplina);
     }
 
     @Override
     public List<Disciplina> getAll(long parentId) {
         List<com.espweb.chronos.storage.model.Disciplina> disciplinas = getBox().query().equal(Disciplina_.cronogramaId, parentId).build().find();
-        return StorageModelConverter.ConvertDisciplinasToDomainModel(disciplinas);
+        return StorageToDomainConverter.convertDisciplinas(disciplinas);
     }
 
     private Box<com.espweb.chronos.storage.model.Disciplina> getBox() {
