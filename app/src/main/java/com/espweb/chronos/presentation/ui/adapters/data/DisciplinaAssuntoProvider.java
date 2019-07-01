@@ -1,15 +1,21 @@
-package com.espweb.chronos.presentation.data;
+package com.espweb.chronos.presentation.ui.adapters.data;
 import androidx.core.util.Pair;
 
 import com.espweb.chronos.domain.model.Assunto;
 import com.espweb.chronos.domain.model.Disciplina;
-import com.espweb.chronos.presentation.data.base.AbstractGroupProvider;
+import com.espweb.chronos.presentation.ui.adapters.data.base.AbstractGroupProvider;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class DisciplinaAssuntoProvider extends AbstractGroupProvider<Disciplina, Assunto> {
+
+    public static final int NOT_PINNED = 0;
+    public static final int PINNED_LEFT = 1;
+    public static final int PINNED_RIGHT = 2;
+
+
     private List<Pair<DisciplinaData, List<AssuntoData>>> data;
 
     public DisciplinaAssuntoProvider() {
@@ -40,13 +46,21 @@ public class DisciplinaAssuntoProvider extends AbstractGroupProvider<Disciplina,
     }
 
     @Override
-    public void addGroupItem(Disciplina group, int position) {
+    public void updateGroupItem(Disciplina disciplina, int lastActionGroupPosition) {
+        DisciplinaData disciplinaData = data.get(lastActionGroupPosition).first;
+        Disciplina disciplina1 = disciplinaData.getItem();
+        disciplina1.setNome(disciplina.getNome());
+        disciplinaData.setPinDirection(NOT_PINNED);
+    }
 
+    @Override
+    public void addGroupItem(Disciplina group, int position) {
+        data.add(position, new Pair<>(new DisciplinaData(group), new ArrayList<>()));
     }
 
     @Override
     public void addChilItem(Assunto child, int groupPosition, int childPosition) {
-
+        data.get(groupPosition).second.add(childPosition, new AssuntoData(child));
     }
 
     @Override

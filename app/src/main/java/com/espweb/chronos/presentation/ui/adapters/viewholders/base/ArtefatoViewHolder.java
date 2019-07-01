@@ -1,4 +1,4 @@
-package com.espweb.chronos.presentation.ui.adapters.viewholders;
+package com.espweb.chronos.presentation.ui.adapters.viewholders.base;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,9 +10,9 @@ import com.espweb.chronos.presentation.ui.adapters.ArtefatoAdapter;
 
 public abstract class ArtefatoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    ArtefatoAdapter.ArtefatoListListener artefatoListListener;
+    protected ArtefatoAdapter.ArtefatoListListener artefatoListListener;
 
-    ArtefatoViewHolder(@NonNull View itemView, ArtefatoAdapter.ArtefatoListListener artefatoListListener) {
+    protected ArtefatoViewHolder(@NonNull View itemView, ArtefatoAdapter.ArtefatoListListener artefatoListListener) {
         super(itemView);
         itemView.setOnClickListener(this);
         this.artefatoListListener = artefatoListListener;

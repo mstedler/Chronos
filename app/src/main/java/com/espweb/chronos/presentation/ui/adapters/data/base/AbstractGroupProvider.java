@@ -1,11 +1,13 @@
-package com.espweb.chronos.presentation.data.base;
+package com.espweb.chronos.presentation.ui.adapters.data.base;
 
 
-import androidx.core.util.Pair;
+import com.espweb.chronos.domain.model.Disciplina;
 
 import java.util.List;
 
 public abstract class AbstractGroupProvider<G, C> {
+
+
     public abstract class BaseData {
         public abstract void setPinDirection(int direction);
         public abstract int getPinDirection();
@@ -28,6 +30,9 @@ public abstract class AbstractGroupProvider<G, C> {
 
     public abstract void addGroupItem(G group, int position);
     public abstract void addChilItem(C child, int groupPosition, int childPosition);
+
+    public abstract void updateGroupItem(G disciplina, int lastActionGroupPosition);
+
 
     public abstract GroupData getGroupItem(int index);
     public abstract ChildData getChildItem(int groupIndex, int position);
