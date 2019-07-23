@@ -4,33 +4,42 @@ import com.espweb.chronos.domain.executor.Executor;
 import com.espweb.chronos.domain.executor.MainThread;
 import com.espweb.chronos.domain.interactors.cronograma.GetAllCronogramasInteractor;
 import com.espweb.chronos.domain.interactors.cronograma.impl.GetAllCronogramasInteractorImpl;
+import com.espweb.chronos.domain.interactors.session.GetActiveUserInteractor;
+import com.espweb.chronos.domain.interactors.session.SignOutInteractor;
+import com.espweb.chronos.domain.interactors.session.impl.GetActiveUserInteractorImpl;
+import com.espweb.chronos.domain.interactors.session.impl.SignOutInteractorImpl;
 import com.espweb.chronos.domain.model.Cronograma;
-import com.espweb.chronos.domain.repository.CronogramaRepository;
+import com.espweb.chronos.domain.model.User;
+import com.espweb.chronos.domain.repository.Repository;
+import com.espweb.chronos.domain.repository.SessaoRepository;
 import com.espweb.chronos.presentation.presenters.base.AbstractPresenter;
 import com.espweb.chronos.presentation.presenters.MainPresenter;
 
 import java.util.List;
 
 public class MainPresenterImpl extends AbstractPresenter implements MainPresenter,
-        //Podemos usar varios interactors em um mesmo presenter!
-        GetAllCronogramasInteractor.Callback {
+        GetAllCronogramasInteractor.Callback,
+        SignOutInteractor.Callback,
+        GetActiveUserInteractor.Callback {
 
     private MainPresenter.View view;
-    private CronogramaRepository cronogramaRepository;
-    
+    private Repository<Cronograma> cronogramaRepository;
+    private SessaoRepository sessaoRepository;
+
     public MainPresenterImpl(Executor executor,
                              MainThread mainThread,
                              View view,
-                             CronogramaRepository cronogramaRepository) {
+                             Repository<Cronograma> cronogramaRepository,
+                             SessaoRepository sessaoRepository) {
         super(executor, mainThread);
 
+        this.sessaoRepository = sessaoRepository;
         this.cronogramaRepository = cronogramaRepository;
         this.view = view;
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
@@ -49,6 +58,24 @@ public class MainPresenterImpl extends AbstractPresenter implements MainPresente
     }
 
     @Override
+    public void onUserSignOut() {
+        view.navigateToLogin();
+        view.showError("Usuário descontectado.");
+    }
+
+    @Override
+    public void onUserRetrieved(User user) {
+        view.setUser(user);
+        getAllCronogramas(user.getId());
+    }
+
+    @Override
+    public void onUserNotFound() {
+        view.navigateToLogin();
+        view.showError("Algo deu errado, tente logar novamente.");
+    }
+
+    @Override
     public void onError(String message) {
         view.showError(message);
     }
@@ -58,11 +85,31 @@ public class MainPresenterImpl extends AbstractPresenter implements MainPresente
         view.showCronogramas(cronogramas);
     }
 
+    @Override
+    public void onCronogramasNotFound() {
+
+    }
+
 
     @Override
-    public void getAllCronogramas() {
+    public void getUser() {
+        GetActiveUserInteractor getActiveUserInteractor = new GetActiveUserInteractorImpl(executor,
+                mainThread,
+                this,
+                sessaoRepository);
+        getActiveUserInteractor.execute();
+    }
+
+    @Override
+    public void logout() {
+        SignOutInteractor signOutInteractor = new SignOutInteractorImpl(executor, mainThread, this, sessaoRepository);
+        signOutInteractor.execute();
+    }
+
+    @Override
+    public void getAllCronogramas(long userId) {
         GetAllCronogramasInteractor getAllCronogramasInteractor =
-                new GetAllCronogramasInteractorImpl(executor, mainThread, this ,cronogramaRepository);
+                new GetAllCronogramasInteractorImpl(executor, mainThread, this, cronogramaRepository, userId);
 
         getAllCronogramasInteractor.execute();
     }

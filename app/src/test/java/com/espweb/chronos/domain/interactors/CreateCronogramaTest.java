@@ -5,7 +5,6 @@ import com.espweb.chronos.domain.executor.MainThread;
 import com.espweb.chronos.domain.interactors.cronograma.CreateCronogramaInteractor;
 import com.espweb.chronos.domain.interactors.cronograma.impl.CreateCronogramaInteractorImpl;
 import com.espweb.chronos.domain.model.Cronograma;
-import com.espweb.chronos.domain.repository.CronogramaRepository;
 import com.espweb.chronos.threading.TestMainThread;
 
 import org.junit.Before;
@@ -42,8 +41,8 @@ public class CreateCronogramaTest {
         when(cronogramaRepository.insert(cronograma)).thenReturn(Long.valueOf(1));
 
         CreateCronogramaInteractorImpl createCronogramaInteractor = new CreateCronogramaInteractorImpl(
-                executor, mainThread, callback, cronogramaRepository, cronograma
-        );
+                executor, mainThread, callback, cronogramaRepository, cronograma,
+                userId);
 
         createCronogramaInteractor.run();
 

@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.espweb.chronos.R;
 import com.espweb.chronos.domain.model.Assunto;
 import com.espweb.chronos.domain.model.Disciplina;
-import com.espweb.chronos.presentation.ui.adapters.data.DisciplinaAssuntoProvider;
-import com.espweb.chronos.presentation.ui.adapters.data.base.AbstractGroupProvider;
+import com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider;
+import com.espweb.chronos.presentation.ui.adapters.providers.base.GroupItemProvider;
 import com.espweb.chronos.presentation.ui.adapters.viewholders.AssuntoViewHolder;
 import com.espweb.chronos.presentation.ui.adapters.viewholders.DisciplinaViewHolder;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableSwipeableItemAdapter;
@@ -25,70 +25,34 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAda
 
 import java.util.List;
 
-import static com.espweb.chronos.presentation.ui.adapters.data.DisciplinaAssuntoProvider.NOT_PINNED;
-import static com.espweb.chronos.presentation.ui.adapters.data.DisciplinaAssuntoProvider.PINNED_LEFT;
-import static com.espweb.chronos.presentation.ui.adapters.data.DisciplinaAssuntoProvider.PINNED_RIGHT;
+import static com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider.NOT_PINNED;
+import static com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider.PINNED_LEFT;
+import static com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider.PINNED_RIGHT;
 
 public class DisciplinaAdapter extends AbstractExpandableItemAdapter<DisciplinaViewHolder, AssuntoViewHolder>
                             implements ExpandableSwipeableItemAdapter<DisciplinaViewHolder, AssuntoViewHolder> {
 
-    public void addAssunto(Assunto assunto, int groupPosition) {
-        int childPosition = disciplinaAssuntoProvider.getChildCount(groupPosition);
-        disciplinaAssuntoProvider.addChilItem(assunto, groupPosition, childPosition);
-        expandableItemManager.notifyChildItemInserted(groupPosition, childPosition);
-    }
-
-    public void removeDisciplina(int lastActionGroupPosition) {
-        disciplinaAssuntoProvider.removeGroupItem(lastActionGroupPosition);
-        expandableItemManager.notifyGroupItemRemoved(lastActionGroupPosition);
-    }
-
-    public void addDisciplina(Disciplina disciplina) {
-        int groupPosition = disciplinaAssuntoProvider.getGroupCount();
-        disciplinaAssuntoProvider.addGroupItem(disciplina, groupPosition);
-        expandableItemManager.notifyGroupItemInserted(groupPosition);
-    }
-
-    public void updateDisciplina(Disciplina disciplina, int lastActionGroupPosition) {
-        disciplinaAssuntoProvider.updateGroupItem(disciplina, lastActionGroupPosition);
-        expandableItemManager.notifyGroupItemChanged(lastActionGroupPosition);
-
-    }
-
     public interface AssuntoListListener {
-        void onAssuntoClicked(Assunto assunto);
+        void onAssuntoClicked(com.espweb.chronos.domain.model.Assunto assunto);
     }
 
     public interface DisciplinaListListener {
-        void onEditClicked(Disciplina disciplina, int groupPosition);
-        void onDeleteClicked(long id, int groupPosition);
-        void onAddAssuntoClicked(Disciplina disciplina, int groupPosition);
+        void onEditDisciplinaClicked(com.espweb.chronos.domain.model.Disciplina disciplina);
+        void onDeleteDisciplinaClicked(long id);
+        void onCreateAssuntoClicked(com.espweb.chronos.domain.model.Disciplina disciplina);
     }
 
-    private DisciplinaAssuntoProvider disciplinaAssuntoProvider;
+    private DisciplinaProvider disciplinaProvider;
     private final LayoutInflater layoutInflater;
     private AssuntoListListener assuntoListListener;
     private DisciplinaListListener disciplinaListListener;
 
     private RecyclerViewExpandableItemManager expandableItemManager;
 
-    public void setDisciplinaListListener(DisciplinaListListener disciplinaListListener) {
-        this.disciplinaListListener = disciplinaListListener;
-    }
+    private int lastActionPosition;
 
-    public void setAssuntoListListener(AssuntoListListener assuntoListListener) {
-        this.assuntoListListener = assuntoListListener;
-    }
-
-    public void setDisciplinas(List<Disciplina> disciplinas) {
-        disciplinaAssuntoProvider.setGroups(disciplinas);
-        notifyDataSetChanged();
-    }
-
-    public DisciplinaAdapter(Context context,
-                             RecyclerViewExpandableItemManager expandableItemManager,
-                             DisciplinaAssuntoProvider disciplinaAssuntoProvider) {
-        this.disciplinaAssuntoProvider = disciplinaAssuntoProvider;
+    public DisciplinaAdapter(Context context, RecyclerViewExpandableItemManager expandableItemManager, DisciplinaProvider disciplinaProvider) {
+        this.disciplinaProvider = disciplinaProvider;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.expandableItemManager = expandableItemManager;
 
@@ -97,97 +61,88 @@ public class DisciplinaAdapter extends AbstractExpandableItemAdapter<DisciplinaV
 
     @Override
     public int getGroupCount() {
-        return disciplinaAssuntoProvider.getGroupCount();
+        return disciplinaProvider.getGroupCount();
     }
 
     @Override
     public int getChildCount(int groupPosition) {
-        return disciplinaAssuntoProvider.getChildCount(groupPosition);
+        return disciplinaProvider.getItemCount(groupPosition);
     }
 
     @Override
     public long getGroupId(int groupPosition) {
-        return disciplinaAssuntoProvider.getGroupItem(groupPosition).getGroupId();
+        return disciplinaProvider.getGroup(groupPosition).getId();
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return disciplinaAssuntoProvider.getChildItem(groupPosition, childPosition).getChildId();
+        return disciplinaProvider.getItem(groupPosition, childPosition).getId();
     }
+
+
+    private DisciplinaViewHolder.DisciplinaViewHolderListener disciplinaViewHolderListener =
+            new DisciplinaViewHolder.DisciplinaViewHolderListener() {
+                @Override
+                public void notifyGroupItemChanged(int position) {
+                    expandableItemManager.notifyGroupItemChanged(position);
+                }
+
+                @Override
+                public void createAssuntoClicked(Disciplina disciplina, int adapterPosition) {
+                    disciplinaListListener.onCreateAssuntoClicked(disciplina);
+                    lastActionPosition = adapterPosition;
+                }
+
+                @Override
+                public void deleteDisciplinaClicked(long disciplinaId, int position) {
+                    disciplinaListListener.onDeleteDisciplinaClicked(disciplinaId);
+                    lastActionPosition = position;
+                }
+
+                @Override
+                public void editDisciplinaClicked(Disciplina disciplina, int position) {
+                    disciplinaListListener.onEditDisciplinaClicked(disciplina);
+                    lastActionPosition = position;
+                }
+            };
 
     @NonNull
     @Override
     public DisciplinaViewHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
         final View view = layoutInflater.inflate(R.layout.row_disciplina, parent, false);
-        return new DisciplinaViewHolder(view);
+        return new DisciplinaViewHolder(view, disciplinaViewHolderListener);
     }
+
+    private AssuntoViewHolder.AssuntoViewHolderListener assuntoViewHolderListener = new AssuntoViewHolder.AssuntoViewHolderListener() {
+        @Override
+        public void onAssuntoClicked(Assunto assunto) {
+            assuntoListListener.onAssuntoClicked(assunto);
+        }
+    };
 
     @NonNull
     @Override
     public AssuntoViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
         final View view = layoutInflater.inflate(R.layout.row_assunto, parent, false);
-        return new AssuntoViewHolder(view);
+        return new AssuntoViewHolder(view, assuntoViewHolderListener);
     }
 
     @Override
-    public void onBindGroupViewHolder(@NonNull DisciplinaViewHolder holder, int groupPosition, int viewType) {
-        final DisciplinaAssuntoProvider.DisciplinaData data = (DisciplinaAssuntoProvider.DisciplinaData) disciplinaAssuntoProvider.getGroupItem(groupPosition);
-        final Disciplina disciplina = data.getItem();
-        holder.setMaxLeftSwipeAmount(-0.2f);
-        holder.setMaxRightSwipeAmount(0.5f);
-
-        switch (data.getPinDirection()) {
-            case PINNED_LEFT:
-                holder.setSwipeItemHorizontalSlideAmount(-0.2f);
-                break;
-            case PINNED_RIGHT:
-                holder.setSwipeItemHorizontalSlideAmount(0.5f);
-                break;
-            default:
-                holder.setSwipeItemHorizontalSlideAmount(0);
-                break;
-        }
-
-        holder.container.setOnClickListener(v -> {
-            if(data.getPinDirection() != NOT_PINNED) {
-                data.setPinDirection(NOT_PINNED);
-                expandableItemManager.notifyGroupItemChanged(groupPosition);
-            }
-        });
-
-        holder.llAssuntoAdd.setOnClickListener(v -> {
-            if(disciplinaListListener != null) {
-                disciplinaListListener.onAddAssuntoClicked(disciplina, groupPosition);
-            }
-        });
-
-        holder.llDisciplinaDelete.setOnClickListener(v -> {
-            if(disciplinaListListener != null) {
-                disciplinaListListener.onDeleteClicked(disciplina.getId(), groupPosition);
-            }
-        });
-
-        holder.llDisciplinaEdit.setOnClickListener( v -> {
-            if(disciplinaListListener != null) {
-                disciplinaListListener.onEditClicked(disciplina, groupPosition);
-            }
-        });
-
-        holder.tvNome.setText(disciplina.getNome());
+    public void onBindGroupViewHolder(@NonNull DisciplinaViewHolder disciplinaViewHolder, int groupPosition, int viewType) {
+        final DisciplinaProvider.GroupDisciplina groupDisciplina = disciplinaProvider.getGroup(groupPosition);
+        disciplinaViewHolder.bind(groupDisciplina);
     }
 
     @Override
     public void onBindChildViewHolder(@NonNull AssuntoViewHolder holder, int groupPosition, int childPosition, int viewType) {
-        final DisciplinaAssuntoProvider.AssuntoData assuntoData = (DisciplinaAssuntoProvider.AssuntoData)disciplinaAssuntoProvider.getChildItem(groupPosition, childPosition);
-        final Assunto assunto = assuntoData.getItem();
-        holder.tvDescricao.setText(assunto.getDescricao());
-        holder.itemView.setOnClickListener(v -> assuntoListListener.onAssuntoClicked(assuntoData.getItem()));
+        final DisciplinaProvider.ItemAssunto itemAssunto = disciplinaProvider.getItem(groupPosition, childPosition);
+        holder.bind(itemAssunto);
     }
 
     @Override
     public boolean onCheckCanExpandOrCollapseGroup(@NonNull DisciplinaViewHolder holder, int groupPosition, int x, int y, boolean expand) {
-        DisciplinaAssuntoProvider.DisciplinaData data = (DisciplinaAssuntoProvider.DisciplinaData) disciplinaAssuntoProvider.getGroupItem(groupPosition);
-        return data.getPinDirection() == NOT_PINNED;
+        GroupItemProvider.Pinnable data = disciplinaProvider.getGroup(groupPosition);
+        return !data.isPinned();
     }
 
     @Override
@@ -202,15 +157,16 @@ public class DisciplinaAdapter extends AbstractExpandableItemAdapter<DisciplinaV
 
     @Override
     public SwipeResultAction onSwipeGroupItem(@NonNull DisciplinaViewHolder holder, int groupPosition, int result) {
+        GroupItemProvider.Pinnable pinnable = disciplinaProvider.getGroup(groupPosition);
         switch (result) {
             case SwipeableItemConstants.RESULT_SWIPED_LEFT:
-                return new PinResultAction(this, groupPosition, PINNED_LEFT);
+                return new PinResultAction(pinnable, groupPosition, PINNED_LEFT);
             case SwipeableItemConstants.RESULT_SWIPED_RIGHT:
-                return new PinResultAction(this, groupPosition, PINNED_RIGHT);
+                return new PinResultAction(pinnable, groupPosition, PINNED_RIGHT);
             case SwipeableItemConstants.RESULT_CANCELED:
             default:
                 if (groupPosition != RecyclerView.NO_POSITION) {
-                    return new UnpinResultAction(this, groupPosition);
+                    return new UnpinResultAction(pinnable, groupPosition);
                 } else {
                     return null;
                 }
@@ -245,9 +201,9 @@ public class DisciplinaAdapter extends AbstractExpandableItemAdapter<DisciplinaV
     @Override
     public void onSetGroupItemSwipeBackground(@NonNull DisciplinaViewHolder holder, int groupPosition, int type) {
         if(type == SwipeableItemConstants.DRAWABLE_SWIPE_NEUTRAL_BACKGROUND) {
-            holder.behindViews.setVisibility(View.GONE);
+            holder.hideBehindViews();
         } else {
-            holder.behindViews.setVisibility(View.VISIBLE);
+            holder.showBehindViews();
         }
     }
 
@@ -257,62 +213,99 @@ public class DisciplinaAdapter extends AbstractExpandableItemAdapter<DisciplinaV
     }
 
     class PinResultAction extends SwipeResultActionMoveToSwipedDirection {
-        private DisciplinaAdapter disciplinaAdapter;
+        private GroupItemProvider.Pinnable pinnable;
         private int position;
         private int pinDirection;
 
-        PinResultAction(DisciplinaAdapter disciplinaAdapter, int position, int pinDirection) {
-            this.disciplinaAdapter = disciplinaAdapter;
+        PinResultAction(GroupItemProvider.Pinnable pinnable, int position, int pinDirection) {
             this.position = position;
             this.pinDirection = pinDirection;
+            this.pinnable = pinnable;
         }
 
         @Override
         protected void onPerformAction() {
             super.onPerformAction();
 
-            AbstractGroupProvider.BaseData data = disciplinaAdapter.disciplinaAssuntoProvider.getGroupItem(position);
-
-            if(data.getPinDirection() == NOT_PINNED) {
-                data.setPinDirection(pinDirection);
-            } else if(data.getPinDirection() != pinDirection) {
-                data.setPinDirection(NOT_PINNED);
+            if(!pinnable.isPinned()) {
+                pinnable.setPinDirection(pinDirection);
+            } else if(pinnable.getPinDirection() != pinDirection) {
+                pinnable.setPinDirection(NOT_PINNED);
             }
-            disciplinaAdapter.notifyItemChanged(position);
+            expandableItemManager.notifyGroupItemChanged(position);
         }
 
         @Override
         protected void onCleanUp() {
             super.onCleanUp();
-            disciplinaAdapter = null;
         }
     }
 
     class UnpinResultAction extends SwipeResultActionDefault {
-        private DisciplinaAdapter disciplinaAdapter;
+        private GroupItemProvider.Pinnable pinnable;
         private int position;
 
-        UnpinResultAction(DisciplinaAdapter disciplinaAdapter, int position) {
-            this.disciplinaAdapter = disciplinaAdapter;
+        UnpinResultAction(GroupItemProvider.Pinnable pinnable, int position) {
+            this.pinnable = pinnable;
             this.position = position;
         }
 
         @Override
         protected void onPerformAction() {
             super.onPerformAction();
-
-            AbstractGroupProvider.BaseData data = disciplinaAdapter.disciplinaAssuntoProvider.getGroupItem(position);
-
-            if(data.getPinDirection() != NOT_PINNED) {
-                data.setPinDirection(NOT_PINNED);
-                disciplinaAdapter.notifyItemChanged(position);
+            if(pinnable.isPinned()) {
+                pinnable.setPinDirection(NOT_PINNED);
+                expandableItemManager.notifyGroupItemChanged(position);
             }
         }
 
         @Override
         protected void onCleanUp() {
             super.onCleanUp();
-            disciplinaAdapter = null;
         }
+    }
+
+    public void addAssunto(Assunto assunto) {
+        int groupPosition = getGroupPosition(lastActionPosition);
+        int childPosition = disciplinaProvider.getItemCount(groupPosition);
+        disciplinaProvider.addItem(assunto, groupPosition, childPosition);
+        expandableItemManager.notifyChildItemInserted(groupPosition, childPosition);
+        expandableItemManager.expandGroup(groupPosition);
+    }
+
+    private int getGroupPosition(int flatPosition) {
+        long expandablePosition = expandableItemManager.getExpandablePosition(flatPosition);
+        return RecyclerViewExpandableItemManager.getPackedPositionGroup(expandablePosition);
+    }
+
+    public void removeDisciplina() {
+        int groupPosition = getGroupPosition(lastActionPosition);
+        disciplinaProvider.removeGroup(groupPosition);
+        expandableItemManager.notifyGroupItemRemoved(groupPosition);
+    }
+
+    public void addDisciplina(com.espweb.chronos.domain.model.Disciplina disciplina) {
+        int groupPosition = disciplinaProvider.getGroupCount();
+        disciplinaProvider.addGroup(disciplina, groupPosition);
+        expandableItemManager.notifyGroupItemInserted(groupPosition);
+    }
+
+    public void updateDisciplina(Disciplina disciplina) {
+        int groupPosition = getGroupPosition(lastActionPosition);
+        disciplinaProvider.updateGroup(disciplina, groupPosition);
+        expandableItemManager.notifyGroupItemChanged(groupPosition);
+    }
+
+    public void setDisciplinaListListener(DisciplinaListListener disciplinaListListener) {
+        this.disciplinaListListener = disciplinaListListener;
+    }
+
+    public void setAssuntoListListener(AssuntoListListener assuntoListListener) {
+        this.assuntoListListener = assuntoListListener;
+    }
+
+    public void setDisciplinas(List<com.espweb.chronos.domain.model.Disciplina> disciplinas) {
+        disciplinaProvider.setGroups(disciplinas);
+        notifyDataSetChanged();
     }
 }

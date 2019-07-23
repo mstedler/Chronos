@@ -1,13 +1,11 @@
 package com.espweb.chronos.domain.repository;
 
-import com.espweb.chronos.domain.model.Cronograma;
-
 import java.util.List;
 
 public interface Repository<T> {
-    long insert(long parentId, T model);
-    boolean update(T model);
-    boolean delete(long id);
+    long insert(T model);
+    void update(T model);
+    void delete(T model);
     T get(long id);
     List<T> getAll(long parentId);
 }

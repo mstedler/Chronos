@@ -13,9 +13,9 @@ public class Cronograma {
     private String titulo;
     @SerializedName("descricao")
     private String descricao;
-    @SerializedName("data_inicio")
+    @SerializedName("inicio")
     private Date inicio;
-    @SerializedName("data_fim")
+    @SerializedName("fim")
     private Date fim;
     @SerializedName("disciplinas")
     private List<Disciplina> disciplinas;

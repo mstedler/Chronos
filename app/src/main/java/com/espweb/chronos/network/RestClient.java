@@ -1,46 +1,51 @@
 package com.espweb.chronos.network;
 
+import com.espweb.chronos.domain.repository.SessaoRepository;
+import com.espweb.chronos.network.utils.ResponseInterceptor;
+import com.espweb.chronos.network.utils.TokenAuthenticator;
+import com.espweb.chronos.network.utils.TokenInterceptor;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Interceptor;
+import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestClient {
 
-    public static final String REST_API_URL = "http://google.com";
+    public static final String REST_API_URL = "http://cronos.vizzarconsultoria.com/api/";
     private static Retrofit retrofit;
 
-    static {
-        OkHttpClient httpClient = new OkHttpClient.
-                Builder()
-                .connectTimeout(5, TimeUnit.MINUTES)
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Interceptor.Chain chain) throws IOException {
-                        Request original = chain.request();
-                        Request.Builder requestBuilder = original.newBuilder()
-                                .header("User-Agent", "Cronograma-App")
-                                .method(original.method(), original.body());
-
-                        Request request = requestBuilder.build();
-                        return chain.proceed(request);
-                    }
-                })
-                .readTimeout(5, TimeUnit.MINUTES)
+    public static void init(SessaoRepository sessaoRepository) {
+        TokenInterceptor tokenInterceptor = new TokenInterceptor(sessaoRepository);
+        TokenAuthenticator tokenAuthenticator = new TokenAuthenticator(sessaoRepository);
+        ResponseInterceptor responseInterceptor = new ResponseInterceptor(sessaoRepository);
+        Dispatcher dispatcher = new Dispatcher();
+        dispatcher.setMaxRequests(1);
+        OkHttpClient httpClient = new OkHttpClient.Builder()
+                .addInterceptor(tokenInterceptor)
+                .authenticator(tokenAuthenticator)
+                .addInterceptor(responseInterceptor)
+                .dispatcher(dispatcher)
+                .connectTimeout(5, TimeUnit.SECONDS)
+                .writeTimeout(5, TimeUnit.SECONDS)
+                .readTimeout(5, TimeUnit.SECONDS)
                 .build();
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                .setLenient()
+                .serializeNulls()
+                .create();
 
         retrofit = new Retrofit.Builder()
                 .client(httpClient)
                 .baseUrl(REST_API_URL)
-                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().serializeNulls().create())).build();
+                .addConverterFactory(GsonConverterFactory.create(gson)).build();
+
     }
 
     public static <S> S createService(Class<S> serviceClass) {

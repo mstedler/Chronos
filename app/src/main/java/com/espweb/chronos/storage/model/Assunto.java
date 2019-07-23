@@ -5,6 +5,7 @@ import java.util.List;
 import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
+import io.objectbox.annotation.Unique;
 import io.objectbox.relation.ToMany;
 import io.objectbox.relation.ToOne;
 
@@ -13,9 +14,10 @@ public class Assunto {
 
     @Id
     private long id;
+
+    @Unique
     private String uuid;
     private String descricao;
-    private String anotacao;
 
     @Backlink(to = "assunto")
     private ToMany<Material> materiais;
@@ -26,18 +28,16 @@ public class Assunto {
 
     private ToOne<Disciplina> disciplina;
 
-    public Assunto(long id, String uuid, String descricao, String anotacao, long disciplinaId) {
+    public Assunto(long id, String uuid, String descricao, long disciplinaId) {
         this.id = id;
         this.uuid = uuid;
         this.descricao = descricao;
-        this.anotacao = anotacao;
         this.disciplina.setTargetId(disciplinaId);
     }
 
-    public Assunto(String uuid, String descricao, String anotacao, long disciplinaId) {
+    public Assunto(String uuid, String descricao, long disciplinaId) {
         this.descricao = descricao;
         this.uuid = uuid;
-        this.anotacao = anotacao;
         this.disciplina.setTargetId(disciplinaId);
     }
 
@@ -66,14 +66,6 @@ public class Assunto {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    public String getAnotacao() {
-        return anotacao;
-    }
-
-    public void setAnotacao(String anotacao) {
-        this.anotacao = anotacao;
     }
 
     public ToMany<Material> getMateriais() {

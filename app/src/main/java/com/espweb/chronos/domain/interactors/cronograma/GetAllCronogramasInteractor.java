@@ -11,6 +11,7 @@ public interface GetAllCronogramasInteractor extends Interactor {
 
     interface Callback {
         void onCronogramasRetrieved(List<Cronograma> cronogramas);
+        void onCronogramasNotFound();
         void onError(String message);
     }
 }

@@ -6,10 +6,15 @@ public class Assunto {
     private long id;
     private String uuid;
     private String descricao;
-    private String anotacao;
     private List<Artefato> artefatos;
 
+    private long disciplinaId;
+
     public Assunto() {
+    }
+
+    public Assunto(long disciplinaId) {
+        this.disciplinaId = disciplinaId;
     }
 
     public List<Artefato> getArtefatos() {
@@ -44,11 +49,11 @@ public class Assunto {
         this.descricao = descricao;
     }
 
-    public String getAnotacao() {
-        return anotacao;
+    public long getDisciplinaId() {
+        return disciplinaId;
     }
 
-    public void setAnotacao(String anotacao) {
-        this.anotacao = anotacao;
+    public void setDisciplinaId(long disciplinaId) {
+        this.disciplinaId = disciplinaId;
     }
 }

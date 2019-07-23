@@ -5,7 +5,6 @@ import com.espweb.chronos.domain.executor.MainThread;
 import com.espweb.chronos.domain.interactors.cronograma.GetAllCronogramasInteractor;
 import com.espweb.chronos.domain.interactors.base.AbstractInteractor;
 import com.espweb.chronos.domain.model.Cronograma;
-import com.espweb.chronos.domain.repository.CronogramaRepository;
 import com.espweb.chronos.domain.repository.Repository;
 
 import java.util.List;
@@ -13,11 +12,15 @@ import java.util.List;
 public class GetAllCronogramasInteractorImpl extends AbstractInteractor implements GetAllCronogramasInteractor {
 
     private Callback callback;
-    private CronogramaRepository cronogramaRepository;
+    private Repository<Cronograma> cronogramaRepository;
+
+    private long userId;
 
     public GetAllCronogramasInteractorImpl(Executor threadExecutor,
                                            MainThread mainThread,
-                                           Callback callback, CronogramaRepository cronogramaRepository) {
+                                           Callback callback,
+                                           Repository<Cronograma> cronogramaRepository,
+                                           long userId) {
         super(threadExecutor, mainThread);
 
 
@@ -27,15 +30,20 @@ public class GetAllCronogramasInteractorImpl extends AbstractInteractor implemen
 
         this.callback = callback;
         this.cronogramaRepository = cronogramaRepository;
+        this.userId = userId;
     }
 
     @Override
     public void run() {
-        final List<Cronograma> cronogramas = cronogramaRepository.getAll();
-        if(cronogramas.size() > 0) {
-            mainThread.post(() -> callback.onCronogramasRetrieved(cronogramas));
-        } else {
-            mainThread.post(() -> callback.onError("Nao existem cronogramas."));
+        try {
+            final List<Cronograma> cronogramas = cronogramaRepository.getAll(userId);
+            if (cronogramas.size() > 0) {
+                mainThread.post(() -> callback.onCronogramasRetrieved(cronogramas));
+            } else {
+                mainThread.post(() -> callback.onCronogramasNotFound());
+            }
+        } catch (Exception e) {
+            mainThread.post(() -> callback.onError(e.getMessage()));
         }
     }
 }

@@ -7,8 +7,13 @@ import java.util.List;
 public class Disciplina {
     @SerializedName("uuid")
     private String uuid;
+
     @SerializedName("nome")
     private String nome;
+
+    @SerializedName("descricao")
+    private String descricao;
+
     @SerializedName("assuntos")
     private List<Assunto> assuntos;
 
@@ -37,5 +42,13 @@ public class Disciplina {
 
     public void setAssuntos(List<Assunto> assuntos) {
         this.assuntos = assuntos;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }

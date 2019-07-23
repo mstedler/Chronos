@@ -12,14 +12,13 @@ public class CreateAssuntoInteractorImpl extends AbstractInteractor implements C
     private Repository<Assunto> assuntoRepository;
     private Callback callback;
     private long disciplinaId;
-    private String descricao;
-    private String anotacao;
+    private Assunto assunto;
 
     public CreateAssuntoInteractorImpl(Executor threadExecutor, MainThread mainThread,
                                        Callback callback,
                                        Repository<Assunto> assuntoRepository,
                                        long disciplinaId,
-                                       String descricao, String anotacao) {
+                                       Assunto assunto) {
         super(threadExecutor, mainThread);
 
         if (assuntoRepository == null || callback == null) {
@@ -29,22 +28,17 @@ public class CreateAssuntoInteractorImpl extends AbstractInteractor implements C
         this.callback = callback;
         this.assuntoRepository = assuntoRepository;
         this.disciplinaId = disciplinaId;
-        this.descricao = descricao;
-        this.anotacao = anotacao;
+        this.assunto = assunto;
     }
 
     @Override
     public void run() {
-        Assunto assunto = new Assunto();
-        assunto.setDescricao(descricao);
-        assunto.setAnotacao(anotacao);
-
-        long assuntoId = assuntoRepository.insert(disciplinaId, assunto);
-
-        if(assuntoId != 0) {
+        try {
+            assunto.setDisciplinaId(disciplinaId);
+            long assuntoId = assuntoRepository.insert(assunto);
             assunto.setId(assuntoId);
             mainThread.post(() -> callback.onAssuntoCreated(assunto));
-        } else {
+        } catch (Exception e) {
             mainThread.post(() -> callback.onError("Erro ao criar assunto."));
         }
     }

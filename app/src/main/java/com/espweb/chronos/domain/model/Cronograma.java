@@ -1,5 +1,10 @@
 package com.espweb.chronos.domain.model;
 
+import android.widget.SimpleCursorAdapter;
+
+import androidx.annotation.NonNull;
+
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -13,12 +18,23 @@ public class Cronograma {
     private Date fim;
     private List<Disciplina> disciplinas;
 
-    public Cronograma(String uuid, String titulo, String descricao, Date inicio, Date fim) {
+    private long userId;
+
+    public Cronograma(long userId) {
+        this.userId = userId;
+    }
+
+    public Cronograma(long id, String uuid, String titulo, String descricao, Date inicio, Date fim) {
+        this.id = id;
         this.uuid = uuid;
         this.titulo = titulo;
         this.descricao = descricao;
         this.inicio = inicio;
         this.fim = fim;
+    }
+
+    public static Cronograma withoutId(String uuid, String titulo, String descricao, Date inicio, Date fim) {
+        return new Cronograma(-1, uuid, titulo, descricao, inicio, fim);
     }
 
     public Cronograma() {
@@ -79,5 +95,13 @@ public class Cronograma {
 
     public void setDisciplinas(List<Disciplina> disciplinas) {
         this.disciplinas = disciplinas;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 }

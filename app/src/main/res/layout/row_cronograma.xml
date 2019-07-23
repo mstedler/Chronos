@@ -2,10 +2,13 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
     android:foreground="?attr/selectableItemBackground"
-    android:layout_marginTop="8dp"
-    app:cardElevation="5dp">
+    app:cardCornerRadius="2dp"
+    app:cardElevation="5dp"
+    app:cardPreventCornerOverlap="true"
+    app:contentPadding="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,8 +18,6 @@
             android:id="@+id/tv_cronograma_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,8 +27,6 @@
             android:id="@+id/tv_cronograma_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_cronograma_title" />
@@ -43,10 +42,9 @@
             android:id="@+id/tv_data_inicio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:drawablePadding="8dp"
             android:drawableStart="@drawable/ic_event"
+            android:drawablePadding="8dp"
             android:gravity="center_vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_text_inicio" />
@@ -57,8 +55,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:drawablePadding="8dp"
             android:drawableStart="@drawable/ic_event"
+            android:drawablePadding="8dp"
             android:gravity="center_vertical"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/tv_text_fim" />
@@ -67,7 +65,6 @@
             android:id="@+id/tv_text_inicio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/initial_date"
             android:textSize="14sp"

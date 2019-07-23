@@ -5,17 +5,17 @@ import com.espweb.chronos.domain.executor.MainThread;
 import com.espweb.chronos.domain.interactors.base.AbstractInteractor;
 import com.espweb.chronos.domain.interactors.cronograma.GetCronogramaInteractor;
 import com.espweb.chronos.domain.model.Cronograma;
-import com.espweb.chronos.domain.repository.CronogramaRepository;
+import com.espweb.chronos.domain.repository.Repository;
 
 public class GetCronogramaInteractorImpl extends AbstractInteractor implements GetCronogramaInteractor {
 
-    private CronogramaRepository cronogramaRepository;
+    private Repository<Cronograma> cronogramaRepository;
     private Callback callback;
     private long cronogramaId;
 
     public GetCronogramaInteractorImpl(Executor threadExecutor, MainThread mainThread,
                                        Callback callback,
-                                       CronogramaRepository cronogramaRepository,
+                                       Repository<Cronograma> cronogramaRepository,
                                        long cronogramaId) {
         super(threadExecutor, mainThread);
 
@@ -32,6 +32,6 @@ public class GetCronogramaInteractorImpl extends AbstractInteractor implements G
     public void run() {
         Cronograma cronograma = cronogramaRepository.get(cronogramaId);
 
-        mainThread.post(() -> callback.showCronograma(cronograma));
+        mainThread.post(() -> callback.onCronogramaRetrieved(cronograma));
     }
 }

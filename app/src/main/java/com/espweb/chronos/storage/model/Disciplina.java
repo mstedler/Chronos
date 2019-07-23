@@ -3,6 +3,7 @@ package com.espweb.chronos.storage.model;
 import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
+import io.objectbox.annotation.Unique;
 import io.objectbox.relation.ToMany;
 import io.objectbox.relation.ToOne;
 
@@ -11,24 +12,31 @@ public class Disciplina {
 
     @Id
     private long id;
+
+    @Unique
     private String uuid;
+
     private String nome;
+
+    private String descricao;
 
     @Backlink(to = "disciplina")
     private ToMany<Assunto> assuntos;
 
     private ToOne<Cronograma> cronograma;
 
-    public Disciplina(String uuid, String nome, long cronogramaId) {
+    public Disciplina(String uuid, String nome, String descricao, long cronogramaId) {
         this.uuid = uuid;
         this.nome = nome;
+        this.descricao = descricao;
         this.cronograma.setTargetId(cronogramaId);
     }
 
-    public Disciplina(long id, String uuid, String nome, long cronogramaId) {
+    public Disciplina(long id, String uuid, String nome, String descricao, long cronogramaId) {
         this.id = id;
         this.uuid = uuid;
         this.nome = nome;
+        this.descricao = descricao;
         this.cronograma.setTargetId(cronogramaId);
     }
 
@@ -73,5 +81,13 @@ public class Disciplina {
 
     public void setCronograma(ToOne<Cronograma> cronograma) {
         this.cronograma = cronograma;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }

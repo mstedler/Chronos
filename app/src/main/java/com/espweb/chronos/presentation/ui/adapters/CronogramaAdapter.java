@@ -11,10 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.espweb.chronos.R;
 import com.espweb.chronos.domain.model.Cronograma;
-import com.espweb.chronos.presentation.ui.utils.DateUtils;
+import com.espweb.chronos.presentation.utils.DateUtils;
 
-import org.w3c.dom.Text;
-
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,6 +21,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CronogramaAdapter extends RecyclerView.Adapter<CronogramaAdapter.CronogramaViewHolder> {
+    public void addCronograma(Cronograma cronograma) {
+        cronogramas.add(cronograma);
+        notifyItemInserted(cronogramas.size());
+    }
+
     public interface CronogramaListListener {
         void onCronogramaClicked(final Cronograma cronograma);
     }
@@ -32,10 +36,10 @@ public class CronogramaAdapter extends RecyclerView.Adapter<CronogramaAdapter.Cr
 
     public CronogramaAdapter(Context context) {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.cronogramas = Collections.emptyList();
+        this.cronogramas = new ArrayList<>();
     }
 
-    public void setCronogramasList(List<Cronograma> cronogramas) {
+    public void setCronogramas(List<Cronograma> cronogramas) {
         this.cronogramas = cronogramas;
         notifyDataSetChanged();
     }
@@ -83,7 +87,7 @@ public class CronogramaAdapter extends RecyclerView.Adapter<CronogramaAdapter.Cr
     }
 
     public void setCronogramaListListener(CronogramaListListener cronogramaListListener) {
-        if(cronogramaListListener != null) {
+        if (cronogramaListListener != null) {
             this.cronogramaListListener = cronogramaListListener;
         }
     }

@@ -12,18 +12,29 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".presentation.ui.activities.AssuntoActivity"></activity>
-        <activity android:name=".presentation.ui.activities.CronogramaActivity" />
-        <activity android:name=".presentation.ui.activities.MainActivity">
+        <activity android:name=".presentation.ui.activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".presentation.ui.activities.LoginActivity" />
+        <activity android:name=".presentation.ui.activities.AssuntoActivity" />
+        <activity android:name=".presentation.ui.activities.CronogramaActivity" />
+        <activity android:name=".presentation.ui.activities.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

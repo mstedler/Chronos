@@ -5,7 +5,7 @@ import com.espweb.chronos.domain.model.Disciplina;
 
 public interface UpdateDisciplinaInteractor extends Interactor {
     interface Callback {
-        void onDisciplinaUpdated(Disciplina disciplina);
+        void onDisciplinaUpdated();
         void onError(String message);
     }
 }

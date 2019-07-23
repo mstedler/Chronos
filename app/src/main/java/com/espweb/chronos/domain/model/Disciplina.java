@@ -7,8 +7,10 @@ public class Disciplina {
     private long id;
     private String uuid;
     private String nome;
+    private String descricao;
     private List<Assunto> assuntos;
 
+    private long cronogramaId;
 
     public Disciplina() {
     }
@@ -43,5 +45,21 @@ public class Disciplina {
 
     public void setAssuntos(List<Assunto> assuntos) {
         this.assuntos = assuntos;
+    }
+
+    public long getCronogramaId() {
+        return cronogramaId;
+    }
+
+    public void setCronogramaId(long cronogramaId) {
+        this.cronogramaId = cronogramaId;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }

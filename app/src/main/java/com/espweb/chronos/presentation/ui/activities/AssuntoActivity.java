@@ -12,11 +12,12 @@ import android.widget.Toast;
 import com.espweb.chronos.R;
 import com.espweb.chronos.domain.executor.impl.ThreadExecutor;
 import com.espweb.chronos.domain.model.Artefato;
+import com.espweb.chronos.domain.repository.ArtefatoRepository;
 import com.espweb.chronos.domain.repository.Repository;
 import com.espweb.chronos.presentation.presenters.AssuntoPresenter;
 import com.espweb.chronos.presentation.presenters.impl.AssuntoPresenterImpl;
 import com.espweb.chronos.presentation.ui.adapters.ArtefatoAdapter;
-import com.espweb.chronos.storage.ArtefatoRepositoryImpl;
+import com.espweb.chronos.data.ArtefatoRepositoryImpl;
 import com.espweb.chronos.threading.MainThreadImpl;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public class AssuntoActivity extends BaseActivity implements AssuntoPresenter.Vi
             return;
         }
 
-        Repository<Artefato> artefatoRepository = new ArtefatoRepositoryImpl(this);
+        ArtefatoRepository artefatoRepository = new ArtefatoRepositoryImpl(this);
         AssuntoPresenter assuntoPresenter = new AssuntoPresenterImpl(ThreadExecutor.getInstance(),
                 MainThreadImpl.getInstance(), this, artefatoRepository);
 

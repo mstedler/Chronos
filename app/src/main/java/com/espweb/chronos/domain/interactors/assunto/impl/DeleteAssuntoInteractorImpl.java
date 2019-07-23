@@ -28,12 +28,9 @@ public class DeleteAssuntoInteractorImpl extends AbstractInteractor implements D
 
     @Override
     public void run() {
-        boolean success = assuntoRepository.delete(assuntoId);
-
-        if(success) {
-            mainThread.post(() -> callback.onAssuntoDeleted());
-        } else {
-            mainThread.post(() -> callback.onError("Erro ao excluir assunto."));
-        }
+        Assunto assunto = new Assunto();
+        assunto.setId(assuntoId);
+        assuntoRepository.delete(assunto);
+        mainThread.post(() -> callback.onAssuntoDeleted());
     }
 }

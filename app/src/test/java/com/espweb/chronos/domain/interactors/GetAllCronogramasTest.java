@@ -5,7 +5,7 @@ import com.espweb.chronos.domain.executor.MainThread;
 import com.espweb.chronos.domain.interactors.cronograma.GetAllCronogramasInteractor;
 import com.espweb.chronos.domain.interactors.cronograma.impl.GetAllCronogramasInteractorImpl;
 import com.espweb.chronos.domain.model.Cronograma;
-import com.espweb.chronos.domain.repository.CronogramaRepository;
+import com.espweb.chronos.domain.repository.Repository;
 import com.espweb.chronos.threading.TestMainThread;
 
 import org.junit.Before;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 public class GetAllCronogramasTest {
     private MainThread mainThread;
     @Mock private Executor executor;
-    @Mock private CronogramaRepository cronogramaRepository;
+    @Mock private Repository<Cronograma> cronogramaRepository;
     @Mock private GetAllCronogramasInteractor.Callback callback;
 
     @Before
@@ -35,12 +35,12 @@ public class GetAllCronogramasTest {
     public void testCronogramasRetrieved() throws Exception{
         List<Cronograma> cronogramas = new ArrayList<>();
 
-        when(cronogramaRepository.getAll()).thenReturn(cronogramas);
+        when(cronogramaRepository.getAll(1)).thenReturn(cronogramas);
 
-        GetAllCronogramasInteractorImpl getAllCronogramasInteractor = new GetAllCronogramasInteractorImpl(executor, mainThread, callback, cronogramaRepository);
+        GetAllCronogramasInteractorImpl getAllCronogramasInteractor = new GetAllCronogramasInteractorImpl(executor, mainThread, callback, cronogramaRepository, 1);
         getAllCronogramasInteractor.run();
 
-        Mockito.verify(cronogramaRepository).getAll();
+        Mockito.verify(cronogramaRepository).getAll(1);
         Mockito.verifyNoMoreInteractions(cronogramaRepository);
         Mockito.verify(callback).onCronogramasRetrieved(cronogramas);
     }

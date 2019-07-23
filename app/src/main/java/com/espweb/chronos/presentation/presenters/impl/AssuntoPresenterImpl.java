@@ -5,6 +5,7 @@ import com.espweb.chronos.domain.executor.MainThread;
 import com.espweb.chronos.domain.interactors.artefato.GetAllArtefatosInteractor;
 import com.espweb.chronos.domain.interactors.artefato.impl.GetAllArtefatosInteractorImpl;
 import com.espweb.chronos.domain.model.Artefato;
+import com.espweb.chronos.domain.repository.ArtefatoRepository;
 import com.espweb.chronos.domain.repository.Repository;
 import com.espweb.chronos.presentation.presenters.base.AbstractPresenter;
 import com.espweb.chronos.presentation.presenters.AssuntoPresenter;
@@ -14,10 +15,10 @@ import java.util.List;
 public class AssuntoPresenterImpl extends AbstractPresenter implements AssuntoPresenter, GetAllArtefatosInteractor.Callback {
 
     private View view;
-    private Repository<Artefato> artefatoRepository;
+    private ArtefatoRepository artefatoRepository;
 
 
-    public AssuntoPresenterImpl(Executor executor, MainThread mainThread, View view, Repository<Artefato> artefatoRepository) {
+    public AssuntoPresenterImpl(Executor executor, MainThread mainThread, View view, ArtefatoRepository artefatoRepository) {
         super(executor, mainThread);
         this.view = view;
         this.artefatoRepository = artefatoRepository;

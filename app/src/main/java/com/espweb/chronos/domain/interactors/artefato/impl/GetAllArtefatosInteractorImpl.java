@@ -5,19 +5,20 @@ import com.espweb.chronos.domain.executor.MainThread;
 import com.espweb.chronos.domain.interactors.base.AbstractInteractor;
 import com.espweb.chronos.domain.interactors.artefato.GetAllArtefatosInteractor;
 import com.espweb.chronos.domain.model.Artefato;
+import com.espweb.chronos.domain.repository.ArtefatoRepository;
 import com.espweb.chronos.domain.repository.Repository;
 
 import java.util.List;
 
 public class GetAllArtefatosInteractorImpl extends AbstractInteractor implements GetAllArtefatosInteractor {
 
-    private Repository<Artefato> artefatoRepository;
+    private ArtefatoRepository artefatoRepository;
     private Callback callback;
     private long assuntoId;
 
     public GetAllArtefatosInteractorImpl(Executor threadExecutor, MainThread mainThread,
                                          Callback callback,
-                                         Repository<Artefato> artefatoRepository,
+                                         ArtefatoRepository artefatoRepository,
                                          long assuntoId) {
         super(threadExecutor, mainThread);
         if (artefatoRepository == null || callback == null) {

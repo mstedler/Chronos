@@ -18,4 +18,13 @@ public class ObjectBox {
     public static BoxStore get() {
         return boxStore;
     }
+
+    public static void deleteDB(Context applicationContext) {
+        if(!boxStore.isClosed())
+            boxStore.close();
+
+        boxStore.deleteAllFiles();
+
+        init(applicationContext);
+    }
 }

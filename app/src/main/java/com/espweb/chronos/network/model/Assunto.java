@@ -15,8 +15,6 @@ public class Assunto {
     private List<Revisao> revisoes;
     @SerializedName("exercicios")
     private List<Exercicio> exercicios;
-    @SerializedName("anotacao")
-    private String anotacao;
 
     public Assunto() {
     }
@@ -59,13 +57,5 @@ public class Assunto {
 
     public void setExercicios(List<Exercicio> exercicios) {
         this.exercicios = exercicios;
-    }
-
-    public String getAnotacao() {
-        return anotacao;
-    }
-
-    public void setAnotacao(String anotacao) {
-        this.anotacao = anotacao;
     }
 }

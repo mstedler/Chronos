@@ -11,33 +11,22 @@ public class UpdateDisciplinaInteractorImpl extends AbstractInteractor implement
 
     private Repository<Disciplina> disciplinaRepository;
     private Callback callback;
-    private long disciplinaId;
-    private String nome;
+    private Disciplina disciplina;
 
 
     public UpdateDisciplinaInteractorImpl(Executor threadExecutor, MainThread mainThread,
                                           Callback callback,
                                           Repository<Disciplina> disciplinaRepository,
-                                          long disciplinaId,
-                                          String nome) {
+                                          Disciplina disciplina) {
         super(threadExecutor, mainThread);
         this.callback = callback;
         this.disciplinaRepository = disciplinaRepository;
-        this.disciplinaId = disciplinaId;
-        this.nome = nome;
+        this.disciplina = disciplina;
     }
 
     @Override
     public void run() {
-        Disciplina disciplina = new Disciplina();
-        disciplina.setId(disciplinaId);
-        disciplina.setNome(nome);
-
-        boolean success = disciplinaRepository.update(disciplina);
-        if(success) {
-            mainThread.post(() -> callback.onDisciplinaUpdated(disciplina));
-        } else {
-            mainThread.post(() -> callback.onError("Erro ao atualizar disciplina"));
-        }
+        disciplinaRepository.update(disciplina);
+        mainThread.post(() -> callback.onDisciplinaUpdated());
     }
 }

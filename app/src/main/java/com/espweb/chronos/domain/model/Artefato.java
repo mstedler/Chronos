@@ -7,7 +7,13 @@ public abstract class Artefato {
     private String uuid;
     private Date data;
 
+    private long assuntoId;
+
     public Artefato() {
+    }
+
+    public Artefato(long assuntoId) {
+        this.assuntoId = assuntoId;
     }
 
     public long getId() {
@@ -32,5 +38,13 @@ public abstract class Artefato {
 
     public void setData(Date data) {
         this.data = data;
+    }
+
+    public long getAssuntoId() {
+        return assuntoId;
+    }
+
+    public void setAssuntoId(long assuntoId) {
+        this.assuntoId = assuntoId;
     }
 }

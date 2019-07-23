@@ -6,14 +6,27 @@ import com.espweb.chronos.domain.model.Disciplina;
 import com.espweb.chronos.domain.model.Exercicio;
 import com.espweb.chronos.domain.model.Material;
 import com.espweb.chronos.domain.model.Revisao;
+import com.espweb.chronos.domain.model.Sessao;
+import com.espweb.chronos.domain.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StorageToDomainConverter {
 
+    public static User convert(com.espweb.chronos.storage.model.User sUser) {
+        User user = new User();
+        user.setId(sUser.getId());
+        user.setName(sUser.getName());
+        user.setEmail(sUser.getEmail());
+        user.setCreatedAt(sUser.getCreatedAt());
+        user.setUpdatedAt(sUser.getUpdatedAt());
+        user.setUuid(sUser.getUuid());
+        return user;
+    }
+
     public static Cronograma convert(com.espweb.chronos.storage.model.Cronograma sCronograma) {
-        Cronograma cronograma = new com.espweb.chronos.domain.model.Cronograma();
+        Cronograma cronograma = new Cronograma();
         cronograma.setId(sCronograma.getId());
         cronograma.setTitulo(sCronograma.getTitulo());
         cronograma.setUuid(sCronograma.getUuid());
@@ -28,6 +41,7 @@ public class StorageToDomainConverter {
         disciplina.setId(sDisciplina.getId());
         disciplina.setNome(sDisciplina.getNome());
         disciplina.setUuid(sDisciplina.getUuid());
+        disciplina.setDescricao(sDisciplina.getDescricao());
         List<Assunto> assuntos = new ArrayList<>();
         for (com.espweb.chronos.storage.model.Assunto sAssunto: sDisciplina.getAssuntos()) {
             assuntos.add(convert(sAssunto));
@@ -48,7 +62,6 @@ public class StorageToDomainConverter {
         Assunto dAssunto = new Assunto();
         dAssunto.setId(assunto.getId());
         dAssunto.setDescricao(assunto.getDescricao());
-        dAssunto.setAnotacao(assunto.getAnotacao());
         dAssunto.setUuid(assunto.getUuid());
         return dAssunto;
     }
@@ -121,5 +134,15 @@ public class StorageToDomainConverter {
             dCronogramas.add(convert(cronograma));
         }
         return dCronogramas;
+    }
+
+
+    public static Sessao convertSessaoToDomainModel(com.espweb.chronos.storage.model.Sessao sessao) {
+        Sessao dSessao = new Sessao();
+        dSessao.setId(sessao.getId());
+        dSessao.setUser(convert(sessao.getUser().getTarget()));
+        dSessao.setToken(sessao.getToken());
+        dSessao.setActive(sessao.isActive());
+        return dSessao;
     }
 }

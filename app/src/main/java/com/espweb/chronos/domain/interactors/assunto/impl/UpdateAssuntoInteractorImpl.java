@@ -29,12 +29,7 @@ public class UpdateAssuntoInteractorImpl extends AbstractInteractor implements U
 
     @Override
     public void run() {
-        boolean success = assuntoRepository.update(assunto);
-
-        if(success) {
-            mainThread.post(() -> callback.onAssuntoUpdated());
-        } else {
-            mainThread.post(() -> callback.onError("Erro ao atualizar assunto."));
-        }
+        assuntoRepository.update(assunto);
+        mainThread.post(() -> callback.onAssuntoUpdated());
     }
 }

@@ -1,33 +1,47 @@
 package com.espweb.chronos.presentation.ui.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.espweb.chronos.R;
+import com.espweb.chronos.data.SessaoRepositoryImpl;
 import com.espweb.chronos.domain.executor.impl.ThreadExecutor;
 import com.espweb.chronos.domain.model.Cronograma;
-import com.espweb.chronos.domain.repository.CronogramaRepository;
+import com.espweb.chronos.domain.model.User;
+import com.espweb.chronos.domain.repository.Repository;
+import com.espweb.chronos.domain.repository.SessaoRepository;
 import com.espweb.chronos.presentation.ui.adapters.CronogramaAdapter;
-import com.espweb.chronos.presentation.ui.fragments.CronogramaDialog;
-import com.espweb.chronos.storage.CronogramaRepositoryImpl;
+import com.espweb.chronos.presentation.ui.dialogs.CronogramaDialog;
+import com.espweb.chronos.data.CronogramaRepositoryImpl;
 import com.espweb.chronos.presentation.presenters.MainPresenter;
 import com.espweb.chronos.presentation.presenters.MainPresenter.View;
 import com.espweb.chronos.presentation.presenters.impl.MainPresenterImpl;
+import com.espweb.chronos.presentation.ui.dialogs.YesNoDialog;
 import com.espweb.chronos.threading.MainThreadImpl;
 
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements View, CronogramaAdapter.CronogramaListListener, CronogramaDialog.CronogramaDialogListener {
+public class MainActivity extends BaseActivity implements View {
+
+    public static Intent getCallingIntent(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return intent;
+    }
+
     private MainPresenter mainPresenter;
     private CronogramaAdapter cronogramaAdapter;
 
@@ -37,36 +51,85 @@ public class MainActivity extends BaseActivity implements View, CronogramaAdapte
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    private User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        init();
 
+        mainPresenter.getUser();
+    }
+
+    private void init() {
+        initToolbar();
+
+        initPresenter();
+
+        initAdapter();
+
+        initRecyclerView();
+    }
+    private void initToolbar() {
         toolbar.setTitle(R.string.app_name);
+        setSupportActionBar(toolbar);
+    }
 
-        CronogramaRepository cronogramaRepository = new CronogramaRepositoryImpl(this);
+
+    private void initPresenter() {
+        Repository<Cronograma> cronogramaRepository = new CronogramaRepositoryImpl(this);
+        SessaoRepository sessaoRepository = new SessaoRepositoryImpl(this);
         mainPresenter = new MainPresenterImpl(
                 ThreadExecutor.getInstance(),
                 MainThreadImpl.getInstance(), this,
-                cronogramaRepository);
-
-        cronogramaAdapter = new CronogramaAdapter(this);
-
-        setupRecyclerView();
-
-        mainPresenter.getAllCronogramas();
+                cronogramaRepository,
+                sessaoRepository);
     }
 
-    private void setupRecyclerView() {
-        cronogramaAdapter.setCronogramaListListener(this);
+    private void initAdapter() {
+        cronogramaAdapter = new CronogramaAdapter(this);
+    }
+
+    CronogramaAdapter.CronogramaListListener cronogramaListListener = cronograma -> {
+        if (cronograma != null) {
+            navigator.navigateToCronograma(MainActivity.this, cronograma.getId());
+        }
+    };
+
+    private void initRecyclerView() {
+        cronogramaAdapter.setCronogramaListListener(cronogramaListListener);
         rvCronogramas.setLayoutManager(new LinearLayoutManager(this));
         rvCronogramas.setAdapter(cronogramaAdapter);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.logout) {
+            showYesNoDialog();
+        }
+        return true;
+    }
+
+    YesNoDialog.YesNoDialogListener yesNoDialogListener = new YesNoDialog.YesNoDialogListener() {
+        @Override
+        public void yesClicked() {
+            mainPresenter.logout();
+        }
+    };
+
+    public void showYesNoDialog() {
+        YesNoDialog yesNoDialog = YesNoDialog.newInstance();
+        yesNoDialog.setListener(yesNoDialogListener);
+        yesNoDialog.show(getSupportFragmentManager(), "YES_NO_DIALOG");
+
     }
 
     @Override
@@ -81,34 +144,43 @@ public class MainActivity extends BaseActivity implements View, CronogramaAdapte
 
     @Override
     public void showError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        showToast(message);
     }
 
     @Override
     public void showCronogramas(List<Cronograma> cronogramas) {
-        cronogramaAdapter.setCronogramasList(cronogramas);
+        cronogramaAdapter.setCronogramas(cronogramas);
     }
 
     @Override
-    public void onCronogramaClicked(Cronograma cronograma) {
-        if(cronograma != null) {
-            this.navigator.navigateToCronograma(this, cronograma.getId());
-        }
+    public void navigateToLogin() {
+        navigator.navigateToLogin(this);
+        finish();
     }
+
+    @Override
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    CronogramaDialog.CronogramaDialogListener cronogramaDialogListener = new CronogramaDialog.CronogramaDialogListener() {
+        @Override
+        public void onCronogramaCreated(Cronograma cronograma) {
+            new Handler().postDelayed(() -> cronogramaAdapter.addCronograma(cronograma), 500);
+        }
+
+        @Override
+        public void onCronogramaUpdated(Cronograma cronograma) {}
+    };
 
     @OnClick(R.id.fab_add_cronograma)
     public void addCronogramaClick() {
-        DialogFragment dialogFragment = CronogramaDialog.newInstance(null);
-        dialogFragment.show(getSupportFragmentManager(), "CRONOGRAMA_ADD_DIALOG");
-    }
-
-    @Override
-    public void createCronograma(String titulo, String descricao, Date inicio, Date fim) {
-
-    }
-
-    @Override
-    public void updateCronograma(long id, String titulo, String descricao, Date inicio, Date fim) {
-
+        CronogramaDialog cronogramaDialog = CronogramaDialog.newInstance(user.getId());
+        cronogramaDialog.setListener(cronogramaDialogListener);
+        cronogramaDialog.show(getSupportFragmentManager(), "CRONOGRAMA_ADD_DIALOG");
     }
 }

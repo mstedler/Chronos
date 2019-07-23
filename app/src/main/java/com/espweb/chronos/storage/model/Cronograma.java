@@ -5,7 +5,9 @@ import java.util.Date;
 import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
+import io.objectbox.annotation.Unique;
 import io.objectbox.relation.ToMany;
+import io.objectbox.relation.ToOne;
 
 @Entity
 public class Cronograma {
@@ -13,37 +15,35 @@ public class Cronograma {
     @Id
     private long id;
 
+    @Unique
     private String uuid;
 
     private String titulo;
     private String descricao;
     private Date inicio;
     private Date fim;
-    private boolean synced;
 
     @Backlink(to = "cronograma")
     private ToMany<Disciplina> disciplinas;
 
-    public Cronograma(long id, String uuid, String titulo, String descricao, Date inicio, Date fim, boolean synced) {
+    private ToOne<User> user;
+
+    public Cronograma(long id, String uuid, String titulo, String descricao, Date inicio, Date fim, long userId) {
         this.id = id;
         this.uuid = uuid;
         this.titulo = titulo;
         this.descricao = descricao;
         this.inicio = inicio;
         this.fim = fim;
-        this.synced = synced;
-    }
-
-    public boolean isSynced() {
-        return synced;
-    }
-
-    public void setSynced(boolean synced) {
-        this.synced = synced;
+        this.user.setTargetId(userId);
     }
 
     public Cronograma() {
 
+    }
+
+    public ToOne<User> getUser() {
+        return user;
     }
 
     public String getUuid() {

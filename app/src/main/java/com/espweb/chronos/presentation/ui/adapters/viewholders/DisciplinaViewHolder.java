@@ -1,50 +1,129 @@
 package com.espweb.chronos.presentation.ui.adapters.viewholders;
 
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.espweb.chronos.R;
+import com.espweb.chronos.domain.model.Disciplina;
+import com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemState;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemViewHolder;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractSwipeableItemViewHolder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+import static com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider.NOT_PINNED;
+import static com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider.PINNED_LEFT;
+import static com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider.PINNED_RIGHT;
 
 public class DisciplinaViewHolder extends AbstractSwipeableItemViewHolder implements ExpandableItemViewHolder {
+    public interface DisciplinaViewHolderListener {
+        void notifyGroupItemChanged(int position);
+        void createAssuntoClicked(Disciplina disciplina, int adapterPosition);
+        void deleteDisciplinaClicked(long disciplinaId, int position);
+        void editDisciplinaClicked(Disciplina disciplina, int position);
+    }
+
+    private DisciplinaViewHolderListener disciplinaViewHolderListener;
+
     @BindView(R.id.tv_nome_disciplina)
     public TextView tvNome;
 
-    @BindView(R.id.container)
-    public FrameLayout container;
+    @BindView(R.id.tv_descricao_disciplina)
+    public TextView tvDescricao;
 
-    @BindView(R.id.behind_views)
+    @BindView(R.id.fl_container)
+    public ConstraintLayout container;
+
+    @BindView(R.id.ll_behindviews)
     public LinearLayout behindViews;
 
-    @BindView(R.id.assunto_add)
-    public LinearLayout llAssuntoAdd;
+    @BindView(R.id.ll_add_assunto)
+    public LinearLayout llAddAssunto;
 
-    @BindView(R.id.disciplina_delete)
-    public LinearLayout llDisciplinaDelete;
+    @BindView(R.id.ll_delete_disciplina)
+    public LinearLayout llDeleteDisciplina;
 
-    @BindView(R.id.disciplina_edit)
-    public LinearLayout llDisciplinaEdit;
-
-
+    @BindView(R.id.ll_edit_disciplina)
+    public LinearLayout llEditDisciplina;
 
     private final ExpandableItemState expandableItemState = new ExpandableItemState();
+    private DisciplinaProvider.GroupDisciplina groupDisciplina;
+    private Disciplina disciplina;
 
-    public DisciplinaViewHolder(@NonNull View itemView) {
+
+    public DisciplinaViewHolder(@NonNull View itemView, DisciplinaViewHolderListener disciplinaViewHolderListener) {
         super(itemView);
         ButterKnife.bind(this, itemView);
+        this.disciplinaViewHolderListener = disciplinaViewHolderListener;
     }
+
+    public void hideBehindViews() {
+        behindViews.setVisibility(View.GONE);
+    }
+
+    public void showBehindViews() {
+        behindViews.setVisibility(View.VISIBLE);
+    }
+
+
+    @OnClick(R.id.fl_container)
+    public void onContainerClick() {
+        if(groupDisciplina.isPinned()) {
+            groupDisciplina.setPinDirection(NOT_PINNED);
+            disciplinaViewHolderListener.notifyGroupItemChanged(getAdapterPosition());
+        }
+    }
+
+    @OnClick(R.id.ll_add_assunto)
+    public void onAddAssuntoClick() {
+        disciplinaViewHolderListener.createAssuntoClicked(disciplina, getAdapterPosition());
+    }
+
+    @OnClick(R.id.ll_delete_disciplina)
+    public void onDeleteDisciplinaClick() {
+        disciplinaViewHolderListener.deleteDisciplinaClicked(disciplina.getId(), getAdapterPosition());
+    }
+
+    @OnClick(R.id.ll_edit_disciplina)
+    public void onEditDisciplinaClick() {
+        disciplinaViewHolderListener.editDisciplinaClicked(disciplina, getAdapterPosition());
+    }
+
+    public void bind(DisciplinaProvider.GroupDisciplina groupDisciplina) {
+        this.groupDisciplina = groupDisciplina;
+        this.disciplina = groupDisciplina.get();
+        adjustSwipe();
+        tvNome.setText(disciplina.getNome());
+        tvDescricao.setText(disciplina.getDescricao());
+    }
+
+    private void adjustSwipe() {
+        float LEFT_AMOUNT = -0.2f;
+        float RIGHT_AMOUT = 0.5f;
+
+        setMaxLeftSwipeAmount(LEFT_AMOUNT);
+        setMaxRightSwipeAmount(RIGHT_AMOUT);
+
+        switch (groupDisciplina.getPinDirection()) {
+            case PINNED_LEFT:
+                setSwipeItemHorizontalSlideAmount(LEFT_AMOUNT);
+                break;
+            case PINNED_RIGHT:
+                setSwipeItemHorizontalSlideAmount(RIGHT_AMOUT);
+                break;
+            default:
+                setSwipeItemHorizontalSlideAmount(0);
+                break;
+        }
+    }
+
 
     @NonNull
     @Override

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#33365d</color>
+    <color name="colorPrimaryDark">#081033</color>
+    <color name="colorAccent">#4e4280</color>
     <color name="bg_delete">#db2828</color>
     <color name="bg_edit">#eaae00</color>
     <color name="bg_add">#21ba45</color>
     <color name="bg_item_normal_state">#fff0f0f0</color>
+    <color name="bg_splash">#081033</color>
 
     <color name="transparent">@android:color/transparent</color>
 

@@ -4,12 +4,14 @@ import java.util.Date;
 
 import io.objectbox.annotation.BaseEntity;
 import io.objectbox.annotation.Id;
+import io.objectbox.annotation.Unique;
 
 @BaseEntity
 public class Artefato {
     @Id
     long id;
 
+    @Unique
     String uuid;
 
     Date data;

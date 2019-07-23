@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.espweb.chronos.R;
@@ -16,17 +18,18 @@ import com.espweb.chronos.domain.executor.impl.ThreadExecutor;
 import com.espweb.chronos.domain.model.Assunto;
 import com.espweb.chronos.domain.model.Cronograma;
 import com.espweb.chronos.domain.model.Disciplina;
-import com.espweb.chronos.domain.repository.CronogramaRepository;
 import com.espweb.chronos.domain.repository.Repository;
-import com.espweb.chronos.presentation.ui.adapters.data.DisciplinaAssuntoProvider;
 import com.espweb.chronos.presentation.presenters.CronogramaPresenter;
 import com.espweb.chronos.presentation.presenters.impl.CronogramaPresenterImpl;
 import com.espweb.chronos.presentation.ui.adapters.DisciplinaAdapter;
-import com.espweb.chronos.presentation.ui.fragments.AssuntoDialog;
-import com.espweb.chronos.presentation.ui.fragments.DisciplinaDialog;
-import com.espweb.chronos.storage.AssuntoRepositoryImpl;
-import com.espweb.chronos.storage.CronogramaRepositoryImpl;
-import com.espweb.chronos.storage.DisciplinaRepositoryImpl;
+import com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider;
+import com.espweb.chronos.presentation.ui.dialogs.AssuntoDialog;
+import com.espweb.chronos.presentation.ui.dialogs.CronogramaDialog;
+import com.espweb.chronos.presentation.ui.dialogs.DisciplinaDialog;
+import com.espweb.chronos.data.AssuntoRepositoryImpl;
+import com.espweb.chronos.data.CronogramaRepositoryImpl;
+import com.espweb.chronos.data.DisciplinaRepositoryImpl;
+import com.espweb.chronos.presentation.ui.dialogs.YesNoDialog;
 import com.espweb.chronos.threading.MainThreadImpl;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
@@ -40,19 +43,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CronogramaActivity extends BaseActivity implements
-        CronogramaPresenter.View,
-        DisciplinaAdapter.AssuntoListListener,
-        DisciplinaAdapter.DisciplinaListListener,
-        AssuntoDialog.CreateAssuntoDialogListener,
-        DisciplinaDialog.DisciplinaDialogListener {
+public class CronogramaActivity extends BaseActivity implements CronogramaPresenter.View {
+
+    public static Intent getCallingIntent(Context context, long cronogramaId) {
+        Intent callingIntent = new Intent(context, CronogramaActivity.class);
+        callingIntent.putExtra(INTENT_EXTRA_PARAM_CRONOGRAMA_ID, cronogramaId);
+        return callingIntent;
+    }
 
     private static final String INTENT_EXTRA_PARAM_CRONOGRAMA_ID = "com.espweb.INTENT_PARAM_CRONOGRAMA_ID";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.rv_disciplinas)
-    RecyclerView rv_disciplinas;
+    RecyclerView rvDisciplinas;
     @BindView(R.id.fab_add_disciplina)
     FloatingActionButton fabAddDisciplina;
 
@@ -60,7 +64,7 @@ public class CronogramaActivity extends BaseActivity implements
     private long cronogramaId;
     private DisciplinaAdapter disciplinaAdapter;
 
-    private int lastActionGroupPosition;
+    private Cronograma cronograma;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,29 +80,110 @@ public class CronogramaActivity extends BaseActivity implements
             return;
         }
 
-        CronogramaRepository cronogramaRepository = new CronogramaRepositoryImpl(this);
+        init();
+
+        cronogramaPresenter.getCronograma(cronogramaId);
+    }
+
+    private void init() {
+        initPresenter();
+        initToolbar();
+        initRecyclerView();
+    }
+
+    private void initToolbar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+    }
+
+    private void initPresenter() {
+        Repository<Cronograma> cronogramaRepository = new CronogramaRepositoryImpl(this);
         Repository<Disciplina> disciplinaRepository = new DisciplinaRepositoryImpl(this);
         Repository<Assunto> assuntoRepository = new AssuntoRepositoryImpl(this);
 
-        this.cronogramaPresenter = new CronogramaPresenterImpl(
+        cronogramaPresenter = new CronogramaPresenterImpl(
                 ThreadExecutor.getInstance(),
                 MainThreadImpl.getInstance(), this,
                 cronogramaRepository,
                 disciplinaRepository,
                 assuntoRepository);
+    }
 
-        setUpRecyclerView();
-        setUpToolbar();
+    DisciplinaAdapter.DisciplinaListListener disciplinaListListener = new DisciplinaAdapter.DisciplinaListListener() {
+        @Override
+        public void onEditDisciplinaClicked(Disciplina disciplina) {
+            showDisciplinaDialog(disciplina);
+        }
 
-        cronogramaPresenter.getCronograma(cronogramaId);
+        @Override
+        public void onDeleteDisciplinaClicked(long id) {
+            cronogramaPresenter.deleteDisciplina(id);
+        }
+
+        @Override
+        public void onCreateAssuntoClicked(Disciplina disciplina) {
+            showAssuntoDialog(disciplina, null);
+        }
+    };
+
+
+    DisciplinaAdapter.AssuntoListListener assuntoListListener = assunto -> {
+        navigator.navigateToAssunto(this, assunto.getId());
+    };
+
+    private void initRecyclerView() {
+        RecyclerViewExpandableItemManager expandableItemManager = new RecyclerViewExpandableItemManager(null);
+
+        disciplinaAdapter = new DisciplinaAdapter(this, expandableItemManager, new DisciplinaProvider());
+        disciplinaAdapter.setDisciplinaListListener(disciplinaListListener);
+        disciplinaAdapter.setAssuntoListListener(assuntoListListener);
+
+
+        RecyclerView.Adapter wrappedAdapter = expandableItemManager.createWrappedAdapter(disciplinaAdapter);
+        RecyclerViewSwipeManager swipeManager = new RecyclerViewSwipeManager();
+        wrappedAdapter = swipeManager.createWrappedAdapter(wrappedAdapter);
+
+        final GeneralItemAnimator animator = new SwipeDismissItemAnimator();
+        animator.setSupportsChangeAnimations(false);
+
+
+        rvDisciplinas.setLayoutManager(new LinearLayoutManager(this));
+        rvDisciplinas.setItemAnimator(animator);
+        rvDisciplinas.setAdapter(wrappedAdapter);
+        rvDisciplinas.setHasFixedSize(false);
+
+        swipeManager.attachRecyclerView(rvDisciplinas);
+        expandableItemManager.attachRecyclerView(rvDisciplinas);
+
+        rvDisciplinas.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    fabAddDisciplina.hide();
+                } else {
+                    fabAddDisciplina.show();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         cronogramaPresenter.getAllDisciplinas(cronogramaId);
     }
 
-    private void setUpToolbar() {
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+    @Override
+    public void setCronograma(Cronograma cronograma) {
+        this.cronograma = cronograma;
+    }
+
+    @Override
+    public void bindCronogramaToView() {
+        toolbar.setTitle(cronograma.getTitulo());
     }
 
     @Override
@@ -107,28 +192,105 @@ public class CronogramaActivity extends BaseActivity implements
     }
 
     @Override
-    public void showCronograma(Cronograma cronograma) {
-        toolbar.setTitle(cronograma.getTitulo());
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.cronograma, menu);
+        return true;
     }
 
     @Override
-    public void addAssuntoToList(Assunto assunto) {
-        disciplinaAdapter.addAssunto(assunto, lastActionGroupPosition);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.item_edit) {
+            showCronogramaDialog();
+        } else if (item.getItemId() == R.id.item_delete) {
+            showYesNoDialog();
+        }
+        return true;
     }
+
+
+
+    @Override
+    public void onCronogramaDeleted() {
+        finish();
+    }
+
+    CronogramaDialog.CronogramaDialogListener cronogramaDialogListener = new CronogramaDialog.CronogramaDialogListener() {
+        @Override
+        public void onCronogramaCreated(Cronograma cronograma) {
+
+        }
+
+        @Override
+        public void onCronogramaUpdated(Cronograma cronograma) {
+            setCronograma(cronograma);
+            bindCronogramaToView();
+        }
+    };
+
+    private void showCronogramaDialog() {
+        CronogramaDialog cronogramaDialog = CronogramaDialog.newInstance(cronograma);
+        cronogramaDialog.setListener(cronogramaDialogListener);
+        cronogramaDialog.show(getSupportFragmentManager(), "CRONOGRAMA_DIALOG");
+    }
+
+    AssuntoDialog.AssuntoDialogListener assuntoDialogListener = new AssuntoDialog.AssuntoDialogListener() {
+        @Override
+        public void onAssuntoCreated(Assunto assunto) {
+            disciplinaAdapter.addAssunto(assunto);
+        }
+
+        @Override
+        public void onAssuntoUpdated(Assunto assunto) {
+
+        }
+    };
+
+    private void showAssuntoDialog(Disciplina disciplina, Assunto assunto) {
+        AssuntoDialog assuntoDialog = AssuntoDialog.newInstance(disciplina, assunto);
+        assuntoDialog.setAssuntoDialogListener(assuntoDialogListener);
+        assuntoDialog.show(getSupportFragmentManager(), "ASSUNTO_DIALOG");
+    }
+
+    YesNoDialog.YesNoDialogListener yesNoDialogListener = new YesNoDialog.YesNoDialogListener() {
+        @Override
+        public void yesClicked() {
+            cronogramaPresenter.deleteCronograma(cronogramaId);
+        }
+    };
+
+    private void showYesNoDialog() {
+        YesNoDialog yesNoDialog = YesNoDialog.newInstance();
+        yesNoDialog.setListener(yesNoDialogListener);
+        yesNoDialog.show(getSupportFragmentManager(), "YES_NO_DIALOG");
+    }
+
 
     @Override
     public void onDisciplinaDeleted() {
-        disciplinaAdapter.removeDisciplina(lastActionGroupPosition);
+        disciplinaAdapter.removeDisciplina();
     }
 
-    @Override
-    public void addDisciplinaToList(Disciplina disciplina) {
-        disciplinaAdapter.addDisciplina(disciplina);
+    private void showDisciplinaDialog(Disciplina disciplina) {
+        DisciplinaDialog disciplinaDialog = DisciplinaDialog.newInstance(cronogramaId, disciplina);
+        disciplinaDialog.setListener(disciplinaDialogListener);
+        disciplinaDialog.show(getSupportFragmentManager(), "DISCIPLINA_DIALOG");
     }
 
-    @Override
-    public void updateDisciplinaOnList(Disciplina disciplina) {
-        disciplinaAdapter.updateDisciplina(disciplina, lastActionGroupPosition);
+    DisciplinaDialog.DisciplinaDialogListener disciplinaDialogListener = new DisciplinaDialog.DisciplinaDialogListener() {
+        @Override
+        public void onDisciplinaCreated(Disciplina disciplina) {
+            disciplinaAdapter.addDisciplina(disciplina);
+        }
+
+        @Override
+        public void onDisciplinaUpdated(Disciplina disciplina) {
+            disciplinaAdapter.updateDisciplina(disciplina);
+        }
+    };
+
+    @OnClick(R.id.fab_add_disciplina)
+    void addDisciplina() {
+       showDisciplinaDialog(null);
     }
 
     @Override
@@ -145,96 +307,4 @@ public class CronogramaActivity extends BaseActivity implements
     public void showError(String message) {
 
     }
-
-    public static Intent getCallingIntent(Context context, long cronogramaId) {
-        Intent callingIntent = new Intent(context, CronogramaActivity.class);
-        callingIntent.putExtra(INTENT_EXTRA_PARAM_CRONOGRAMA_ID, cronogramaId);
-        return callingIntent;
-    }
-
-    private void setUpRecyclerView() {
-        RecyclerView.Adapter wrappedAdapter;
-        RecyclerViewExpandableItemManager expandableItemManager = new RecyclerViewExpandableItemManager(null);
-        RecyclerViewSwipeManager swipeManager = new RecyclerViewSwipeManager();
-        disciplinaAdapter = new DisciplinaAdapter(this, expandableItemManager, new DisciplinaAssuntoProvider());
-        disciplinaAdapter.setAssuntoListListener(this);
-        disciplinaAdapter.setDisciplinaListListener(this);
-
-        final GeneralItemAnimator animator = new SwipeDismissItemAnimator();
-        animator.setSupportsChangeAnimations(false);
-
-        //é necessário fazer o wrap para cada manager
-        wrappedAdapter = expandableItemManager.createWrappedAdapter(disciplinaAdapter);
-        wrappedAdapter = swipeManager.createWrappedAdapter(wrappedAdapter);
-
-        rv_disciplinas.setLayoutManager(new LinearLayoutManager(this));
-        rv_disciplinas.setItemAnimator(animator);
-        rv_disciplinas.setAdapter(wrappedAdapter);
-        rv_disciplinas.setHasFixedSize(false);
-
-        //Attach managers na RecyclerView;
-        swipeManager.attachRecyclerView(rv_disciplinas);
-        expandableItemManager.attachRecyclerView(rv_disciplinas);
-
-        rv_disciplinas.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if(dy > 0) {
-                    fabAddDisciplina.hide();
-                } else {
-                    fabAddDisciplina.show();
-                }
-            }
-        });
-
-    }
-
-    @Override
-    public void onAssuntoClicked(Assunto assunto) {
-        navigator.navigateToAssunto(this, assunto.getId());
-    }
-
-    @Override
-    public void onEditClicked(Disciplina disciplina, int lastActionGroupPosition) {
-        this.lastActionGroupPosition = lastActionGroupPosition;
-        DialogFragment editDisciplinaDialog = DisciplinaDialog.newInstance(cronogramaId, disciplina);
-        editDisciplinaDialog.show(getSupportFragmentManager(), "EDIT_DISCIPLINA_DIALOG");
-    }
-
-    @Override
-    public void onDeleteClicked(long id, int lastActionGroupPosition) {
-        this.lastActionGroupPosition = lastActionGroupPosition;
-        cronogramaPresenter.deleteDisciplina(id);
-    }
-
-    @Override
-    public void onAddAssuntoClicked(Disciplina disciplina, int lastActionGroupPosition) {
-        this.lastActionGroupPosition = lastActionGroupPosition;
-        DialogFragment createAssuntoDialog = AssuntoDialog.newInstance(disciplina, null);
-        createAssuntoDialog.show(getSupportFragmentManager(), "CREATE_ASSUNTO_DIALOG");
-    }
-
-    @Override
-    public void createAssunto(long disciplinaId, String descricao, String anotacao) {
-        cronogramaPresenter.createAssunto(disciplinaId, descricao, anotacao);
-    }
-
-    @OnClick(R.id.fab_add_disciplina)
-    void addDisciplina(){
-        DialogFragment createDisciplinaDialog = DisciplinaDialog.newInstance(cronogramaId, null);
-        createDisciplinaDialog.show(getSupportFragmentManager(), "CREATE_DISCIPLINA_DIALOG");
-    }
-
-    @Override
-    public void createDisciplina(long cronogramaId, String nome) {
-        cronogramaPresenter.createDisciplina(cronogramaId, nome);
-    }
-
-    @Override
-    public void updateDisciplina(long disciplinaId, String nome) {
-        cronogramaPresenter.updateDisciplina(disciplinaId, nome);
-    }
-
-
 }

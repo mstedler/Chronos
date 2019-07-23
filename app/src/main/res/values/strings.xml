@@ -8,16 +8,33 @@
     <string name="btn_edit_disciplina">Edit subject</string>
     <string name="description">Description</string>
     <string name="annotation">Annotation</string>
-    <string name="create_topic">Create Topic</string>
+    <string name="new_topic">New Topic</string>
     <string name="save">Save</string>
     <string name="cannot_be_empty">Can\'t be empty</string>
     <string name="name">Name</string>
-    <string name="create_subject">Create Subject</string>
+    <string name="new_subject">New Subject</string>
     <string name="cancel">Cancel</string>
     <string name="edit">Edit</string>
     <string name="edit_topic">Edit topic</string>
     <string name="initial_date">Initial Date</string>
     <string name="final_date">Final Date</string>
     <string name="title">Title</string>
-    <string name="create_cronograma">Create Cronogram</string>
+    <string name="new_cronograma">New Cronogram</string>
+    <string name="welcome">Welcome</string>
+    <string name="enter_account">Sign in to continue</string>
+    <string name="create_free_account">Create free account</string>
+    <string name="password">Password</string>
+    <string name="login">Sign in</string>
+    <string name="sign_in_instead">Sign in instead</string>
+    <string name="create_your_account">Create your account</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="logout">Logout</string>
+    <string name="delete">Delete</string>
+    <string name="user_not_found">User not found!</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

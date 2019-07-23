@@ -29,12 +29,9 @@ public class DeleteDisciplinaInteractorImpl extends AbstractInteractor implement
 
     @Override
     public void run() {
-        boolean success = disciplinaRepository.delete(disciplinaId);
-
-        if(success) {
-            mainThread.post(() -> callback.onDisciplinaDeleted());
-        } else {
-            mainThread.post(() -> callback.onError("Erro ao excluir disciplina"));
-        }
+        Disciplina disciplina = new Disciplina();
+        disciplina.setId(disciplinaId);
+        disciplinaRepository.delete(disciplina);
+        mainThread.post(() -> callback.onDisciplinaDeleted());
     }
 }

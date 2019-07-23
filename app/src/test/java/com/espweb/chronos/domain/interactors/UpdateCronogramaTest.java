@@ -5,7 +5,6 @@ import com.espweb.chronos.domain.executor.MainThread;
 import com.espweb.chronos.domain.interactors.cronograma.UpdateCronogramaInteractor;
 import com.espweb.chronos.domain.interactors.cronograma.impl.UpdateCronogramaInteractorImpl;
 import com.espweb.chronos.domain.model.Cronograma;
-import com.espweb.chronos.domain.repository.CronogramaRepository;
 import com.espweb.chronos.threading.TestMainThread;
 
 import org.junit.Before;

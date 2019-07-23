@@ -10,18 +10,17 @@ import java.util.List;
 
 public interface CronogramaPresenter extends BasePresenter {
 
+    void deleteCronograma(long cronogramaId);
+
     interface View extends BaseView {
         void showDisciplinas(List<Disciplina> disciplinas);
-        void showCronograma(Cronograma cronograma);
-        void addAssuntoToList(Assunto assunto);
+        void setCronograma(Cronograma cronograma);
+        void bindCronogramaToView();
         void onDisciplinaDeleted();
-        void addDisciplinaToList(Disciplina disciplina);
-        void updateDisciplinaOnList(Disciplina disciplina);
+        void onCronogramaDeleted();
     }
-    void createAssunto(long disciplinaId, String descricao, String anotacao);
+
     void getAllDisciplinas(long cronogramaId);
     void getCronograma(long cronogramaId);
     void deleteDisciplina(long disciplinaId);
-    void createDisciplina(long cronogramaId, String nome);
-    void updateDisciplina(long disciplinaId, String nome);
 }
