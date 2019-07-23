@@ -3,11 +3,8 @@ package com.espweb.chronos.presentation.ui.adapters.providers.base;
 
 import java.util.List;
 
-public abstract class ExpandableSwipeableProvider<G, I> {
-    public static final int NOT_PINNED = 0;
-    public static final int PINNED_LEFT = 1;
-    public static final int PINNED_RIGHT = 2;
-    
+public abstract class GroupItemProvider<G, I> {
+
     public interface Pinnable {
        void setPinDirection(int direction);
        int getPinDirection();

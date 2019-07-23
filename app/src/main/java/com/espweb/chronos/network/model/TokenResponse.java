@@ -2,11 +2,11 @@ package com.espweb.chronos.network.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class RefreshTokenResponse {
+public class TokenResponse {
     @SerializedName("data")
     private Token token;
 
-    public RefreshTokenResponse() {
+    public TokenResponse() {
     }
 
     public Token getToken() {

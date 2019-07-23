@@ -1,31 +1,29 @@
-package com.espweb.chronos.domain.interactors.user.impl;
+package com.espweb.chronos.domain.interactors.session.impl;
 
+import com.espweb.chronos.domain.exceptions.SignUpFailedException;
 import com.espweb.chronos.domain.executor.Executor;
 import com.espweb.chronos.domain.executor.MainThread;
 import com.espweb.chronos.domain.interactors.base.AbstractInteractor;
-import com.espweb.chronos.domain.interactors.user.CreateUserInteractor;
+import com.espweb.chronos.domain.interactors.session.SignUpInteractor;
 import com.espweb.chronos.domain.model.User;
-import com.espweb.chronos.domain.repository.SessionRepository;
-import com.espweb.chronos.domain.repository.Repository;
-import com.espweb.chronos.domain.result.Result;
-import com.espweb.chronos.domain.result.ResultStatus;
+import com.espweb.chronos.domain.repository.SessaoRepository;
 
-public class CreateUserInteractorImpl extends AbstractInteractor implements CreateUserInteractor {
+public class SignUpInteractorImpl extends AbstractInteractor implements SignUpInteractor {
 
     private Callback callback;
-    private SessionRepository sessionRepository;
+    private SessaoRepository sessaoRepository;
     private String password;
     private String name;
     private String email;
 
-    public CreateUserInteractorImpl(Executor threadExecutor,
-                                    MainThread mainThread,
-                                    Callback callback,
-                                    SessionRepository sessionRepository,
-                                    String name, String email, String password) {
+    public SignUpInteractorImpl(Executor threadExecutor,
+                                MainThread mainThread,
+                                Callback callback,
+                                SessaoRepository sessaoRepository,
+                                String name, String email, String password) {
         super(threadExecutor, mainThread);
         this.callback = callback;
-        this.sessionRepository = sessionRepository;
+        this.sessaoRepository = sessaoRepository;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -33,11 +31,12 @@ public class CreateUserInteractorImpl extends AbstractInteractor implements Crea
 
     @Override
     public void run() {
-        Result<Boolean> result = sessionRepository.signUpUser(name, email, password);
-        if(result.getStatus() == ResultStatus.SUCCESS){
+        User user = new User(name, email, password);
+       try {
+            sessaoRepository.signUpUser(user);
             mainThread.post(() -> callback.onSignUpSuccess());
-        } else {
-            mainThread.post(() -> callback.onError("Erro ao criar usuário"));
+        } catch (SignUpFailedException e){
+            mainThread.post(() -> callback.onError(e.getMessage()));
         }
     }
 }

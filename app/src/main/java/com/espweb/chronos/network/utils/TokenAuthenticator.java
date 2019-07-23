@@ -18,26 +18,11 @@ import okhttp3.Request;
 import okhttp3.Route;
 import retrofit2.Response;
 
-public class TokenSupport implements Interceptor, Authenticator {
+public class TokenAuthenticator implements Authenticator {
     private SessaoRepository sessaoRepository;
 
-    public TokenSupport(SessaoRepository sessaoRepository) {
+    public TokenAuthenticator(SessaoRepository sessaoRepository) {
         this.sessaoRepository = sessaoRepository;
-    }
-
-    @Override
-    public okhttp3.Response intercept(Chain chain) throws IOException {
-        Request originalRequest = chain.request();
-        Sessao sessao;
-        try {
-            sessao = sessaoRepository.getSessao();
-        } catch (NotFoundException e) {
-            return chain.proceed(originalRequest);
-        }
-
-        Request withTokenRequest = originalRequest.newBuilder().addHeader("Authorization", "Bearer " + sessao.getToken()).build();
-
-        return chain.proceed(withTokenRequest);
     }
 
     @Nullable
@@ -47,17 +32,11 @@ public class TokenSupport implements Interceptor, Authenticator {
         Response<TokenResponse> tokenResponse = RestClient.createService(SessionService.class).refreshToken().execute();
         if (tokenResponse.isSuccessful()) {
             Token token = tokenResponse.body().getToken();
-            try {
-                sessaoRepository.refreshToken(token.getValue());
-            } catch (NotFoundException e) {
-                //sessao não encontrada
-                return null;
-            }
-
-
+            sessaoRepository.refreshToken(token.getValue());
             return originalRequest.newBuilder().addHeader("Authorization", "Bearer " + token.getValue()).build();
         } else {
-            return null;
+            sessaoRepository.signOutUser();
         }
+        return null;
     }
 }
