@@ -2,7 +2,6 @@ package com.espweb.chronos.presentation.ui.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,10 +14,10 @@ import android.widget.Toast;
 
 import com.espweb.chronos.R;
 import com.espweb.chronos.domain.executor.impl.ThreadExecutor;
-import com.espweb.chronos.domain.model.Assunto;
-import com.espweb.chronos.domain.model.Cronograma;
-import com.espweb.chronos.domain.model.Disciplina;
+
 import com.espweb.chronos.domain.repository.Repository;
+import com.espweb.chronos.presentation.model.Assunto;
+import com.espweb.chronos.presentation.model.Disciplina;
 import com.espweb.chronos.presentation.presenters.CronogramaPresenter;
 import com.espweb.chronos.presentation.presenters.impl.CronogramaPresenterImpl;
 import com.espweb.chronos.presentation.ui.adapters.DisciplinaAdapter;
@@ -26,7 +25,6 @@ import com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider;
 import com.espweb.chronos.presentation.ui.dialogs.AssuntoDialog;
 import com.espweb.chronos.presentation.ui.dialogs.CronogramaDialog;
 import com.espweb.chronos.presentation.ui.dialogs.DisciplinaDialog;
-import com.espweb.chronos.data.AssuntoRepositoryImpl;
 import com.espweb.chronos.data.CronogramaRepositoryImpl;
 import com.espweb.chronos.data.DisciplinaRepositoryImpl;
 import com.espweb.chronos.presentation.ui.dialogs.YesNoDialog;
@@ -61,10 +59,9 @@ public class CronogramaActivity extends BaseActivity implements CronogramaPresen
     FloatingActionButton fabAddDisciplina;
 
     private CronogramaPresenter cronogramaPresenter;
-    private long cronogramaId;
     private DisciplinaAdapter disciplinaAdapter;
 
-    private Cronograma cronograma;
+    private com.espweb.chronos.presentation.model.Cronograma cronograma;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,13 +69,16 @@ public class CronogramaActivity extends BaseActivity implements CronogramaPresen
         setContentView(R.layout.activity_cronograma);
         ButterKnife.bind(this);
 
-        cronogramaId = getIntent().getLongExtra(INTENT_EXTRA_PARAM_CRONOGRAMA_ID, -1);
+        long cronogramaId = getIntent().getLongExtra(INTENT_EXTRA_PARAM_CRONOGRAMA_ID, -1);
 
         if (cronogramaId == -1) {
             Toast.makeText(this, R.string.cronograma_not_found, Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
+
+        cronograma = new com.espweb.chronos.presentation.model.Cronograma();
+        cronograma.setId(cronogramaId);
 
         init();
 
@@ -99,16 +99,14 @@ public class CronogramaActivity extends BaseActivity implements CronogramaPresen
     }
 
     private void initPresenter() {
-        Repository<Cronograma> cronogramaRepository = new CronogramaRepositoryImpl(this);
-        Repository<Disciplina> disciplinaRepository = new DisciplinaRepositoryImpl(this);
-        Repository<Assunto> assuntoRepository = new AssuntoRepositoryImpl(this);
+        Repository<com.espweb.chronos.domain.model.Cronograma> cronogramaRepository = new CronogramaRepositoryImpl(this);
+        Repository<com.espweb.chronos.domain.model.Disciplina> disciplinaRepository = new DisciplinaRepositoryImpl(this);
 
         cronogramaPresenter = new CronogramaPresenterImpl(
                 ThreadExecutor.getInstance(),
                 MainThreadImpl.getInstance(), this,
                 cronogramaRepository,
-                disciplinaRepository,
-                assuntoRepository);
+                disciplinaRepository);
     }
 
     DisciplinaAdapter.DisciplinaListListener disciplinaListListener = new DisciplinaAdapter.DisciplinaListListener() {
@@ -118,19 +116,21 @@ public class CronogramaActivity extends BaseActivity implements CronogramaPresen
         }
 
         @Override
-        public void onDeleteDisciplinaClicked(long id) {
-            cronogramaPresenter.deleteDisciplina(id);
+        public void onDeleteDisciplinaClicked(Disciplina disciplina) {
+            YesNoDialog confirmDialog = YesNoDialog.newInstance(getString(R.string.delete), getString(R.string.are_you_sure));
+            confirmDialog.setListener(() -> cronogramaPresenter.deleteDisciplina(disciplina.getId()));
+            confirmDialog.show(getSupportFragmentManager(), "DELETE_DISCIPLINA_DIALOG");
         }
 
         @Override
         public void onCreateAssuntoClicked(Disciplina disciplina) {
-            showAssuntoDialog(disciplina, null);
+            showAssuntoDialog(disciplina, new Assunto(disciplina.getId()));
         }
     };
 
 
     DisciplinaAdapter.AssuntoListListener assuntoListListener = assunto -> {
-        navigator.navigateToAssunto(this, assunto.getId());
+        navigator.navigateToAssunto(this, assunto);
     };
 
     private void initRecyclerView() {
@@ -173,11 +173,11 @@ public class CronogramaActivity extends BaseActivity implements CronogramaPresen
     @Override
     protected void onResume() {
         super.onResume();
-        cronogramaPresenter.getAllDisciplinas(cronogramaId);
+        cronogramaPresenter.getAllDisciplinas(cronograma.getId());
     }
 
     @Override
-    public void setCronograma(Cronograma cronograma) {
+    public void setCronograma(com.espweb.chronos.presentation.model.Cronograma cronograma) {
         this.cronograma = cronograma;
     }
 
@@ -187,7 +187,7 @@ public class CronogramaActivity extends BaseActivity implements CronogramaPresen
     }
 
     @Override
-    public void showDisciplinas(List<Disciplina> disciplinas) {
+    public void showDisciplinas(List<com.espweb.chronos.presentation.model.Disciplina> disciplinas) {
         disciplinaAdapter.setDisciplinas(disciplinas);
     }
 
@@ -216,12 +216,12 @@ public class CronogramaActivity extends BaseActivity implements CronogramaPresen
 
     CronogramaDialog.CronogramaDialogListener cronogramaDialogListener = new CronogramaDialog.CronogramaDialogListener() {
         @Override
-        public void onCronogramaCreated(Cronograma cronograma) {
+        public void onCronogramaCreated(com.espweb.chronos.presentation.model.Cronograma cronograma) {
 
         }
 
         @Override
-        public void onCronogramaUpdated(Cronograma cronograma) {
+        public void onCronogramaUpdated(com.espweb.chronos.presentation.model.Cronograma cronograma) {
             setCronograma(cronograma);
             bindCronogramaToView();
         }
@@ -251,17 +251,17 @@ public class CronogramaActivity extends BaseActivity implements CronogramaPresen
         assuntoDialog.show(getSupportFragmentManager(), "ASSUNTO_DIALOG");
     }
 
-    YesNoDialog.YesNoDialogListener yesNoDialogListener = new YesNoDialog.YesNoDialogListener() {
+    YesNoDialog.YesNoDialogListener confirmDeleteCronograma = new YesNoDialog.YesNoDialogListener() {
         @Override
         public void yesClicked() {
-            cronogramaPresenter.deleteCronograma(cronogramaId);
+            cronogramaPresenter.deleteCronograma(cronograma.getId());
         }
     };
 
     private void showYesNoDialog() {
-        YesNoDialog yesNoDialog = YesNoDialog.newInstance();
-        yesNoDialog.setListener(yesNoDialogListener);
-        yesNoDialog.show(getSupportFragmentManager(), "YES_NO_DIALOG");
+        YesNoDialog confirmDelete = YesNoDialog.newInstance(getString(R.string.delete), getString(R.string.are_you_sure));
+        confirmDelete.setListener(confirmDeleteCronograma);
+        confirmDelete.show(getSupportFragmentManager(), "YES_NO_DIALOG");
     }
 
 
@@ -271,7 +271,7 @@ public class CronogramaActivity extends BaseActivity implements CronogramaPresen
     }
 
     private void showDisciplinaDialog(Disciplina disciplina) {
-        DisciplinaDialog disciplinaDialog = DisciplinaDialog.newInstance(cronogramaId, disciplina);
+        DisciplinaDialog disciplinaDialog = DisciplinaDialog.newInstance(disciplina);
         disciplinaDialog.setListener(disciplinaDialogListener);
         disciplinaDialog.show(getSupportFragmentManager(), "DISCIPLINA_DIALOG");
     }
@@ -290,7 +290,7 @@ public class CronogramaActivity extends BaseActivity implements CronogramaPresen
 
     @OnClick(R.id.fab_add_disciplina)
     void addDisciplina() {
-       showDisciplinaDialog(null);
+       showDisciplinaDialog(new Disciplina(cronograma.getId()));
     }
 
     @Override

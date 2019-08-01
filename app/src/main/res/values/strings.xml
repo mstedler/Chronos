@@ -37,4 +37,19 @@
     <string name="are_you_sure">Are you sure?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="hits">Hits</string>
+    <string name="quantity">Quantity</string>
+    <string name="date">Date</string>
+    <string name="invalid_date">Invalid date</string>
+    <string name="new_exercise">New Exercise</string>
+    <string name="new_material">New material</string>
+    <string name="time">Time</string>
+    <string name="new_review">New review</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="biweekly">Biweekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="material">Material</string>
+    <string name="review">Review</string>
+    <string name="add">Add</string>
 </resources>

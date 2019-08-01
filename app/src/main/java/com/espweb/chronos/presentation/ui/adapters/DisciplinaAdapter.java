@@ -9,8 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.espweb.chronos.R;
-import com.espweb.chronos.domain.model.Assunto;
-import com.espweb.chronos.domain.model.Disciplina;
+import com.espweb.chronos.presentation.model.Assunto;
+import com.espweb.chronos.presentation.model.Disciplina;
 import com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider;
 import com.espweb.chronos.presentation.ui.adapters.providers.base.GroupItemProvider;
 import com.espweb.chronos.presentation.ui.adapters.viewholders.AssuntoViewHolder;
@@ -33,13 +33,13 @@ public class DisciplinaAdapter extends AbstractExpandableItemAdapter<DisciplinaV
                             implements ExpandableSwipeableItemAdapter<DisciplinaViewHolder, AssuntoViewHolder> {
 
     public interface AssuntoListListener {
-        void onAssuntoClicked(com.espweb.chronos.domain.model.Assunto assunto);
+        void onAssuntoClicked(Assunto assunto);
     }
 
     public interface DisciplinaListListener {
-        void onEditDisciplinaClicked(com.espweb.chronos.domain.model.Disciplina disciplina);
-        void onDeleteDisciplinaClicked(long id);
-        void onCreateAssuntoClicked(com.espweb.chronos.domain.model.Disciplina disciplina);
+        void onEditDisciplinaClicked(Disciplina disciplina);
+        void onDeleteDisciplinaClicked(Disciplina disciplina);
+        void onCreateAssuntoClicked(Disciplina disciplina);
     }
 
     private DisciplinaProvider disciplinaProvider;
@@ -94,8 +94,8 @@ public class DisciplinaAdapter extends AbstractExpandableItemAdapter<DisciplinaV
                 }
 
                 @Override
-                public void deleteDisciplinaClicked(long disciplinaId, int position) {
-                    disciplinaListListener.onDeleteDisciplinaClicked(disciplinaId);
+                public void deleteDisciplinaClicked(Disciplina disciplina, int position) {
+                    disciplinaListListener.onDeleteDisciplinaClicked(disciplina);
                     lastActionPosition = position;
                 }
 
@@ -284,7 +284,7 @@ public class DisciplinaAdapter extends AbstractExpandableItemAdapter<DisciplinaV
         expandableItemManager.notifyGroupItemRemoved(groupPosition);
     }
 
-    public void addDisciplina(com.espweb.chronos.domain.model.Disciplina disciplina) {
+    public void addDisciplina(Disciplina disciplina) {
         int groupPosition = disciplinaProvider.getGroupCount();
         disciplinaProvider.addGroup(disciplina, groupPosition);
         expandableItemManager.notifyGroupItemInserted(groupPosition);
@@ -304,7 +304,7 @@ public class DisciplinaAdapter extends AbstractExpandableItemAdapter<DisciplinaV
         this.assuntoListListener = assuntoListListener;
     }
 
-    public void setDisciplinas(List<com.espweb.chronos.domain.model.Disciplina> disciplinas) {
+    public void setDisciplinas(List<Disciplina> disciplinas) {
         disciplinaProvider.setGroups(disciplinas);
         notifyDataSetChanged();
     }

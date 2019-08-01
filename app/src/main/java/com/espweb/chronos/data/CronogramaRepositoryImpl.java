@@ -5,12 +5,8 @@ import android.util.Log;
 
 import com.espweb.chronos.domain.model.Cronograma;
 import com.espweb.chronos.domain.repository.Repository;
-import com.espweb.chronos.network.RestClient;
 import com.espweb.chronos.network.WebService;
 import com.espweb.chronos.network.converters.RESTModelConverter;
-import com.espweb.chronos.network.model.Cronogramas;
-import com.espweb.chronos.network.services.CronogramaService;
-import com.espweb.chronos.storage.converters.DomainToStorageConverter;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
 import com.espweb.chronos.storage.database.ObjectBox;
 import com.espweb.chronos.storage.model.Assunto;
@@ -19,17 +15,13 @@ import com.espweb.chronos.storage.model.Disciplina;
 import com.espweb.chronos.storage.model.Exercicio;
 import com.espweb.chronos.storage.model.Material;
 import com.espweb.chronos.storage.model.Revisao;
-import com.espweb.chronos.storage.utils.ObjectBoxUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import io.objectbox.Box;
-import retrofit2.Response;
 
 public class CronogramaRepositoryImpl implements Repository<Cronograma> {
 
@@ -40,7 +32,7 @@ public class CronogramaRepositoryImpl implements Repository<Cronograma> {
         this.context = context;
     }
 
-    public static Box<com.espweb.chronos.storage.model.Cronograma> getBox() {
+    private Box<com.espweb.chronos.storage.model.Cronograma> getBox() {
         return ObjectBox.get().boxFor(com.espweb.chronos.storage.model.Cronograma.class);
     }
 
@@ -73,7 +65,7 @@ public class CronogramaRepositoryImpl implements Repository<Cronograma> {
         sCronograma.setDescricao(cronograma.getDescricao());
         sCronograma.setFim(cronograma.getFim());
         sCronograma.setInicio(cronograma.getInicio());
-        sCronograma.getUser().setTargetId(cronograma.getUserId());
+        sCronograma.getUser().setTargetId(cronograma.getIdUser());
         return getBox().put(sCronograma);
     }
 

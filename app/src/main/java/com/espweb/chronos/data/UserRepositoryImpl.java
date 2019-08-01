@@ -7,12 +7,10 @@ import com.espweb.chronos.domain.repository.Repository;
 import com.espweb.chronos.storage.converters.DomainToStorageConverter;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
 import com.espweb.chronos.storage.database.ObjectBox;
-import com.espweb.chronos.storage.model.User_;
 
 import java.util.List;
 
 import io.objectbox.Box;
-import io.objectbox.query.QueryBuilder;
 
 public class UserRepositoryImpl implements Repository<User> {
 

@@ -2,7 +2,12 @@
 <resources>
     <color name="colorPrimary">#33365d</color>
     <color name="colorPrimaryDark">#081033</color>
-    <color name="colorAccent">#4e4280</color>
+    <color name="colorAccent">#4d417f</color>
+    <color name="textColorPrimary">#442C2E</color>
+    <color name="colorError">#C5032B</color>
+    <color name="textInputOutlineColor">#4e4280</color>
+
+
     <color name="bg_delete">#db2828</color>
     <color name="bg_edit">#eaae00</color>
     <color name="bg_add">#21ba45</color>

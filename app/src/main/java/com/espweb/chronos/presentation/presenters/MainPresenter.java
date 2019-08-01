@@ -1,7 +1,7 @@
 package com.espweb.chronos.presentation.presenters;
 
-import com.espweb.chronos.domain.model.Cronograma;
-import com.espweb.chronos.domain.model.User;
+import com.espweb.chronos.presentation.model.Cronograma;
+import com.espweb.chronos.presentation.model.User;
 import com.espweb.chronos.presentation.presenters.base.BasePresenter;
 import com.espweb.chronos.presentation.ui.BaseView;
 

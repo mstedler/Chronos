@@ -2,10 +2,8 @@ package com.espweb.chronos.data;
 
 import android.content.Context;
 
-import com.espweb.chronos.domain.model.Artefato;
 import com.espweb.chronos.domain.model.Exercicio;
 import com.espweb.chronos.domain.repository.ArtefatoRepository;
-import com.espweb.chronos.domain.repository.Repository;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
 import com.espweb.chronos.storage.database.ObjectBox;
 import com.espweb.chronos.storage.model.Exercicio_;
@@ -27,7 +25,7 @@ public class ExercicioRepositoryImpl implements ArtefatoRepository<Exercicio> {
                         exercicio.getDescricao(),
                         exercicio.getQuantidade(),
                         exercicio.getAcertos(),
-                        exercicio.getAssuntoId());
+                        exercicio.getIdAssunto());
         return getBox().put(sExercicio);
     }
 

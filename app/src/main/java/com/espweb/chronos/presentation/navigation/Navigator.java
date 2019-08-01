@@ -3,6 +3,7 @@ package com.espweb.chronos.presentation.navigation;
 import android.content.Context;
 import android.content.Intent;
 
+import com.espweb.chronos.presentation.model.Assunto;
 import com.espweb.chronos.presentation.ui.activities.AssuntoActivity;
 import com.espweb.chronos.presentation.ui.activities.CronogramaActivity;
 import com.espweb.chronos.presentation.ui.activities.LoginActivity;
@@ -21,9 +22,9 @@ public class Navigator {
         }
     }
 
-    public void navigateToAssunto(Context context, long assuntoId) {
+    public void navigateToAssunto(Context context, Assunto assunto) {
         if(context != null) {
-            Intent intent = AssuntoActivity.getCallingIntent(context, assuntoId);
+            Intent intent = AssuntoActivity.getCallingIntent(context, assunto);
             context.startActivity(intent);
         }
     }

@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.espweb.chronos.R;
-import com.espweb.chronos.domain.model.Disciplina;
+import com.espweb.chronos.presentation.model.Disciplina;
 import com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemState;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemViewHolder;
@@ -26,7 +26,7 @@ public class DisciplinaViewHolder extends AbstractSwipeableItemViewHolder implem
     public interface DisciplinaViewHolderListener {
         void notifyGroupItemChanged(int position);
         void createAssuntoClicked(Disciplina disciplina, int adapterPosition);
-        void deleteDisciplinaClicked(long disciplinaId, int position);
+        void deleteDisciplinaClicked(Disciplina disciplina, int position);
         void editDisciplinaClicked(Disciplina disciplina, int position);
     }
 
@@ -74,7 +74,7 @@ public class DisciplinaViewHolder extends AbstractSwipeableItemViewHolder implem
 
 
     @OnClick(R.id.fl_container)
-    public void onContainerClick() {
+    void onContainerClick() {
         if(groupDisciplina.isPinned()) {
             groupDisciplina.setPinDirection(NOT_PINNED);
             disciplinaViewHolderListener.notifyGroupItemChanged(getAdapterPosition());
@@ -82,17 +82,17 @@ public class DisciplinaViewHolder extends AbstractSwipeableItemViewHolder implem
     }
 
     @OnClick(R.id.ll_add_assunto)
-    public void onAddAssuntoClick() {
+    void onAddAssuntoClick() {
         disciplinaViewHolderListener.createAssuntoClicked(disciplina, getAdapterPosition());
     }
 
     @OnClick(R.id.ll_delete_disciplina)
-    public void onDeleteDisciplinaClick() {
-        disciplinaViewHolderListener.deleteDisciplinaClicked(disciplina.getId(), getAdapterPosition());
+    void onDeleteDisciplinaClick() {
+        disciplinaViewHolderListener.deleteDisciplinaClicked(disciplina, getAdapterPosition());
     }
 
     @OnClick(R.id.ll_edit_disciplina)
-    public void onEditDisciplinaClick() {
+    void onEditDisciplinaClick() {
         disciplinaViewHolderListener.editDisciplinaClicked(disciplina, getAdapterPosition());
     }
 

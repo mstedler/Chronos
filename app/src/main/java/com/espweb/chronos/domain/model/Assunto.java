@@ -8,13 +8,13 @@ public class Assunto {
     private String descricao;
     private List<Artefato> artefatos;
 
-    private long disciplinaId;
+    private long idDisciplina;
 
     public Assunto() {
     }
 
-    public Assunto(long disciplinaId) {
-        this.disciplinaId = disciplinaId;
+    public Assunto(long idDisciplina) {
+        this.idDisciplina = idDisciplina;
     }
 
     public List<Artefato> getArtefatos() {
@@ -49,11 +49,11 @@ public class Assunto {
         this.descricao = descricao;
     }
 
-    public long getDisciplinaId() {
-        return disciplinaId;
+    public long getIdDisciplina() {
+        return idDisciplina;
     }
 
-    public void setDisciplinaId(long disciplinaId) {
-        this.disciplinaId = disciplinaId;
+    public void setIdDisciplina(long idDisciplina) {
+        this.idDisciplina = idDisciplina;
     }
 }

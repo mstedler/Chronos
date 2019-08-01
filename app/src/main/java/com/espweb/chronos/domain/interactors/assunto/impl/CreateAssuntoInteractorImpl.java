@@ -11,13 +11,11 @@ public class CreateAssuntoInteractorImpl extends AbstractInteractor implements C
 
     private Repository<Assunto> assuntoRepository;
     private Callback callback;
-    private long disciplinaId;
     private Assunto assunto;
 
     public CreateAssuntoInteractorImpl(Executor threadExecutor, MainThread mainThread,
                                        Callback callback,
                                        Repository<Assunto> assuntoRepository,
-                                       long disciplinaId,
                                        Assunto assunto) {
         super(threadExecutor, mainThread);
 
@@ -27,14 +25,12 @@ public class CreateAssuntoInteractorImpl extends AbstractInteractor implements C
 
         this.callback = callback;
         this.assuntoRepository = assuntoRepository;
-        this.disciplinaId = disciplinaId;
         this.assunto = assunto;
     }
 
     @Override
     public void run() {
         try {
-            assunto.setDisciplinaId(disciplinaId);
             long assuntoId = assuntoRepository.insert(assunto);
             assunto.setId(assuntoId);
             mainThread.post(() -> callback.onAssuntoCreated(assunto));

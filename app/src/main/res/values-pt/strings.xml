@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="cronograma_not_found">Cronograma não encontrado!</string>
-    <string name="disciplina_not_found">Disciplina não encontrado!</string>
+    <string name="disciplina_not_found">Disciplina não encontrada!</string>
     <string name="assunto_not_found">Assunto não encontrado!</string>
     <string name="exercise">Exercício</string>
     <string name="btn_delete_disciplina">Excluir disciplina.</string>
@@ -12,14 +12,14 @@
     <string name="save">Salvar</string>
     <string name="cannot_be_empty">Não pode ser vazio!</string>
     <string name="name">Nome</string>
-    <string name="new_subject">Nova Disciplina</string>
+    <string name="new_subject">Nova disciplina</string>
     <string name="cancel">Cancelar</string>
-    <string name="edit">Editar</string>
+    <string name="edit">Atualizar</string>
     <string name="edit_topic">Editar Assunto</string>
     <string name="initial_date">Data inicial</string>
     <string name="final_date">Data final</string>
-    <string name="title">Title</string>
-    <string name="new_cronograma">Novo Cronograma</string>
+    <string name="title">Nome</string>
+    <string name="new_cronograma">Novo cronograma</string>
     <string name="welcome">Seja bem-vindo!</string>
     <string name="enter_account">Faça login para continuar</string>
     <string name="create_free_account">Criar conta grátis</string>
@@ -33,5 +33,20 @@
     <string name="user_not_found">Usuário não encontrado</string>
     <string name="are_you_sure">Tem certeza?</string>
     <string name="yes">Sim</string>
-    <string name="no">Nãi</string>
+    <string name="no">Não</string>
+    <string name="hits">Acertos</string>
+    <string name="quantity">Quantidade</string>
+    <string name="date">Data</string>
+    <string name="invalid_date">Data inválida</string>
+    <string name="new_exercise">Novo exercício</string>
+    <string name="new_material">Novo material</string>
+    <string name="time">Tempo</string>
+    <string name="new_review">Nova revisão</string>
+    <string name="daily">Diária</string>
+    <string name="weekly">Semanal</string>
+    <string name="biweekly">Quinzenal</string>
+    <string name="monthly">Mensal</string>
+    <string name="material">Material</string>
+    <string name="review">Revisão</string>
+    <string name="add">Adicionar</string>
 </resources>

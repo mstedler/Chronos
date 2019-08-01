@@ -1,7 +1,5 @@
 package com.espweb.chronos.domain.model;
 
-import java.util.Date;
-
 public class Revisao extends Artefato {
     public enum Escopo {
         DIARIA(0),

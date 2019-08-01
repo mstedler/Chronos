@@ -15,8 +15,9 @@
         android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".presentation.ui.activities.SplashActivity">
+        android:theme="@style/Theme.Chronos">
+        <activity android:name=".presentation.ui.activities.SplashActivity"
+            android:theme="@style/Theme.Chronos.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

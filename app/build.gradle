@@ -44,10 +44,15 @@ dependencies {
     //view
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha06'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta01'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:1.0.0'
     implementation 'me.zhanghai.android.materialprogressbar:library:1.6.1'
+    implementation 'com.github.clans:fab:1.6.4'
+
+    //view-parcelable
+    implementation 'org.parceler:parceler-api:1.1.12'
+    annotationProcessor 'org.parceler:parceler:1.1.12'
 
     //time
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'

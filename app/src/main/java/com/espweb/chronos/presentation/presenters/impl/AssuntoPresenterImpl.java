@@ -7,6 +7,7 @@ import com.espweb.chronos.domain.interactors.artefato.impl.GetAllArtefatosIntera
 import com.espweb.chronos.domain.model.Artefato;
 import com.espweb.chronos.domain.repository.ArtefatoRepository;
 import com.espweb.chronos.domain.repository.Repository;
+import com.espweb.chronos.presentation.converters.DomainToPresentationConverter;
 import com.espweb.chronos.presentation.presenters.base.AbstractPresenter;
 import com.espweb.chronos.presentation.presenters.AssuntoPresenter;
 
@@ -54,7 +55,8 @@ public class AssuntoPresenterImpl extends AbstractPresenter implements AssuntoPr
 
     @Override
     public void onArtefatosRetrieved(List<Artefato> artefatos) {
-        view.showArtefatos(artefatos);
+        List<com.espweb.chronos.presentation.model.Artefato> pArtefatos = DomainToPresentationConverter.convertArtefatos(artefatos);
+        view.showArtefatos(pArtefatos);
     }
 
     @Override

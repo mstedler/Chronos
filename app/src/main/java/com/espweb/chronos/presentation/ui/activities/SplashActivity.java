@@ -13,12 +13,12 @@ import com.espweb.chronos.threading.MainThreadImpl;
 
 public class SplashActivity extends BaseActivity implements SplashPresenter.View {
 
-    private static int SPLASH_TIME_OUT = 2000;
+    private static int SPLASH_TIME_OUT = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        //setContentView(R.layout.activity_splash);
 
         SessaoRepository sessaoRepository = new SessaoRepositoryImpl(this);
         SplashPresenter splashPresenter = new SplashPresenterImpl(ThreadExecutor.getInstance(), MainThreadImpl.getInstance(), this, sessaoRepository);

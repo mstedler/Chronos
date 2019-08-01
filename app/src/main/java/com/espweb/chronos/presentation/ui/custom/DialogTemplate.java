@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 public class DialogTemplate extends ConstraintLayout {
 
     //@BindView(R.id.ll_content)
-    private LinearLayout llContent;
+    protected LinearLayout llContent;
 
     public DialogTemplate(Context context) {
         super(context);

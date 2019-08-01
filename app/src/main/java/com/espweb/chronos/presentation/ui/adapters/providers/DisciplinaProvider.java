@@ -1,8 +1,8 @@
 package com.espweb.chronos.presentation.ui.adapters.providers;
 import androidx.core.util.Pair;
 
-import com.espweb.chronos.domain.model.Assunto;
-import com.espweb.chronos.domain.model.Disciplina;
+import com.espweb.chronos.presentation.model.Assunto;
+import com.espweb.chronos.presentation.model.Disciplina;
 import com.espweb.chronos.presentation.ui.adapters.providers.base.GroupItemProvider;
 
 import java.util.ArrayList;
@@ -32,13 +32,13 @@ public class DisciplinaProvider extends GroupItemProvider<Disciplina, Assunto> {
     }
 
     @Override
-    public void setGroups(List<Disciplina> groups) {
+    public void setGroups(List<Disciplina> disciplinas) {
         data.clear();
-        for (Disciplina disciplina: groups) {
+        for (Disciplina disciplina: disciplinas) {
             GroupDisciplina groupDisciplina = new GroupDisciplina(disciplina);
             final List<ItemAssunto> assuntos = new ArrayList<>();
 
-            for (com.espweb.chronos.domain.model.Assunto assunto: disciplina.getAssuntos()) {
+            for (Assunto assunto: disciplina.getAssuntos()) {
                 assuntos.add(new ItemAssunto(assunto));
             }
             data.add(new Pair<>(groupDisciplina, assuntos));
@@ -46,21 +46,21 @@ public class DisciplinaProvider extends GroupItemProvider<Disciplina, Assunto> {
     }
 
     @Override
-    public void updateGroup(com.espweb.chronos.domain.model.Disciplina disciplina, int position) {
+    public void updateGroup(Disciplina disciplina, int position) {
         GroupDisciplina groupDisciplina = data.get(position).first;
-        com.espweb.chronos.domain.model.Disciplina disciplina1 = groupDisciplina.get();
+        Disciplina disciplina1 = groupDisciplina.get();
         disciplina1.setNome(disciplina.getNome());
         groupDisciplina.setPinDirection(NOT_PINNED);
     }
 
     @Override
-    public void addGroup(com.espweb.chronos.domain.model.Disciplina group, int position) {
-        data.add(position, new Pair<>(new GroupDisciplina(group), new ArrayList<>()));
+    public void addGroup(Disciplina disciplina, int position) {
+        data.add(position, new Pair<>(new GroupDisciplina(disciplina), new ArrayList<>()));
     }
 
     @Override
-    public void addItem(com.espweb.chronos.domain.model.Assunto child, int groupPosition, int childPosition) {
-        data.get(groupPosition).second.add(childPosition, new ItemAssunto(child));
+    public void addItem(Assunto assunto, int groupPosition, int childPosition) {
+        data.get(groupPosition).second.add(childPosition, new ItemAssunto(assunto));
     }
 
     @Override
@@ -79,10 +79,10 @@ public class DisciplinaProvider extends GroupItemProvider<Disciplina, Assunto> {
     }
 
     public class GroupDisciplina extends Group<Disciplina> {
-        private com.espweb.chronos.domain.model.Disciplina disciplina;
+        private Disciplina disciplina;
         private int pinDirection;
 
-        public GroupDisciplina(com.espweb.chronos.domain.model.Disciplina disciplina){
+        GroupDisciplina(Disciplina disciplina){
             this.disciplina = disciplina;
         }
 
@@ -113,14 +113,14 @@ public class DisciplinaProvider extends GroupItemProvider<Disciplina, Assunto> {
     }
 
     public class ItemAssunto extends Item<Assunto> {
-        private com.espweb.chronos.domain.model.Assunto assunto;
+        private Assunto assunto;
 
-        public ItemAssunto(com.espweb.chronos.domain.model.Assunto assunto) {
+        ItemAssunto(Assunto assunto) {
             this.assunto = assunto;
         }
 
         @Override
-        public com.espweb.chronos.domain.model.Assunto get() {
+        public Assunto get() {
             return assunto;
         }
 

@@ -1,6 +1,5 @@
 package com.espweb.chronos.presentation.ui.dialogs;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,23 +13,20 @@ import androidx.fragment.app.DialogFragment;
 import com.espweb.chronos.R;
 import com.espweb.chronos.data.DisciplinaRepositoryImpl;
 import com.espweb.chronos.domain.executor.impl.ThreadExecutor;
-import com.espweb.chronos.domain.model.Disciplina;
+import com.espweb.chronos.presentation.model.Disciplina;
 import com.espweb.chronos.presentation.presenters.DisciplinaDialogPresenter;
 import com.espweb.chronos.presentation.presenters.impl.DisciplinaDialogPresenterImpl;
 import com.espweb.chronos.presentation.utils.ViewUtils;
 import com.espweb.chronos.threading.MainThreadImpl;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.parceler.Parcels;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class DisciplinaDialog extends DialogFragment implements DisciplinaDialogPresenter.View {
-
-    private long cronogramaId;
-
-    private Disciplina disciplina;
-    private DisciplinaDialogPresenter disciplinaDialogPresenter;
 
     public interface DisciplinaDialogListener {
         void onDisciplinaCreated(Disciplina disciplina);
@@ -46,33 +42,23 @@ public class DisciplinaDialog extends DialogFragment implements DisciplinaDialog
     @BindView(R.id.tv_title)
     TextView tvTitle;
 
+    private long cronogramaId;
+
+    private Disciplina disciplina;
+    private DisciplinaDialogPresenter disciplinaDialogPresenter;
+
     private DisciplinaDialogListener disciplinaDialogListener;
 
     public DisciplinaDialog() {
 
     }
 
-    public static DisciplinaDialog newInstance(long cronogramaId, Disciplina disciplina) {
+    public static DisciplinaDialog newInstance(Disciplina disciplina) {
         DisciplinaDialog disciplinaDialog = new DisciplinaDialog();
-        Bundle args = createBundleWith(cronogramaId, disciplina);
-        disciplinaDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.TitledDialog);
+        Bundle args = new Bundle();
+        args.putParcelable("disciplina", Parcels.wrap(disciplina));
         disciplinaDialog.setArguments(args);
         return disciplinaDialog;
-    }
-
-    public static DisciplinaDialog newInstance(long cronogramaId) {
-       return newInstance(cronogramaId, null);
-    }
-
-    private static Bundle createBundleWith(long cronogramaId, Disciplina disciplina) {
-        Bundle args = new Bundle();
-        args.putLong("idCronograma", cronogramaId);
-        if (disciplina != null) {
-            args.putLong("idDisciplina", disciplina.getId());
-            args.putString("nomeDisciplina", disciplina.getNome());
-            args.putString("descricaoDisciplina", disciplina.getDescricao());
-        }
-        return args;
     }
 
     @Nullable
@@ -104,15 +90,8 @@ public class DisciplinaDialog extends DialogFragment implements DisciplinaDialog
     }
 
     private void buildFromArguments() {
-        cronogramaId = getArguments().getLong("idCronograma", -1);
-        long id = getArguments().getLong("idDisciplina", -1);
-        String nome = getArguments().getString("nomeDisciplina", "");
-        String descricao = getArguments().getString("descricaoDisciplina", "");
-
-        disciplina = new Disciplina();
-        disciplina.setId(id);
-        disciplina.setNome(nome);
-        disciplina.setDescricao(descricao);
+        if(getArguments() != null)
+            disciplina = Parcels.unwrap(getArguments().getParcelable("disciplina"));
     }
 
     private void fillForm() {
@@ -121,7 +100,7 @@ public class DisciplinaDialog extends DialogFragment implements DisciplinaDialog
     }
 
     private void setTitle() {
-        int title = disciplina.getId() == -1 ? R.string.new_subject : R.string.edit;
+        int title = disciplina.isNew() ? R.string.new_subject : R.string.edit;
         tvTitle.setText(title);
     }
 
@@ -134,7 +113,7 @@ public class DisciplinaDialog extends DialogFragment implements DisciplinaDialog
     @OnClick(R.id.btn_save)
     void onSaveClick() {
         buildDisciplina();
-        if(disciplina.getId() == -1) {
+        if(disciplina.isNew()) {
             createDisciplina();
         } else {
             updateDisciplina();
@@ -146,7 +125,7 @@ public class DisciplinaDialog extends DialogFragment implements DisciplinaDialog
     }
 
     private void createDisciplina() {
-        disciplinaDialogPresenter.createDisciplina(cronogramaId, disciplina);
+        disciplinaDialogPresenter.createDisciplina(disciplina);
     }
 
     private void buildDisciplina() {

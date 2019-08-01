@@ -7,8 +7,6 @@ import io.objectbox.relation.ToOne;
 
 @Entity
 public class Material extends Artefato{
-
-    private String descricao;
     private int minutos;
 
     private ToOne<Assunto> assunto;
@@ -31,14 +29,6 @@ public class Material extends Artefato{
     }
 
     public Material() {
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
     }
 
     public int getMinutos() {

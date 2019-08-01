@@ -1,7 +1,8 @@
 package com.espweb.chronos.presentation.ui.dialogs;
 
-import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +15,15 @@ import androidx.fragment.app.DialogFragment;
 import com.espweb.chronos.R;
 import com.espweb.chronos.data.AssuntoRepositoryImpl;
 import com.espweb.chronos.domain.executor.impl.ThreadExecutor;
-import com.espweb.chronos.domain.model.Assunto;
-import com.espweb.chronos.domain.model.Disciplina;
+import com.espweb.chronos.presentation.model.Assunto;
+import com.espweb.chronos.presentation.model.Disciplina;
 import com.espweb.chronos.presentation.presenters.AssuntoDialogPresenter;
 import com.espweb.chronos.presentation.presenters.impl.AssuntoDialogPresenterImpl;
 import com.espweb.chronos.presentation.utils.ViewUtils;
 import com.espweb.chronos.threading.MainThreadImpl;
 import com.google.android.material.textfield.TextInputLayout;
+
+import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,30 +54,14 @@ public class AssuntoDialog extends DialogFragment implements AssuntoDialogPresen
 
     }
 
-    private static Bundle createBundleWith(Disciplina disciplina, Assunto assunto) {
-        Bundle args = new Bundle();
-        args.putLong("idDisciplina", disciplina.getId());
-        args.putString("nomeDisciplina", disciplina.getNome());
-
-        if(assunto != null) {
-            args.putLong("idAssunto", assunto.getId());
-            args.putString("descricaoAssunto", assunto.getDescricao());
-        }
-        return args;
-    }
-
     public static AssuntoDialog newInstance(Disciplina disciplina, Assunto assunto) {
         AssuntoDialog assuntoDialog = new AssuntoDialog();
-        Bundle args = createBundleWith(disciplina, assunto);
-        assuntoDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.TitledDialog);
+        Bundle args = new Bundle();
+        args.putParcelable("disciplina", Parcels.wrap(disciplina));
+        args.putParcelable("assunto", Parcels.wrap(assunto));
         assuntoDialog.setArguments(args);
         return assuntoDialog;
     }
-
-    public static AssuntoDialog newInstance(Disciplina disciplina) {
-        return newInstance(disciplina, null);
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,24 +91,16 @@ public class AssuntoDialog extends DialogFragment implements AssuntoDialogPresen
     }
 
     private void setTitle() {
-        int title = assunto.getId() == -1 ? R.string.new_topic : R.string.edit_topic;
+        int title = assunto.isNew() ? R.string.new_topic : R.string.edit_topic;
         tvTitle.setText(getString(title));
     }
 
     private void initFromBundle() {
-        long idDisciplina = getArguments().getLong("idDisciplina", -1);
-        String nomeDisciplina = getArguments().getString("nomeDisciplina", "");
-
-        long idAssunto = getArguments().getLong("idAssunto", -1);
-        String descricaoAssunto = getArguments().getString("descricaoAssunto", "");
-
-        disciplina = new Disciplina();
-        disciplina.setId(idDisciplina);
-        disciplina.setNome(nomeDisciplina);
-
-        assunto = new Assunto();
-        assunto.setId(idAssunto);
-        assunto.setDescricao(descricaoAssunto);
+        Bundle arguments = getArguments();
+        if(arguments != null) {
+            disciplina = Parcels.unwrap(arguments.getParcelable("disciplina"));
+            assunto = Parcels.unwrap(arguments.getParcelable("assunto"));
+        }
     }
 
     private void buildForm() {
@@ -137,7 +116,7 @@ public class AssuntoDialog extends DialogFragment implements AssuntoDialogPresen
     @OnClick(R.id.btn_save)
     public void onSaveClick() {
         buildAssunto();
-        if(assunto.getId() == -1) {
+        if(assunto.isNew()) {
             createAssunto();
         } else {
             updateAssunto();
@@ -149,7 +128,7 @@ public class AssuntoDialog extends DialogFragment implements AssuntoDialogPresen
     }
 
     private void createAssunto() {
-        presenter.createAssunto(disciplina.getId(), assunto);
+        presenter.createAssunto(assunto);
     }
 
     private void buildAssunto() {

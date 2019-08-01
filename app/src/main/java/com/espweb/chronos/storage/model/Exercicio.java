@@ -8,7 +8,6 @@ import io.objectbox.relation.ToOne;
 
 @Entity
 public class Exercicio extends Artefato{
-    private String descricao;
     private int quantidade;
     private int acertos;
 
@@ -34,14 +33,6 @@ public class Exercicio extends Artefato{
     }
 
     public Exercicio() {
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
     }
 
     public int getQuantidade() {

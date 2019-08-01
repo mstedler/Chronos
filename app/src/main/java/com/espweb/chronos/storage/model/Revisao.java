@@ -11,18 +11,20 @@ public class Revisao extends Artefato{
     private int escopo;
     private ToOne<Assunto> assunto;
 
-    public Revisao(long id, String uuid, Date data, int escopo, long assuntoId) {
+    public Revisao(long id, String uuid, Date data, int escopo, String descricao, long assuntoId) {
         this.id = id;
         this.uuid = uuid;
         this.data = data;
         this.escopo = escopo;
+        this.descricao = descricao;
         this.assunto.setTargetId(assuntoId);
     }
 
-    public Revisao(String uuid, Date data, int escopo, long assuntoId) {
+    public Revisao(String uuid, Date data, int escopo, String descricao, long assuntoId) {
         this.uuid = uuid;
         this.data = data;
         this.escopo = escopo;
+        this.descricao = descricao;
         this.assunto.setTargetId(assuntoId);
     }
 

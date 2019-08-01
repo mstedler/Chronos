@@ -16,6 +16,8 @@ public class Artefato {
 
     Date data;
 
+    String descricao;
+
     Artefato() {
 
     }
@@ -47,5 +49,13 @@ public class Artefato {
 
     public void setData(Date data) {
         this.data = data;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }

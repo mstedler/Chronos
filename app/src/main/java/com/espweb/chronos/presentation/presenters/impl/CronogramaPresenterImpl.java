@@ -2,26 +2,18 @@ package com.espweb.chronos.presentation.presenters.impl;
 
 import com.espweb.chronos.domain.executor.Executor;
 import com.espweb.chronos.domain.executor.MainThread;
-import com.espweb.chronos.domain.interactors.assunto.CreateAssuntoInteractor;
-import com.espweb.chronos.domain.interactors.assunto.impl.CreateAssuntoInteractorImpl;
 import com.espweb.chronos.domain.interactors.cronograma.DeleteCronogramaInteractor;
 import com.espweb.chronos.domain.interactors.cronograma.GetCronogramaInteractor;
-import com.espweb.chronos.domain.interactors.cronograma.UpdateCronogramaInteractor;
 import com.espweb.chronos.domain.interactors.cronograma.impl.DeleteCronogramaInteractorImpl;
 import com.espweb.chronos.domain.interactors.cronograma.impl.GetCronogramaInteractorImpl;
-import com.espweb.chronos.domain.interactors.cronograma.impl.UpdateCronogramaInteractorImpl;
-import com.espweb.chronos.domain.interactors.disciplina.CreateDisciplinaInteractor;
 import com.espweb.chronos.domain.interactors.disciplina.DeleteDisciplinaInteractor;
 import com.espweb.chronos.domain.interactors.disciplina.GetAllDisciplinasInteractor;
-import com.espweb.chronos.domain.interactors.disciplina.UpdateDisciplinaInteractor;
-import com.espweb.chronos.domain.interactors.disciplina.impl.CreateDisciplinaInteractorImpl;
 import com.espweb.chronos.domain.interactors.disciplina.impl.DeleteDisciplinaInteractorImpl;
 import com.espweb.chronos.domain.interactors.disciplina.impl.GetAllDisciplinasInteractorImpl;
-import com.espweb.chronos.domain.interactors.disciplina.impl.UpdateDisciplinaInteractorImpl;
-import com.espweb.chronos.domain.model.Assunto;
-import com.espweb.chronos.domain.model.Cronograma;
-import com.espweb.chronos.domain.model.Disciplina;
 import com.espweb.chronos.domain.repository.Repository;
+import com.espweb.chronos.presentation.converters.DomainToPresentationConverter;
+import com.espweb.chronos.presentation.model.Cronograma;
+import com.espweb.chronos.presentation.model.Disciplina;
 import com.espweb.chronos.presentation.presenters.CronogramaPresenter;
 import com.espweb.chronos.presentation.presenters.base.AbstractPresenter;
 
@@ -33,21 +25,18 @@ public class CronogramaPresenterImpl extends AbstractPresenter implements Cronog
         DeleteDisciplinaInteractor.Callback, DeleteCronogramaInteractor.Callback {
 
     private View view;
-    private Repository<Disciplina> disciplinaRepository;
-    private Repository<Cronograma> cronogramaRepository;
-    private Repository<Assunto> assuntoRepository;
+    private Repository<com.espweb.chronos.domain.model.Disciplina> disciplinaRepository;
+    private Repository<com.espweb.chronos.domain.model.Cronograma> cronogramaRepository;
 
     public CronogramaPresenterImpl(Executor executor,
                                    MainThread mainThread,
                                    View view,
-                                   Repository<Cronograma> cronogramaRepository,
-                                   Repository<Disciplina> disciplinaRepository,
-                                   Repository<Assunto> assuntoRepository) {
+                                   Repository<com.espweb.chronos.domain.model.Cronograma> cronogramaRepository,
+                                   Repository<com.espweb.chronos.domain.model.Disciplina> disciplinaRepository) {
         super(executor, mainThread);
         this.view = view;
         this.disciplinaRepository = disciplinaRepository;
         this.cronogramaRepository = cronogramaRepository;
-        this.assuntoRepository = assuntoRepository;
     }
 
     @Override
@@ -117,8 +106,9 @@ public class CronogramaPresenterImpl extends AbstractPresenter implements Cronog
     }
 
     @Override
-    public void onDisciplinasRetrieved(List<Disciplina> disciplinas) {
-        view.showDisciplinas(disciplinas);
+    public void onDisciplinasRetrieved(List<com.espweb.chronos.domain.model.Disciplina> disciplinas) {
+        List<Disciplina> pDisciplinas = DomainToPresentationConverter.convertDisciplinas(disciplinas);
+        view.showDisciplinas(pDisciplinas);
     }
 
     @Override
@@ -137,8 +127,9 @@ public class CronogramaPresenterImpl extends AbstractPresenter implements Cronog
     }
 
     @Override
-    public void onCronogramaRetrieved(Cronograma cronograma) {
-        view.setCronograma(cronograma);
+    public void onCronogramaRetrieved(com.espweb.chronos.domain.model.Cronograma cronograma) {
+        Cronograma pCronograma = DomainToPresentationConverter.convert(cronograma);
+        view.setCronograma(pCronograma);
         view.bindCronogramaToView();
     }
 }

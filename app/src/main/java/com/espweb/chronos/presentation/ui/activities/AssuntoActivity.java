@@ -11,60 +11,105 @@ import android.widget.Toast;
 
 import com.espweb.chronos.R;
 import com.espweb.chronos.domain.executor.impl.ThreadExecutor;
-import com.espweb.chronos.domain.model.Artefato;
 import com.espweb.chronos.domain.repository.ArtefatoRepository;
-import com.espweb.chronos.domain.repository.Repository;
+import com.espweb.chronos.presentation.model.Artefato;
+import com.espweb.chronos.presentation.model.Assunto;
+import com.espweb.chronos.presentation.model.Exercicio;
+import com.espweb.chronos.presentation.model.Material;
+import com.espweb.chronos.presentation.model.Revisao;
 import com.espweb.chronos.presentation.presenters.AssuntoPresenter;
 import com.espweb.chronos.presentation.presenters.impl.AssuntoPresenterImpl;
 import com.espweb.chronos.presentation.ui.adapters.ArtefatoAdapter;
 import com.espweb.chronos.data.ArtefatoRepositoryImpl;
+import com.espweb.chronos.presentation.ui.dialogs.ExercicioDialog;
+import com.espweb.chronos.presentation.ui.dialogs.MaterialDialog;
+import com.espweb.chronos.presentation.ui.dialogs.RevisaoDialog;
+import com.espweb.chronos.presentation.ui.dialogs.base.ArtefatoDialog;
 import com.espweb.chronos.threading.MainThreadImpl;
+import com.github.clans.fab.FloatingActionMenu;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class AssuntoActivity extends BaseActivity implements AssuntoPresenter.View, ArtefatoAdapter.ArtefatoListListener {
+public class AssuntoActivity extends BaseActivity implements
+        AssuntoPresenter.View,
+        ArtefatoAdapter.ArtefatoListListener,
+        ArtefatoDialog.ArtefatoDialogListener {
 
-    private static final String INTENT_EXTRA_PARAM_ASSUNTO_ID = "com.espweb.INTENT_PARAM_ASSUNTO_ID";
+    private static final String INTENT_EXTRA_PARAM_ASSUNTO = "com.espweb.INTENT_PARAM_ASSUNTO";
 
-    private long assuntoId;
+    public static Intent getCallingIntent(Context context, Assunto assunto) {
+        Intent callingIntent = new Intent(context, AssuntoActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("assunto", Parcels.wrap(assunto));
+        callingIntent.putExtra(INTENT_EXTRA_PARAM_ASSUNTO, bundle);
+        return callingIntent;
+    }
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
     @BindView(R.id.rv_artefatos)
     RecyclerView rvArtefatos;
 
+    @BindView(R.id.fa_menu)
+    FloatingActionMenu faMenu;
+
+    private AssuntoPresenter assuntoPresenter;
     private ArtefatoAdapter artefatoAdapter;
+
+    private Assunto assunto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assunto);
         ButterKnife.bind(this);
-        assuntoId = getIntent().getLongExtra(INTENT_EXTRA_PARAM_ASSUNTO_ID, -1);
+        Bundle bundle = getIntent().getBundleExtra(INTENT_EXTRA_PARAM_ASSUNTO);
+        assunto = Parcels.unwrap(bundle.getParcelable("assunto"));
 
-        if(assuntoId == -1) {
+        if(assunto == null) {
             Toast.makeText(this, R.string.assunto_not_found, Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
+        init();
 
-        ArtefatoRepository artefatoRepository = new ArtefatoRepositoryImpl(this);
-        AssuntoPresenter assuntoPresenter = new AssuntoPresenterImpl(ThreadExecutor.getInstance(),
-                MainThreadImpl.getInstance(), this, artefatoRepository);
+        assuntoPresenter.getAllArtefatos(assunto.getId());
+    }
 
+    private void init() {
+        initToolbar();
+        initPresenter();
+        initAdapter();
+        initRecyclerView();
+    }
 
-        artefatoAdapter = new ArtefatoAdapter(this);
-
-        setUpRecyclerView();
-
-        assuntoPresenter.getAllArtefatos(assuntoId);
+    private void initToolbar() {
+        toolbar.setTitle(assunto.getDescricao());
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
     }
 
-    private void setUpRecyclerView() {
+    private void initPresenter() {
+        ArtefatoRepository artefatoRepository = new ArtefatoRepositoryImpl(this);
+        assuntoPresenter = new AssuntoPresenterImpl(ThreadExecutor.getInstance(),
+                MainThreadImpl.getInstance(), this, artefatoRepository);
+    }
+
+    private void initAdapter() {
+        artefatoAdapter = new ArtefatoAdapter(this);
+    }
+
+    private void initRecyclerView() {
         artefatoAdapter.setArtefatoListListener(this);
         rvArtefatos.setLayoutManager(new LinearLayoutManager(this));
         rvArtefatos.setAdapter(artefatoAdapter);
@@ -95,9 +140,32 @@ public class AssuntoActivity extends BaseActivity implements AssuntoPresenter.Vi
 
     }
 
-    public static Intent getCallingIntent(Context context, long assuntoId) {
-        Intent callingIntent = new Intent(context, AssuntoActivity.class);
-        callingIntent.putExtra(INTENT_EXTRA_PARAM_ASSUNTO_ID, assuntoId);
-        return callingIntent;
+    @Override
+    public void onArtefatoCreated(Artefato artefato) {
+        faMenu.close(false);
+        artefatoAdapter.addArtefato(artefato);
+    }
+
+    @Override
+    public void onArtefatoUpdated(Artefato artefato) {
+        artefatoAdapter.updateArtefato(artefato);
+    }
+
+    @OnClick(R.id.fab_add_material)
+    void onAddMaterialClick() {
+        MaterialDialog materialDialog = MaterialDialog.newInstance(new Material(assunto.getId()));
+        materialDialog.show(getSupportFragmentManager(), "MATERIAL_DIALOG");
+    }
+
+    @OnClick(R.id.fab_add_exercicio)
+    void onAddExercicioClick() {
+        ExercicioDialog exercicioDialog = ExercicioDialog.newInstance(new Exercicio(assunto.getId()));
+        exercicioDialog.show(getSupportFragmentManager(), "EXERCICIO_DIALOG");
+    }
+
+    @OnClick(R.id.fab_add_revisao)
+    void onAddRevisaoClick() {
+        RevisaoDialog revisaoDialog = RevisaoDialog.newInstance(new Revisao(assunto.getId()));
+        revisaoDialog.show(getSupportFragmentManager(), "REVISAO_DIALOG");
     }
 }

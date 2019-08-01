@@ -2,9 +2,12 @@ package com.espweb.chronos.presentation.ui.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,7 +15,19 @@ import androidx.fragment.app.DialogFragment;
 
 import com.espweb.chronos.R;
 
-public class YesNoDialog extends DialogFragment implements Dialog.OnClickListener {
+import org.w3c.dom.Text;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class YesNoDialog extends DialogFragment {
+
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+
+    @BindView(R.id.tv_message)
+    TextView tvMessage;
 
     public interface YesNoDialogListener {
         void yesClicked();
@@ -23,31 +38,41 @@ public class YesNoDialog extends DialogFragment implements Dialog.OnClickListene
     private YesNoDialog() {
     }
 
-    public static YesNoDialog newInstance() {
+    public static YesNoDialog newInstance(String title, String message) {
         YesNoDialog yesNoDialog = new YesNoDialog();
         Bundle args = new Bundle();
+        args.putString("title", title);
+        args.putString("message", message);
         yesNoDialog.setArguments(args);
         return yesNoDialog;
     }
 
 
-
-    @NonNull
+    @Nullable
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder alertDialogBuiler = new AlertDialog.Builder(getContext());
-        alertDialogBuiler.setTitle(R.string.are_you_sure);
-        alertDialogBuiler.setPositiveButton(R.string.yes, this);
-        alertDialogBuiler.setNegativeButton(R.string.no, this);
-        return alertDialogBuiler.create();
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.dialog_yes_no, container);
+        ButterKnife.bind(this, view);
+
+        String title = getArguments().getString("title", "");
+        String message = getArguments().getString("message", "");
+
+        tvTitle.setText(title);
+        tvMessage.setText(message);
+
+        return view;
     }
 
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-       if(which == Dialog.BUTTON_POSITIVE) {
-           yesNoDialogListener.yesClicked();
-       }
-       dismiss();
+
+    @OnClick(R.id.btn_yes)
+    void onYesClick() {
+        dismiss();
+        yesNoDialogListener.yesClicked();
+    }
+
+    @OnClick(R.id.btn_no)
+    void onNoClick() {
+        dismiss();
     }
 
     public void setListener(YesNoDialogListener yesNoDialogListener) {

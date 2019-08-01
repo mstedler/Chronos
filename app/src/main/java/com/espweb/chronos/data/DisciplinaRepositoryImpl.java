@@ -24,7 +24,7 @@ public class DisciplinaRepositoryImpl implements Repository<Disciplina> {
                         UUID.randomUUID().toString(),
                         disciplina.getNome(),
                         disciplina.getDescricao(),
-                        disciplina.getCronogramaId());
+                        disciplina.getIdCronograma());
         return getBox().put(sDisciplina);
     }
 

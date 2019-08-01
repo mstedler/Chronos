@@ -97,7 +97,7 @@ public class RESTModelConverter {
         for (com.espweb.chronos.network.model.Material material : materiais) {
             Material sMaterial = new Material();
             sMaterial.setDescricao(material.getDescricao());
-            sMaterial.setMinutos(material.getMinutos());
+            sMaterial.setMinutos(material.getTime());
             sMaterial.setUuid(material.getUuid());
             sMaterial.setData(material.getData());
             sAssunto.getMateriais().add(sMaterial);

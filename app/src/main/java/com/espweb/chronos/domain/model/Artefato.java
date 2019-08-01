@@ -6,14 +6,15 @@ public abstract class Artefato {
     private long id;
     private String uuid;
     private Date data;
+    private String descricao;
 
-    private long assuntoId;
+    private long idAssunto;
 
     public Artefato() {
     }
 
-    public Artefato(long assuntoId) {
-        this.assuntoId = assuntoId;
+    public Artefato(long idAssunto) {
+        this.idAssunto = idAssunto;
     }
 
     public long getId() {
@@ -40,11 +41,19 @@ public abstract class Artefato {
         this.data = data;
     }
 
-    public long getAssuntoId() {
-        return assuntoId;
+    public long getIdAssunto() {
+        return idAssunto;
     }
 
-    public void setAssuntoId(long assuntoId) {
-        this.assuntoId = assuntoId;
+    public void setIdAssunto(long idAssunto) {
+        this.idAssunto = idAssunto;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }

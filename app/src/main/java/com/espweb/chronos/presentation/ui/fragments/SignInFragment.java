@@ -135,7 +135,6 @@ public class SignInFragment extends Fragment implements SignInPresenter.View {
 
     @Override
     public void showWelcomeMessage(User user) {
-        Toast.makeText(getContext(), getString(R.string.welcome) + " " + user.getName(), Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.btn_show_signUp)

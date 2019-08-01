@@ -1,5 +1,6 @@
 package com.espweb.chronos.domain.model;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Disciplina {
@@ -8,9 +9,9 @@ public class Disciplina {
     private String uuid;
     private String nome;
     private String descricao;
-    private List<Assunto> assuntos;
+    private List<Assunto> assuntos = Collections.emptyList();
 
-    private long cronogramaId;
+    private long idCronograma;
 
     public Disciplina() {
     }
@@ -47,12 +48,12 @@ public class Disciplina {
         this.assuntos = assuntos;
     }
 
-    public long getCronogramaId() {
-        return cronogramaId;
+    public long getIdCronograma() {
+        return idCronograma;
     }
 
-    public void setCronogramaId(long cronogramaId) {
-        this.cronogramaId = cronogramaId;
+    public void setIdCronograma(long idCronograma) {
+        this.idCronograma = idCronograma;
     }
 
     public String getDescricao() {

@@ -4,8 +4,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.espweb.chronos.R;
-import com.espweb.chronos.domain.model.Artefato;
-import com.espweb.chronos.domain.model.Exercicio;
+import com.espweb.chronos.presentation.model.Artefato;
+import com.espweb.chronos.presentation.model.Exercicio;
 import com.espweb.chronos.presentation.ui.adapters.ArtefatoAdapter;
 import com.espweb.chronos.presentation.ui.adapters.viewholders.base.ArtefatoViewHolder;
 

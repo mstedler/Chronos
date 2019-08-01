@@ -1,7 +1,6 @@
 package com.espweb.chronos.presentation.ui.dialogs;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +15,15 @@ import androidx.fragment.app.DialogFragment;
 import com.espweb.chronos.R;
 import com.espweb.chronos.data.CronogramaRepositoryImpl;
 import com.espweb.chronos.domain.executor.impl.ThreadExecutor;
-import com.espweb.chronos.domain.model.Cronograma;
+import com.espweb.chronos.presentation.model.Cronograma;
 import com.espweb.chronos.presentation.presenters.CronogramaDialogPresenter;
 import com.espweb.chronos.presentation.presenters.impl.CronogramaDialogPresenterImpl;
 import com.espweb.chronos.presentation.utils.DateUtils;
 import com.espweb.chronos.presentation.utils.ViewUtils;
 import com.espweb.chronos.threading.MainThreadImpl;
 import com.google.android.material.textfield.TextInputLayout;
+
+import org.parceler.Parcels;
 
 import java.util.Date;
 
@@ -57,40 +58,17 @@ public class CronogramaDialog extends DialogFragment implements DatePickerDialog
     private CronogramaDialogPresenter presenter;
 
     private Cronograma cronograma;
-    private long userId;
 
     public CronogramaDialog() {
 
     }
 
-    private static Bundle createBundleWith(long userId, Cronograma cronograma) {
-        Bundle args = new Bundle();
-        args.putLong("userId", userId);
-        if(cronograma != null) {
-            args.putLong("id", cronograma.getId());
-            args.putString("titulo", cronograma.getTitulo());
-            args.putString("descricao", cronograma.getDescricao());
-            args.putString("inicio", DateUtils.formatDate(cronograma.getInicio()));
-            args.putString("fim", DateUtils.formatDate(cronograma.getFim()));
-            args.putString("uuid", cronograma.getUuid());
-        }
-        return args;
-    }
-
-    private static CronogramaDialog newInstance(long userId, Cronograma cronograma) {
+    public static CronogramaDialog newInstance(Cronograma cronograma) {
         CronogramaDialog cronogramaDialog = new CronogramaDialog();
-        Bundle args = createBundleWith(userId, cronograma);
-        cronogramaDialog.setStyle(STYLE_NORMAL, R.style.TitledDialog);
+        Bundle args = new Bundle();
+        args.putParcelable("cronograma", Parcels.wrap(cronograma));
         cronogramaDialog.setArguments(args);
         return cronogramaDialog;
-    }
-
-    public static CronogramaDialog newInstance(long userId) {
-        return newInstance(userId, null);
-    }
-
-    public static CronogramaDialog newInstance(Cronograma cronograma) {
-        return newInstance(-1, cronograma);
     }
 
     @Override
@@ -113,27 +91,18 @@ public class CronogramaDialog extends DialogFragment implements DatePickerDialog
     }
 
     private void init() {
-        userId = getArguments().getLong("userId", -1);
-
-        buildCronogramaFromBundle();
-
+        buildFromArguments();
         fillForm();
         setTitle();
     }
 
-    private void buildCronogramaFromBundle() {
-        long id = getArguments().getLong("id", -1);
-        String uuid = getArguments().getString("uuid", "");
-        String titulo = getArguments().getString("titulo", "");
-        String descricao = getArguments().getString("descricao", "");
-        Date inicio = DateUtils.parse(getArguments().getString("inicio", ""));
-        Date fim = DateUtils.parse(getArguments().getString("fim", ""));
-
-        cronograma = new Cronograma(id, uuid, titulo, descricao, inicio, fim);
+    private void buildFromArguments() {
+        if(getArguments() != null)
+            cronograma = Parcels.unwrap(getArguments().getParcelable("cronograma"));
     }
 
     private void setTitle() {
-        int title = cronograma.getId() == -1 ? R.string.new_cronograma : R.string.edit;
+        int title = cronograma.isNew() ? R.string.new_cronograma : R.string.edit;
         tvTitle.setText(title);
     }
 
@@ -158,10 +127,10 @@ public class CronogramaDialog extends DialogFragment implements DatePickerDialog
     @OnClick(R.id.btn_save)
     void saveClicked(){
         buildFromForm();
-        if(cronograma.getId() != -1) {
-            updateCronograma();
-        } else {
+        if(cronograma.isNew()) {
             createCronograma();
+        } else {
+            updateCronograma();
         }
     }
 
@@ -178,7 +147,7 @@ public class CronogramaDialog extends DialogFragment implements DatePickerDialog
     }
 
     private void createCronograma() {
-        presenter.createCronograma(userId, cronograma);
+        presenter.createCronograma(cronograma);
     }
 
     @Override

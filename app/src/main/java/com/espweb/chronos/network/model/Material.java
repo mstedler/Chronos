@@ -11,8 +11,8 @@ public class Material {
     private Date data;
     @SerializedName("descricao")
     private String descricao;
-    @SerializedName("minutos")
-    private int minutos;
+    @SerializedName("time")
+    private int time;
 
     public String getUuid() {
         return uuid;
@@ -38,11 +38,11 @@ public class Material {
         this.descricao = descricao;
     }
 
-    public int getMinutos() {
-        return minutos;
+    public int getTime() {
+        return time;
     }
 
-    public void setMinutos(int minutos) {
-        this.minutos = minutos;
+    public void setTime(int time) {
+        this.time = time;
     }
 }

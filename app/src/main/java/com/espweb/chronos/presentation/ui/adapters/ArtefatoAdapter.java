@@ -9,17 +9,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.espweb.chronos.R;
-import com.espweb.chronos.domain.model.Artefato;
-import com.espweb.chronos.domain.model.Exercicio;
-import com.espweb.chronos.domain.model.Material;
-import com.espweb.chronos.domain.model.Revisao;
+import com.espweb.chronos.presentation.model.Artefato;
+import com.espweb.chronos.presentation.model.Exercicio;
+import com.espweb.chronos.presentation.model.Material;
+import com.espweb.chronos.presentation.model.Revisao;
 import com.espweb.chronos.presentation.ui.adapters.viewholders.base.ArtefatoViewHolder;
 import com.espweb.chronos.presentation.ui.adapters.viewholders.ExercicioViewHolder;
 import com.espweb.chronos.presentation.ui.adapters.viewholders.MaterialViewHolder;
 import com.espweb.chronos.presentation.ui.adapters.viewholders.RevisaoViewHolder;
 import com.espweb.chronos.presentation.ui.adapters.viewholders.UnknownViewHolder;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ArtefatoAdapter extends RecyclerView.Adapter<ArtefatoViewHolder> {
@@ -28,6 +28,19 @@ public class ArtefatoAdapter extends RecyclerView.Adapter<ArtefatoViewHolder> {
     private static final int EXERCICIO = 1;
     private static final int REVISAO = 2;
     private static final int UNKNOWN = -1;
+    private final Context context;
+
+    private int lastActionPosition;
+
+    public void addArtefato(Artefato artefato) {
+        artefatos.add(artefato);
+        notifyItemInserted(artefatos.size());
+    }
+
+    public void updateArtefato(Artefato artefato) {
+        artefatos.set(lastActionPosition, artefato);
+        notifyItemChanged(lastActionPosition);
+    }
 
 
     public interface ArtefatoListListener {
@@ -39,7 +52,8 @@ public class ArtefatoAdapter extends RecyclerView.Adapter<ArtefatoViewHolder> {
     private final LayoutInflater layoutInflater;
 
     public ArtefatoAdapter(Context context) {
-        artefatos = Collections.emptyList();
+        this.context = context;
+        artefatos = new ArrayList<>();
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -56,7 +70,7 @@ public class ArtefatoAdapter extends RecyclerView.Adapter<ArtefatoViewHolder> {
                 return new ExercicioViewHolder(view, artefatoListListener);
             case REVISAO:
                 view = layoutInflater.inflate(R.layout.row_revisao, parent, false);
-                return  new RevisaoViewHolder(view, artefatoListListener);
+                return  new RevisaoViewHolder(view, artefatoListListener, context);
             default:
                 view = layoutInflater.inflate(R.layout.row_artefato, parent, false);
                 return new UnknownViewHolder(view, artefatoListListener);

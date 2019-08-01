@@ -34,7 +34,7 @@ public class CreateArtefatoInteractorImpl extends AbstractInteractor implements 
     @Override
     public void run() {
         try {
-            artefato.setAssuntoId(assuntoId);
+            artefato.setIdAssunto(assuntoId);
             long id = artefatoRepository.insert(artefato);
             artefato.setId(id);
             mainThread.post(() -> callback.onArtefatoCreated(artefato));

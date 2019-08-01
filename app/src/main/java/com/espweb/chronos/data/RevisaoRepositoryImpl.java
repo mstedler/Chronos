@@ -23,7 +23,8 @@ public class RevisaoRepositoryImpl implements ArtefatoRepository<Revisao> {
                         UUID.randomUUID().toString(),
                         revisao.getData(),
                         revisao.getEscopo().getIntValue(),
-                        revisao.getAssuntoId());
+                        revisao.getDescricao(),
+                        revisao.getIdAssunto());
         return getBox().put(sRevisao);
     }
 

@@ -15,10 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.espweb.chronos.R;
 import com.espweb.chronos.data.SessaoRepositoryImpl;
 import com.espweb.chronos.domain.executor.impl.ThreadExecutor;
-import com.espweb.chronos.domain.model.Cronograma;
-import com.espweb.chronos.domain.model.User;
 import com.espweb.chronos.domain.repository.Repository;
 import com.espweb.chronos.domain.repository.SessaoRepository;
+import com.espweb.chronos.presentation.model.Cronograma;
+import com.espweb.chronos.presentation.model.User;
 import com.espweb.chronos.presentation.ui.adapters.CronogramaAdapter;
 import com.espweb.chronos.presentation.ui.dialogs.CronogramaDialog;
 import com.espweb.chronos.data.CronogramaRepositoryImpl;
@@ -79,7 +79,7 @@ public class MainActivity extends BaseActivity implements View {
 
 
     private void initPresenter() {
-        Repository<Cronograma> cronogramaRepository = new CronogramaRepositoryImpl(this);
+        Repository<com.espweb.chronos.domain.model.Cronograma> cronogramaRepository = new CronogramaRepositoryImpl(this);
         SessaoRepository sessaoRepository = new SessaoRepositoryImpl(this);
         mainPresenter = new MainPresenterImpl(
                 ThreadExecutor.getInstance(),
@@ -126,9 +126,9 @@ public class MainActivity extends BaseActivity implements View {
     };
 
     public void showYesNoDialog() {
-        YesNoDialog yesNoDialog = YesNoDialog.newInstance();
-        yesNoDialog.setListener(yesNoDialogListener);
-        yesNoDialog.show(getSupportFragmentManager(), "YES_NO_DIALOG");
+        YesNoDialog logoutDialog = YesNoDialog.newInstance(getString(R.string.logout), getString(R.string.are_you_sure));
+        logoutDialog.setListener(yesNoDialogListener);
+        logoutDialog.show(getSupportFragmentManager(), "YES_NO_DIALOG");
 
     }
 
@@ -179,7 +179,7 @@ public class MainActivity extends BaseActivity implements View {
 
     @OnClick(R.id.fab_add_cronograma)
     public void addCronogramaClick() {
-        CronogramaDialog cronogramaDialog = CronogramaDialog.newInstance(user.getId());
+        CronogramaDialog cronogramaDialog = CronogramaDialog.newInstance(new Cronograma(user.getId()));
         cronogramaDialog.setListener(cronogramaDialogListener);
         cronogramaDialog.show(getSupportFragmentManager(), "CRONOGRAMA_ADD_DIALOG");
     }

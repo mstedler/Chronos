@@ -33,6 +33,7 @@ public class StorageToDomainConverter {
         cronograma.setDescricao(sCronograma.getDescricao());
         cronograma.setInicio(sCronograma.getInicio());
         cronograma.setFim(sCronograma.getFim());
+        cronograma.setIdUser(sCronograma.getUser().getTargetId());
         return cronograma;
     }
 
@@ -42,6 +43,7 @@ public class StorageToDomainConverter {
         disciplina.setNome(sDisciplina.getNome());
         disciplina.setUuid(sDisciplina.getUuid());
         disciplina.setDescricao(sDisciplina.getDescricao());
+        disciplina.setIdCronograma(sDisciplina.getCronograma().getTargetId());
         List<Assunto> assuntos = new ArrayList<>();
         for (com.espweb.chronos.storage.model.Assunto sAssunto: sDisciplina.getAssuntos()) {
             assuntos.add(convert(sAssunto));
@@ -63,6 +65,7 @@ public class StorageToDomainConverter {
         dAssunto.setId(assunto.getId());
         dAssunto.setDescricao(assunto.getDescricao());
         dAssunto.setUuid(assunto.getUuid());
+        dAssunto.setIdDisciplina(assunto.getDisciplina().getTargetId());
         return dAssunto;
     }
 
@@ -82,6 +85,7 @@ public class StorageToDomainConverter {
         dExercicio.setAcertos(exercicio.getAcertos());
         dExercicio.setData(exercicio.getData());
         dExercicio.setUuid(exercicio.getUuid());
+        dExercicio.setIdAssunto(exercicio.getAssunto().getTargetId());
         return dExercicio;
     }
 
@@ -97,7 +101,9 @@ public class StorageToDomainConverter {
         Revisao dRevisao = new Revisao();
         dRevisao.setId(revisao.getId());
         dRevisao.setEscopo(Revisao.Escopo.fromInt(revisao.getEscopo()));
+        dRevisao.setDescricao(revisao.getDescricao());
         dRevisao.setData(revisao.getData());
+        dRevisao.setIdAssunto(revisao.getAssunto().getTargetId());
         dRevisao.setUuid(revisao.getUuid());
         return dRevisao;
     }
@@ -117,6 +123,7 @@ public class StorageToDomainConverter {
         dMaterial.setMinutos(material.getMinutos());
         dMaterial.setData(material.getData());
         dMaterial.setUuid(material.getUuid());
+        dMaterial.setIdAssunto(material.getAssunto().getTargetId());
         return dMaterial;
     }
 

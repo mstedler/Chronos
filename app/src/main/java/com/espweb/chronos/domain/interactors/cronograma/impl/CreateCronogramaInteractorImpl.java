@@ -12,13 +12,11 @@ public class CreateCronogramaInteractorImpl extends AbstractInteractor implement
     private Callback callback;
     private Repository<Cronograma> cronogramaRepository;
     private Cronograma cronograma;
-    long userId;
 
     public CreateCronogramaInteractorImpl(Executor threadExecutor, MainThread mainThread,
                                           Callback callback,
                                           Repository<Cronograma> cronogramaRepository,
-                                          Cronograma cronograma,
-                                          long userId) {
+                                          Cronograma cronograma) {
         super(threadExecutor, mainThread);
         if (cronogramaRepository == null || callback == null) {
             throw new IllegalArgumentException("Argumentos nao podem ser nulos!");
@@ -27,13 +25,11 @@ public class CreateCronogramaInteractorImpl extends AbstractInteractor implement
         this.callback = callback;
         this.cronogramaRepository = cronogramaRepository;
         this.cronograma = cronograma;
-        this.userId = userId;
     }
 
     @Override
     public void run() {
         try {
-            cronograma.setUserId(userId);
             long cronogramaId = cronogramaRepository.insert(cronograma);
             cronograma.setId(cronogramaId);
             mainThread.post(() -> callback.onCronogramaCreated(cronograma));

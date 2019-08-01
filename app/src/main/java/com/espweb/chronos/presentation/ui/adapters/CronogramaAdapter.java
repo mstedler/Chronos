@@ -10,11 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.espweb.chronos.R;
-import com.espweb.chronos.domain.model.Cronograma;
+import com.espweb.chronos.presentation.model.Cronograma;
 import com.espweb.chronos.presentation.utils.DateUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,7 +35,7 @@ public class CronogramaAdapter extends RecyclerView.Adapter<CronogramaAdapter.Cr
 
     public CronogramaAdapter(Context context) {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.cronogramas = new ArrayList<>();
+        cronogramas = new ArrayList<>();
     }
 
     public void setCronogramas(List<Cronograma> cronogramas) {
@@ -54,12 +53,8 @@ public class CronogramaAdapter extends RecyclerView.Adapter<CronogramaAdapter.Cr
 
     @Override
     public void onBindViewHolder(@NonNull CronogramaViewHolder holder, int position) {
-        final Cronograma cronograma = this.cronogramas.get(position);
-        holder.tvCronogramaTitle.setText(cronograma.getTitulo());
-        holder.tvCronogramaDescription.setText(cronograma.getDescricao());
-        holder.tvDataInicio.setText(DateUtils.formatDate(cronograma.getInicio()));
-        holder.tvDataFim.setText(DateUtils.formatDate(cronograma.getFim()));
-        holder.itemView.setOnClickListener(v -> cronogramaListListener.onCronogramaClicked(cronogramas.get(position)));
+        final Cronograma cronograma = cronogramas.get(position);
+        holder.bind(cronograma);
     }
 
     @Override
@@ -83,6 +78,14 @@ public class CronogramaAdapter extends RecyclerView.Adapter<CronogramaAdapter.Cr
         CronogramaViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        void bind(Cronograma cronograma) {
+            tvCronogramaTitle.setText(cronograma.getTitulo());
+            tvCronogramaDescription.setText(cronograma.getDescricao());
+            tvDataInicio.setText(DateUtils.formatDate(cronograma.getInicio()));
+            tvDataFim.setText(DateUtils.formatDate(cronograma.getFim()));
+            itemView.setOnClickListener(v -> cronogramaListListener.onCronogramaClicked(cronograma));
         }
     }
 

@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 
-import com.espweb.chronos.domain.model.Artefato;
+import com.espweb.chronos.presentation.model.Artefato;
 import com.espweb.chronos.presentation.ui.adapters.ArtefatoAdapter;
 
 public abstract class ArtefatoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

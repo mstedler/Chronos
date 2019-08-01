@@ -32,6 +32,11 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.View,
     private Fragment signInFragment;
     private SignUpFragment signUpFragment;
 
+    public static Intent getCallingIntent(Context context) {
+        Intent intent = new Intent(context, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +79,6 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.View,
     @Override
     public void showError(String message) {
 
-    }
-
-    public static Intent getCallingIntent(Context context) {
-        Intent intent = new Intent(context, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        return intent;
     }
 
     private void changeFragment(Fragment frag, boolean saveInBackstack, boolean animate) {

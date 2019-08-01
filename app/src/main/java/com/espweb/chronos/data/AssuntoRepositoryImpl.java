@@ -22,7 +22,7 @@ public class AssuntoRepositoryImpl implements Repository<Assunto> {
         com.espweb.chronos.storage.model.Assunto sAssunto = new com.espweb.chronos.storage.model.Assunto(
                 UUID.randomUUID().toString(),
                 assunto.getDescricao(),
-                assunto.getDisciplinaId());
+                assunto.getIdDisciplina());
         return getBox().put(sAssunto);
     }
 

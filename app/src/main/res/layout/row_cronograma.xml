@@ -4,9 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
+    app:cardBackgroundColor="@android:color/white"
     android:foreground="?attr/selectableItemBackground"
-    app:cardCornerRadius="2dp"
-    app:cardElevation="5dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="2dp"
     app:cardPreventCornerOverlap="true"
     app:contentPadding="8dp">
 
@@ -20,12 +21,14 @@
             android:layout_height="wrap_content"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_cronograma_description"
             android:layout_width="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"

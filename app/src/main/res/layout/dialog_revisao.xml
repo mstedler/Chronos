@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.espweb.chronos.presentation.ui.custom.ArtefatoDialogTemplate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RadioGroup
+        android:id="@+id/rg_escopo"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/rb_diario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/daily" />
+
+        <RadioButton
+            android:id="@+id/rb_semanal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/weekly" />
+
+        <RadioButton
+            android:id="@+id/rb_quinzenal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/biweekly" />
+
+        <RadioButton
+            android:id="@+id/rb_mensal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/monthly" />
+    </RadioGroup>
+
+</com.espweb.chronos.presentation.ui.custom.ArtefatoDialogTemplate>

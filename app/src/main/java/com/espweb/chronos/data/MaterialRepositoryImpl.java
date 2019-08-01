@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.espweb.chronos.domain.model.Material;
 import com.espweb.chronos.domain.repository.ArtefatoRepository;
-import com.espweb.chronos.domain.repository.Repository;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
 import com.espweb.chronos.storage.database.ObjectBox;
 import com.espweb.chronos.storage.model.Material_;
@@ -25,7 +24,7 @@ public class MaterialRepositoryImpl implements ArtefatoRepository<Material> {
                         material.getData(),
                         material.getDescricao(),
                         material.getMinutos(),
-                        material.getAssuntoId());
+                        material.getIdAssunto());
         return getBox().put(sMaterial);
     }
 

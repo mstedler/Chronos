@@ -6,8 +6,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.espweb.chronos.R;
-import com.espweb.chronos.domain.model.Assunto;
-import com.espweb.chronos.presentation.ui.activities.CronogramaActivity;
+import com.espweb.chronos.presentation.model.Assunto;
 import com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
@@ -22,6 +21,7 @@ public class AssuntoViewHolder extends AbstractExpandableItemViewHolder implemen
 
     @BindView(R.id.tv_descricao_assunto)
     public TextView tvDescricao;
+
     private Assunto assunto;
     private AssuntoViewHolderListener assuntoViewHolderListener;
 

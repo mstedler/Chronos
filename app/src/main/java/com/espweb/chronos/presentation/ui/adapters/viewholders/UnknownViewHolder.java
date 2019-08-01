@@ -4,7 +4,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.espweb.chronos.domain.model.Artefato;
+import com.espweb.chronos.presentation.model.Artefato;
 import com.espweb.chronos.presentation.ui.adapters.ArtefatoAdapter;
 import com.espweb.chronos.presentation.ui.adapters.viewholders.base.ArtefatoViewHolder;
 

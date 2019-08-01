@@ -1,7 +1,6 @@
 package com.espweb.chronos.presentation.presenters;
 
-import com.espweb.chronos.domain.model.Artefato;
-import com.espweb.chronos.domain.model.Assunto;
+import com.espweb.chronos.presentation.model.Artefato;
 import com.espweb.chronos.presentation.presenters.base.BasePresenter;
 import com.espweb.chronos.presentation.ui.BaseView;
 

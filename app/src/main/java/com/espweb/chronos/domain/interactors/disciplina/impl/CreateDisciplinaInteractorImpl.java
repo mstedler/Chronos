@@ -11,13 +11,11 @@ public class CreateDisciplinaInteractorImpl extends AbstractInteractor implement
 
     private Repository<Disciplina> disciplinaRepository;
     private Callback callback;
-    private long cronogramaId;
     private Disciplina disciplina;
 
     public CreateDisciplinaInteractorImpl(Executor threadExecutor, MainThread mainThread,
                                           Callback callback,
                                           Repository<Disciplina> disciplinaRepository,
-                                          long cronogramaId,
                                           Disciplina disciplina) {
         super(threadExecutor, mainThread);
         if (disciplinaRepository == null || callback == null) {
@@ -26,14 +24,12 @@ public class CreateDisciplinaInteractorImpl extends AbstractInteractor implement
 
         this.callback = callback;
         this.disciplinaRepository = disciplinaRepository;
-        this.cronogramaId = cronogramaId;
         this.disciplina = disciplina;
     }
 
     @Override
     public void run() {
         try {
-            disciplina.setCronogramaId(cronogramaId);
             long disciplinaId = disciplinaRepository.insert(disciplina);
             disciplina.setId(disciplinaId);
             mainThread.post(() -> callback.onDisciplinaCreated(disciplina));
