@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.espweb.chronos.R;
@@ -22,6 +23,7 @@ import com.espweb.chronos.presentation.presenters.SignUpPresenter;
 import com.espweb.chronos.presentation.presenters.impl.SignUpPresenterImpl;
 import com.espweb.chronos.data.SessaoRepositoryImpl;
 import com.espweb.chronos.data.UserRepositoryImpl;
+import com.espweb.chronos.presentation.utils.ViewUtils;
 import com.espweb.chronos.threading.MainThreadImpl;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -41,6 +43,9 @@ public class SignUpFragment extends Fragment implements SignUpPresenter.View {
 
     @BindView(R.id.til_password)
     TextInputLayout tilPassword;
+
+    @BindView(R.id.progress)
+    ProgressBar progressBar;
 
     private SignUpPresenter signUpPresenter;
 
@@ -87,12 +92,14 @@ public class SignUpFragment extends Fragment implements SignUpPresenter.View {
 
     @Override
     public void showProgress() {
-
+        progressBar.setVisibility(View.VISIBLE);
+        ViewUtils.makeWindowUntouchable(getActivity().getWindow());
     }
 
     @Override
     public void hideProgress() {
-
+        progressBar.setVisibility(View.INVISIBLE);
+        ViewUtils.makeWindowTouchable(getActivity().getWindow());
     }
 
     @Override

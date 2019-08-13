@@ -115,6 +115,7 @@ public abstract class ArtefatoDialog<T extends Artefato> extends DialogFragment 
     @Override
     public void onArtefatoUpdated() {
         artefatoDialogListener.onArtefatoUpdated(artefato);
+        dismiss();
     }
 
     @OnClick(R.id.btn_cancelar)

@@ -6,4 +6,10 @@
         <item>@string/biweekly</item>
         <item>@string/monthly</item>
     </string-array>
+
+    <string-array name="artefatos">
+        <item>@string/exercise</item>
+        <item>@string/material</item>
+        <item>@string/review</item>
+    </string-array>
 </resources>

@@ -1,11 +1,8 @@
 package com.espweb.chronos.presentation.model;
 
-import org.parceler.Parcel;
-
 import java.util.Date;
 
-@Parcel(Parcel.Serialization.BEAN)
-public class Artefato {
+public abstract class Artefato {
     long id;
     String uuid;
     Date data;
@@ -63,4 +60,6 @@ public class Artefato {
     public boolean isNew() {
         return id == 0;
     }
+
+    public abstract EnumTipo getTipo();
 }

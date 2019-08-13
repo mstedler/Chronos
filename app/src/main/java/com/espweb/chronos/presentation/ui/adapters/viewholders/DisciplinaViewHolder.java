@@ -18,9 +18,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider.NOT_PINNED;
-import static com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider.PINNED_LEFT;
-import static com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider.PINNED_RIGHT;
+import static com.espweb.chronos.presentation.ui.adapters.DisciplinaAdapter.NOT_PINNED;
+import static com.espweb.chronos.presentation.ui.adapters.DisciplinaAdapter.PINNED_LEFT;
+import static com.espweb.chronos.presentation.ui.adapters.DisciplinaAdapter.PINNED_RIGHT;
 
 public class DisciplinaViewHolder extends AbstractSwipeableItemViewHolder implements ExpandableItemViewHolder {
     public interface DisciplinaViewHolderListener {

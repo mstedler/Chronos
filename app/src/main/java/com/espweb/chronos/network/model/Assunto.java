@@ -9,10 +9,13 @@ public class Assunto {
     private String uuid;
     @SerializedName("descricao")
     private String descricao;
+
     @SerializedName("materiais")
     private List<Material> materiais;
+
     @SerializedName("revisoes")
     private List<Revisao> revisoes;
+
     @SerializedName("exercicios")
     private List<Exercicio> exercicios;
 

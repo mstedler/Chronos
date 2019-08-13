@@ -49,11 +49,13 @@ public class SignUpPresenterImpl extends AbstractPresenter implements SignUpPres
 
     @Override
     public void onSignUpSuccess() {
+        view.hideProgress();
         view.signUpSuccess();
     }
 
     @Override
     public void onError(String message) {
+        view.hideProgress();
         view.signUpFailed(message);
     }
 
@@ -71,7 +73,7 @@ public class SignUpPresenterImpl extends AbstractPresenter implements SignUpPres
             view.showPasswordError();
             return;
         }
-
+        view.showProgress();
         SignUpInteractor signUpInteractor = new SignUpInteractorImpl(executor, mainThread, this, sessaoRepository, name, email, password);
         signUpInteractor.execute();
     }

@@ -28,8 +28,8 @@ public class MaterialViewHolder extends ArtefatoViewHolder {
     @BindView(R.id.tv_tempo)
     TextView tvTempo;
 
-    public MaterialViewHolder(@NonNull View itemView, ArtefatoAdapter.ArtefatoListListener artefatoListListener) {
-        super(itemView, artefatoListListener);
+    public MaterialViewHolder(@NonNull View itemView) {
+        super(itemView);
         ButterKnife.bind(this, itemView);
     }
 
@@ -43,6 +43,6 @@ public class MaterialViewHolder extends ArtefatoViewHolder {
 
     @Override
     public void onClick(View v) {
-        artefatoListListener.onArtefatoClicked((Artefato)v.getTag());
+        artefatoListListener.onArtefatoClicked(getAdapterPosition(), material);
     }
 }

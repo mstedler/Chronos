@@ -4,7 +4,6 @@ import org.parceler.Parcel;
 
 @Parcel(Parcel.Serialization.BEAN)
 public class Revisao extends Artefato {
-
     public Revisao(long idAssunto) {
         this.idAssunto = idAssunto;
     }
@@ -46,5 +45,10 @@ public class Revisao extends Artefato {
 
     public void setEscopo(Escopo escopo) {
         this.escopo = escopo;
+    }
+
+    @Override
+    public EnumTipo getTipo() {
+        return EnumTipo.REVISAO;
     }
 }

@@ -1,6 +1,10 @@
 package com.espweb.chronos.presentation.model;
 
 import org.parceler.Parcel;
+import org.parceler.ParcelPropertyConverter;
+import org.parceler.Parcels;
+import org.parceler.TypeRangeParcelConverter;
+import org.parceler.converter.ArrayListParcelConverter;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,6 +14,8 @@ public class Assunto {
     private long id;
     private String uuid;
     private String descricao;
+
+    @ParcelPropertyConverter(ArtefatoConverter.class)
     private List<Artefato> artefatos = Collections.emptyList();
 
     private long idDisciplina;
@@ -23,10 +29,6 @@ public class Assunto {
 
     public List<Artefato> getArtefatos() {
         return artefatos;
-    }
-
-    public void setArtefatos(List<Artefato> artefatos) {
-        this.artefatos = artefatos;
     }
 
     public long getId() {
@@ -63,5 +65,17 @@ public class Assunto {
 
     public boolean isNew() {
         return id == 0;
+    }
+
+    private class ArtefatoConverter extends ArrayListParcelConverter<Artefato> {
+        @Override
+        public void itemToParcel(Artefato input, android.os.Parcel parcel) {
+            parcel.writeParcelable(Parcels.wrap(input), 0);
+        }
+
+        @Override
+        public Artefato itemFromParcel(android.os.Parcel parcel) {
+            return Parcels.unwrap(parcel.readParcelable(Artefato.class.getClassLoader()));
+        }
     }
 }

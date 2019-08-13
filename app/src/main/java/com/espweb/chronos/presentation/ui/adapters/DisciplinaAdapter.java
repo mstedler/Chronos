@@ -25,12 +25,18 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAda
 
 import java.util.List;
 
-import static com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider.NOT_PINNED;
-import static com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider.PINNED_LEFT;
-import static com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider.PINNED_RIGHT;
-
 public class DisciplinaAdapter extends AbstractExpandableItemAdapter<DisciplinaViewHolder, AssuntoViewHolder>
                             implements ExpandableSwipeableItemAdapter<DisciplinaViewHolder, AssuntoViewHolder> {
+
+    public static final int NOT_PINNED = 0;
+    public static final int PINNED_LEFT = 1;
+    public static final int PINNED_RIGHT = 2;
+
+    public interface Pinnable {
+        void setPinDirection(int direction);
+        int getPinDirection();
+        boolean isPinned();
+    }
 
     public interface AssuntoListListener {
         void onAssuntoClicked(Assunto assunto);
@@ -141,7 +147,7 @@ public class DisciplinaAdapter extends AbstractExpandableItemAdapter<DisciplinaV
 
     @Override
     public boolean onCheckCanExpandOrCollapseGroup(@NonNull DisciplinaViewHolder holder, int groupPosition, int x, int y, boolean expand) {
-        GroupItemProvider.Pinnable data = disciplinaProvider.getGroup(groupPosition);
+        Pinnable data = disciplinaProvider.getGroup(groupPosition);
         return !data.isPinned();
     }
 
@@ -157,7 +163,7 @@ public class DisciplinaAdapter extends AbstractExpandableItemAdapter<DisciplinaV
 
     @Override
     public SwipeResultAction onSwipeGroupItem(@NonNull DisciplinaViewHolder holder, int groupPosition, int result) {
-        GroupItemProvider.Pinnable pinnable = disciplinaProvider.getGroup(groupPosition);
+        Pinnable pinnable = disciplinaProvider.getGroup(groupPosition);
         switch (result) {
             case SwipeableItemConstants.RESULT_SWIPED_LEFT:
                 return new PinResultAction(pinnable, groupPosition, PINNED_LEFT);
@@ -213,11 +219,11 @@ public class DisciplinaAdapter extends AbstractExpandableItemAdapter<DisciplinaV
     }
 
     class PinResultAction extends SwipeResultActionMoveToSwipedDirection {
-        private GroupItemProvider.Pinnable pinnable;
+        private Pinnable pinnable;
         private int position;
         private int pinDirection;
 
-        PinResultAction(GroupItemProvider.Pinnable pinnable, int position, int pinDirection) {
+        PinResultAction(Pinnable pinnable, int position, int pinDirection) {
             this.position = position;
             this.pinDirection = pinDirection;
             this.pinnable = pinnable;
@@ -242,10 +248,10 @@ public class DisciplinaAdapter extends AbstractExpandableItemAdapter<DisciplinaV
     }
 
     class UnpinResultAction extends SwipeResultActionDefault {
-        private GroupItemProvider.Pinnable pinnable;
+        private Pinnable pinnable;
         private int position;
 
-        UnpinResultAction(GroupItemProvider.Pinnable pinnable, int position) {
+        UnpinResultAction(Pinnable pinnable, int position) {
             this.pinnable = pinnable;
             this.position = position;
         }
@@ -305,7 +311,7 @@ public class DisciplinaAdapter extends AbstractExpandableItemAdapter<DisciplinaV
     }
 
     public void setDisciplinas(List<Disciplina> disciplinas) {
-        disciplinaProvider.setGroups(disciplinas);
+        disciplinaProvider.setData(disciplinas);
         notifyDataSetChanged();
     }
 }

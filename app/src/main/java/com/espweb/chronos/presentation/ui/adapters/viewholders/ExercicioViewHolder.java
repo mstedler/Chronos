@@ -21,8 +21,8 @@ public class ExercicioViewHolder extends ArtefatoViewHolder {
 
     private Exercicio exercicio;
 
-    public ExercicioViewHolder(View itemView, ArtefatoAdapter.ArtefatoListListener artefatoListListener) {
-        super(itemView, artefatoListListener);
+    public ExercicioViewHolder(View itemView) {
+        super(itemView);
         ButterKnife.bind(this, itemView);
     }
 
@@ -39,6 +39,6 @@ public class ExercicioViewHolder extends ArtefatoViewHolder {
 
     @Override
     public void onClick(View v) {
-        artefatoListListener.onArtefatoClicked(exercicio);
+        artefatoListListener.onArtefatoClicked(getAdapterPosition(), exercicio);
     }
 }

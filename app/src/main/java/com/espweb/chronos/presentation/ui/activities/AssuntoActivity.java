@@ -19,12 +19,11 @@ import com.espweb.chronos.presentation.model.Material;
 import com.espweb.chronos.presentation.model.Revisao;
 import com.espweb.chronos.presentation.presenters.AssuntoPresenter;
 import com.espweb.chronos.presentation.presenters.impl.AssuntoPresenterImpl;
-import com.espweb.chronos.presentation.ui.adapters.ArtefatoAdapter;
 import com.espweb.chronos.data.ArtefatoRepositoryImpl;
-import com.espweb.chronos.presentation.ui.dialogs.ExercicioDialog;
-import com.espweb.chronos.presentation.ui.dialogs.MaterialDialog;
-import com.espweb.chronos.presentation.ui.dialogs.RevisaoDialog;
+import com.espweb.chronos.presentation.ui.adapters.ArtefatoAdapter;
+import com.espweb.chronos.presentation.ui.adapters.viewholders.base.ArtefatoViewHolder;
 import com.espweb.chronos.presentation.ui.dialogs.base.ArtefatoDialog;
+import com.espweb.chronos.presentation.ui.dialogs.factory.ArtefatoDialogFactory;
 import com.espweb.chronos.threading.MainThreadImpl;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -106,11 +105,11 @@ public class AssuntoActivity extends BaseActivity implements
     }
 
     private void initAdapter() {
-        artefatoAdapter = new ArtefatoAdapter(this);
+        artefatoAdapter = new ArtefatoAdapter();
+        artefatoAdapter.setArtefatoListListener(this);
     }
 
     private void initRecyclerView() {
-        artefatoAdapter.setArtefatoListListener(this);
         rvArtefatos.setLayoutManager(new LinearLayoutManager(this));
         rvArtefatos.setAdapter(artefatoAdapter);
     }
@@ -136,11 +135,6 @@ public class AssuntoActivity extends BaseActivity implements
     }
 
     @Override
-    public void onArtefatoClicked(Artefato artefato) {
-
-    }
-
-    @Override
     public void onArtefatoCreated(Artefato artefato) {
         faMenu.close(false);
         artefatoAdapter.addArtefato(artefato);
@@ -153,19 +147,27 @@ public class AssuntoActivity extends BaseActivity implements
 
     @OnClick(R.id.fab_add_material)
     void onAddMaterialClick() {
-        MaterialDialog materialDialog = MaterialDialog.newInstance(new Material(assunto.getId()));
-        materialDialog.show(getSupportFragmentManager(), "MATERIAL_DIALOG");
+        showDialogFor(new Material(assunto.getId()));
     }
 
     @OnClick(R.id.fab_add_exercicio)
     void onAddExercicioClick() {
-        ExercicioDialog exercicioDialog = ExercicioDialog.newInstance(new Exercicio(assunto.getId()));
-        exercicioDialog.show(getSupportFragmentManager(), "EXERCICIO_DIALOG");
+        showDialogFor(new Exercicio(assunto.getId()));
     }
 
     @OnClick(R.id.fab_add_revisao)
     void onAddRevisaoClick() {
-        RevisaoDialog revisaoDialog = RevisaoDialog.newInstance(new Revisao(assunto.getId()));
-        revisaoDialog.show(getSupportFragmentManager(), "REVISAO_DIALOG");
+        showDialogFor(new Revisao(assunto.getId()));
+    }
+
+    private void showDialogFor(Artefato artefato) {
+        ArtefatoDialog artefatoDialog = ArtefatoDialogFactory.createFor(artefato);
+        artefatoDialog.show(getSupportFragmentManager(), "ARTEFATO_DIALOG");
+    }
+
+
+    @Override
+    public void onArtefatoClicked(Artefato artefato) {
+        showDialogFor(artefato);
     }
 }

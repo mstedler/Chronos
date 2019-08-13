@@ -20,4 +20,9 @@ public class Material extends Artefato {
     public void setMinutos(int minutos) {
         this.minutos = minutos;
     }
+
+    @Override
+    public EnumTipo getTipo() {
+        return EnumTipo.MATERIAL;
+    }
 }

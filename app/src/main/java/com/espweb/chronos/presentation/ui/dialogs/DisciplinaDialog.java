@@ -42,8 +42,6 @@ public class DisciplinaDialog extends DialogFragment implements DisciplinaDialog
     @BindView(R.id.tv_title)
     TextView tvTitle;
 
-    private long cronogramaId;
-
     private Disciplina disciplina;
     private DisciplinaDialogPresenter disciplinaDialogPresenter;
 

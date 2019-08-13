@@ -30,4 +30,9 @@ public class Exercicio extends Artefato {
     public void setAcertos(int acertos) {
         this.acertos = acertos;
     }
+
+    @Override
+    public EnumTipo getTipo() {
+        return EnumTipo.EXERCICIO;
+    }
 }

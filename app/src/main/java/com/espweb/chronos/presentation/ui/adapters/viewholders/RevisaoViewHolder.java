@@ -31,17 +31,15 @@ public class RevisaoViewHolder extends ArtefatoViewHolder {
     @BindView(R.id.tv_data)
     TextView tvData;
 
-    private Context context;
-    public RevisaoViewHolder(@NonNull View itemView, ArtefatoAdapter.ArtefatoListListener artefatoListListener, Context context) {
-        super(itemView, artefatoListListener);
+    public RevisaoViewHolder(@NonNull View itemView) {
+        super(itemView);
         ButterKnife.bind(this, itemView);
-        this.context = context;
     }
 
     @Override
     public void bind(Artefato artefato) {
         this.revisao = (Revisao) artefato;
-        String[] escopos = context.getResources().getStringArray(R.array.escopos);
+        String[] escopos = itemView.getContext().getResources().getStringArray(R.array.escopos);
         tvEscopo.setText(escopos[revisao.getEscopo().getIntValue()]);
         tvDescricao.setText(revisao.getDescricao());
         tvData.setText(DateUtils.formatDate(revisao.getData()));
@@ -49,6 +47,6 @@ public class RevisaoViewHolder extends ArtefatoViewHolder {
 
     @Override
     public void onClick(View v) {
-        artefatoListListener.onArtefatoClicked(revisao);
+        artefatoListListener.onArtefatoClicked(getAdapterPosition(), revisao);
     }
 }

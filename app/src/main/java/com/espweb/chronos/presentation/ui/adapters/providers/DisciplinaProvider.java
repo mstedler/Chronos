@@ -1,24 +1,24 @@
 package com.espweb.chronos.presentation.ui.adapters.providers;
 import androidx.core.util.Pair;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.espweb.chronos.presentation.model.Assunto;
 import com.espweb.chronos.presentation.model.Disciplina;
+import com.espweb.chronos.presentation.ui.adapters.DisciplinaAdapter;
 import com.espweb.chronos.presentation.ui.adapters.providers.base.GroupItemProvider;
+import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.espweb.chronos.presentation.ui.adapters.DisciplinaAdapter.NOT_PINNED;
+
 public class DisciplinaProvider extends GroupItemProvider<Disciplina, Assunto> {
-
-    public static final int NOT_PINNED = 0;
-    public static final int PINNED_LEFT = 1;
-    public static final int PINNED_RIGHT = 2;
-
     private List<Pair<GroupDisciplina, List<ItemAssunto>>> data;
 
     public DisciplinaProvider() {
-        data = new LinkedList<>();
+        data = new ArrayList<>();
     }
 
     @Override
@@ -31,8 +31,7 @@ public class DisciplinaProvider extends GroupItemProvider<Disciplina, Assunto> {
         return data.get(groupPosition).second.size();
     }
 
-    @Override
-    public void setGroups(List<Disciplina> disciplinas) {
+    public void setData(List<Disciplina> disciplinas){
         data.clear();
         for (Disciplina disciplina: disciplinas) {
             GroupDisciplina groupDisciplina = new GroupDisciplina(disciplina);
@@ -48,9 +47,7 @@ public class DisciplinaProvider extends GroupItemProvider<Disciplina, Assunto> {
     @Override
     public void updateGroup(Disciplina disciplina, int position) {
         GroupDisciplina groupDisciplina = data.get(position).first;
-        Disciplina disciplina1 = groupDisciplina.get();
-        disciplina1.setNome(disciplina.getNome());
-        groupDisciplina.setPinDirection(NOT_PINNED);
+        groupDisciplina.set(disciplina);
     }
 
     @Override
@@ -74,11 +71,11 @@ public class DisciplinaProvider extends GroupItemProvider<Disciplina, Assunto> {
     }
 
     @Override
-    public void removeGroup(int position) {
+    public void removeGroup(int position)    {
         data.remove(position);
     }
 
-    public class GroupDisciplina extends Group<Disciplina> {
+    public class GroupDisciplina extends Group implements DisciplinaAdapter.Pinnable {
         private Disciplina disciplina;
         private int pinDirection;
 
@@ -102,6 +99,11 @@ public class DisciplinaProvider extends GroupItemProvider<Disciplina, Assunto> {
         }
 
         @Override
+        public void set(Disciplina disciplina) {
+            this.disciplina = disciplina;
+        }
+
+        @Override
         public Disciplina get() {
             return disciplina;
         }
@@ -112,10 +114,15 @@ public class DisciplinaProvider extends GroupItemProvider<Disciplina, Assunto> {
         }
     }
 
-    public class ItemAssunto extends Item<Assunto> {
+    public class ItemAssunto extends Item {
         private Assunto assunto;
 
         ItemAssunto(Assunto assunto) {
+            this.assunto = assunto;
+        }
+
+        @Override
+        public void set(Assunto assunto) {
             this.assunto = assunto;
         }
 

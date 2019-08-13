@@ -1,119 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="wrap_content"
+    android:minHeight="80dp"
     android:layout_marginTop="8dp"
-    android:background="#ffffff"
-    android:orientation="vertical">
+    app:cardCornerRadius="7dp"
+    app:cardElevation="5dp"
+    app:cardPreventCornerOverlap="false">
 
-
-    <LinearLayout
-        android:id="@+id/ll_behindviews"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:baselineAligned="false"
-        android:visibility="gone"
-        android:weightSum="1"
-        tools:visibility="visible">
+        android:layout_height="80dp"
+
+        android:background="#ffffff"
+        android:orientation="vertical">
+
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:id="@+id/ll_behindviews"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:visibility="gone"
+            android:weightSum="1"
+            tools:visibility="visible">
 
             <LinearLayout
-                android:id="@+id/ll_delete_disciplina"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:background="@color/bg_delete"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center">
+                android:baselineAligned="false">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_trash_can"
-                    android:contentDescription="@string/btn_delete_disciplina" />
+                <LinearLayout
+                    android:id="@+id/ll_delete_disciplina"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:background="@color/bg_delete"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_trash_can"
+                        android:contentDescription="@string/btn_delete_disciplina" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_edit_disciplina"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:background="@color/bg_edit"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_edit"
+                        android:contentDescription="@string/btn_edit_disciplina" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/ll_edit_disciplina"
+            <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:background="@color/bg_edit"
+                android:layout_weight="0.3" />
+
+            <LinearLayout
+                android:id="@+id/ll_add_assunto"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:background="@color/bg_add"
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ic_edit"
+                    android:background="@drawable/ic_add"
                     android:contentDescription="@string/btn_edit_disciplina" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.3" />
 
-        <LinearLayout
-            android:id="@+id/ll_add_assunto"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/fl_container"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:background="@color/bg_add"
-            android:foreground="?attr/selectableItemBackground"
-            android:gravity="center">
+            android:background="@android:color/white"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground">
 
-            <ImageView
+            <TextView
+                android:id="@+id/tv_nome_disciplina"
+                style="@style/TextAppearance.Chronos.Badge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_add"
-                android:contentDescription="@string/btn_edit_disciplina" />
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
-
-    </LinearLayout>
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/fl_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/bg_item_normal_state"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground">
-
-        <TextView
-            android:id="@+id/tv_nome_disciplina"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="8dp"
-            android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_descricao_disciplina"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="8dp"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_nome_disciplina" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</FrameLayout>
+            <TextView
+                android:id="@+id/tv_descricao_disciplina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_nome_disciplina" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+</androidx.cardview.widget.CardView>

@@ -10,11 +10,18 @@ import com.espweb.chronos.presentation.ui.adapters.ArtefatoAdapter;
 
 public abstract class ArtefatoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    protected ArtefatoAdapter.ArtefatoListListener artefatoListListener;
+    public interface ArtefatoListListener {
+        void onArtefatoClicked(int row, Artefato artefato);
+    }
 
-    protected ArtefatoViewHolder(@NonNull View itemView, ArtefatoAdapter.ArtefatoListListener artefatoListListener) {
+    protected ArtefatoListListener artefatoListListener;
+
+    protected ArtefatoViewHolder(@NonNull View itemView) {
         super(itemView);
         itemView.setOnClickListener(this);
+    }
+
+    public void setArtefatoListListener(ArtefatoListListener artefatoListListener) {
         this.artefatoListListener = artefatoListListener;
     }
 
