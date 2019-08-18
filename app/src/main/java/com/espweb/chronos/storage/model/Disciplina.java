@@ -1,5 +1,7 @@
 package com.espweb.chronos.storage.model;
 
+import java.util.Date;
+
 import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
@@ -24,6 +26,8 @@ public class Disciplina {
     private ToMany<Assunto> assuntos;
 
     private ToOne<Cronograma> cronograma;
+
+    private Date deletedAt;
 
     public Disciplina(String uuid, String nome, String descricao, long cronogramaId) {
         this.uuid = uuid;
@@ -89,5 +93,13 @@ public class Disciplina {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
     }
 }

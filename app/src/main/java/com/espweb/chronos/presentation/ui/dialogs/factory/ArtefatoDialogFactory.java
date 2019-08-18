@@ -11,12 +11,10 @@ import com.espweb.chronos.presentation.ui.dialogs.base.ArtefatoDialog;
 
 public class ArtefatoDialogFactory {
     public static ArtefatoDialog createFor(Artefato artefato) {
-        if(artefato instanceof Exercicio) {
-            return ExercicioDialog.newInstance((Exercicio) artefato);
-        } else if(artefato instanceof Material) {
-            return MaterialDialog.newInstance((Material) artefato);
-        } else if(artefato instanceof Revisao) {
-            return RevisaoDialog.newInstance((Revisao) artefato);
+        switch (artefato.getTipo()){
+            case REVISAO: return RevisaoDialog.newInstance((Revisao) artefato);
+            case MATERIAL: return MaterialDialog.newInstance((Material) artefato);
+            case EXERCICIO: return ExercicioDialog.newInstance((Exercicio) artefato);
         }
         return null;
     }

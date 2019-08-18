@@ -35,8 +35,15 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     testImplementation "org.mockito:mockito-core:2.+"
 
+    // Java
+    implementation "androidx.navigation:navigation-fragment:2.2.0-alpha01"
+    implementation "androidx.navigation:navigation-ui:2.2.0-alpha01"
+
+    //eventbus
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
     //worker
-    implementation "androidx.work:work-runtime:2.1.0"
+    implementation "androidx.work:work-runtime:2.2.0"
 
     //network
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'

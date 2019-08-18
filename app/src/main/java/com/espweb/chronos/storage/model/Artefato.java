@@ -18,6 +18,8 @@ public class Artefato {
 
     String descricao;
 
+    private Date deletedAt;
+
     Artefato() {
 
     }
@@ -57,5 +59,13 @@ public class Artefato {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
     }
 }

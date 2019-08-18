@@ -11,12 +11,12 @@ public class DeleteDisciplinaInteractorImpl extends AbstractInteractor implement
 
     private Repository<Disciplina> disciplinaRepository;
     private Callback callback;
-    private long disciplinaId;
+    private Disciplina disciplina;
 
     public DeleteDisciplinaInteractorImpl(Executor threadExecutor, MainThread mainThread,
                                           Callback callback,
                                           Repository<Disciplina> disciplinaRepository,
-                                          long disciplinaId) {
+                                          Disciplina disciplina) {
         super(threadExecutor, mainThread);
         if (disciplinaRepository == null || callback == null) {
             throw new IllegalArgumentException("Argumentos nao podem ser nulos!");
@@ -24,13 +24,11 @@ public class DeleteDisciplinaInteractorImpl extends AbstractInteractor implement
 
         this.callback = callback;
         this.disciplinaRepository = disciplinaRepository;
-        this.disciplinaId = disciplinaId;
+        this.disciplina = disciplina;
     }
 
     @Override
     public void run() {
-        Disciplina disciplina = new Disciplina();
-        disciplina.setId(disciplinaId);
         disciplinaRepository.delete(disciplina);
         mainThread.post(() -> callback.onDisciplinaDeleted());
     }

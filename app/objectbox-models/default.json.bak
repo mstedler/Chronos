@@ -1,0 +1,289 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:1420804526457978806",
+      "lastPropertyId": "4:3342208917824528561",
+      "name": "Assunto",
+      "properties": [
+        {
+          "id": "1:687699639397967359",
+          "name": "id"
+        },
+        {
+          "id": "2:7135431641655074130",
+          "indexId": "1:7020171448199682413",
+          "name": "uuid"
+        },
+        {
+          "id": "3:3018517149822803047",
+          "name": "descricao"
+        },
+        {
+          "id": "4:3342208917824528561",
+          "indexId": "2:8850196003362447505",
+          "name": "disciplinaId"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:1951000958973831632",
+      "lastPropertyId": "8:2625037626331537283",
+      "name": "Cronograma",
+      "properties": [
+        {
+          "id": "1:6076380579258215328",
+          "name": "id"
+        },
+        {
+          "id": "2:5400531368795883788",
+          "indexId": "3:7502304932382946224",
+          "name": "uuid"
+        },
+        {
+          "id": "3:7785592900662616877",
+          "name": "titulo"
+        },
+        {
+          "id": "4:1261563219365408896",
+          "name": "descricao"
+        },
+        {
+          "id": "5:2853002516673908890",
+          "name": "inicio"
+        },
+        {
+          "id": "6:4388567037317259157",
+          "name": "fim"
+        },
+        {
+          "id": "7:8687185608141040724",
+          "indexId": "4:5006166379992579452",
+          "name": "userId"
+        },
+        {
+          "id": "8:2625037626331537283",
+          "name": "deleted"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:2393354886344238099",
+      "lastPropertyId": "5:5282390980468050699",
+      "name": "Disciplina",
+      "properties": [
+        {
+          "id": "1:6208317742669816164",
+          "name": "id"
+        },
+        {
+          "id": "2:8832336275128381522",
+          "indexId": "5:7036309480830111113",
+          "name": "uuid"
+        },
+        {
+          "id": "3:7695556681321255147",
+          "name": "nome"
+        },
+        {
+          "id": "4:8510106067488156912",
+          "name": "descricao"
+        },
+        {
+          "id": "5:5282390980468050699",
+          "indexId": "6:8613709408393165018",
+          "name": "cronogramaId"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:3349561063116687309",
+      "lastPropertyId": "7:6967573500831436803",
+      "name": "Exercicio",
+      "properties": [
+        {
+          "id": "1:5914167609468484158",
+          "name": "id"
+        },
+        {
+          "id": "2:2386145605549634417",
+          "indexId": "7:3917347003673604568",
+          "name": "uuid"
+        },
+        {
+          "id": "3:7056291832800077218",
+          "name": "data"
+        },
+        {
+          "id": "4:8033270895292430842",
+          "name": "descricao"
+        },
+        {
+          "id": "5:4826627880301188336",
+          "name": "quantidade"
+        },
+        {
+          "id": "6:3783591938676982194",
+          "name": "acertos"
+        },
+        {
+          "id": "7:6967573500831436803",
+          "indexId": "8:8135457567834868840",
+          "name": "assuntoId"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "5:5467916505171854677",
+      "lastPropertyId": "6:4943326451687577391",
+      "name": "Material",
+      "properties": [
+        {
+          "id": "1:9055796222508035364",
+          "name": "id"
+        },
+        {
+          "id": "2:8605797972436052904",
+          "indexId": "9:3202027867319875597",
+          "name": "uuid"
+        },
+        {
+          "id": "3:8856770813552729842",
+          "name": "data"
+        },
+        {
+          "id": "4:5312696757549470572",
+          "name": "descricao"
+        },
+        {
+          "id": "5:195907714957678068",
+          "name": "minutos"
+        },
+        {
+          "id": "6:4943326451687577391",
+          "indexId": "10:4656581020542897164",
+          "name": "assuntoId"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "6:1243281920891778245",
+      "lastPropertyId": "6:5852459520458858996",
+      "name": "Revisao",
+      "properties": [
+        {
+          "id": "1:5381469337984913747",
+          "name": "id"
+        },
+        {
+          "id": "2:421061764504364880",
+          "indexId": "11:1849084559587329559",
+          "name": "uuid"
+        },
+        {
+          "id": "3:3629961579046216113",
+          "name": "data"
+        },
+        {
+          "id": "4:1472780843398434304",
+          "name": "descricao"
+        },
+        {
+          "id": "5:6226482868616751692",
+          "name": "escopo"
+        },
+        {
+          "id": "6:5852459520458858996",
+          "indexId": "12:2143490738052222534",
+          "name": "assuntoId"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "7:3062297765456985281",
+      "lastPropertyId": "4:2592698491277464540",
+      "name": "Sessao",
+      "properties": [
+        {
+          "id": "1:6257872285583974299",
+          "name": "id"
+        },
+        {
+          "id": "2:3452966342596520774",
+          "name": "token"
+        },
+        {
+          "id": "3:8951256172407889029",
+          "name": "active"
+        },
+        {
+          "id": "4:2592698491277464540",
+          "indexId": "13:6756950641896554866",
+          "name": "userId"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "8:5388108826600740881",
+      "lastPropertyId": "7:7574969162957569811",
+      "name": "User",
+      "properties": [
+        {
+          "id": "1:9065728496430891029",
+          "name": "id"
+        },
+        {
+          "id": "2:3777841331927612923",
+          "indexId": "14:7233391923883968817",
+          "name": "uuid"
+        },
+        {
+          "id": "3:6383158271089085186",
+          "name": "name"
+        },
+        {
+          "id": "4:4760314229242328620",
+          "name": "email"
+        },
+        {
+          "id": "5:5267823517916659797",
+          "name": "password"
+        },
+        {
+          "id": "6:7511499738440021909",
+          "name": "createdAt"
+        },
+        {
+          "id": "7:7574969162957569811",
+          "name": "updatedAt"
+        }
+      ],
+      "relations": [
+        {
+          "id": "1:2192669732527524092",
+          "name": "cronogramas"
+        }
+      ]
+    }
+  ],
+  "lastEntityId": "8:5388108826600740881",
+  "lastIndexId": "14:7233391923883968817",
+  "lastRelationId": "1:2192669732527524092",
+  "lastSequenceId": "0:0",
+  "modelVersion": 4,
+  "modelVersionParserMinimum": 4,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

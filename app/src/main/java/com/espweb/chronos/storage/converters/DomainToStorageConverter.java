@@ -16,6 +16,7 @@ public class DomainToStorageConverter {
         sCronograma.setDescricao(cronograma.getDescricao());
         sCronograma.setInicio(cronograma.getInicio());
         sCronograma.setFim(cronograma.getFim());
+        sCronograma.getUser().setTargetId(cronograma.getIdUser());
         return sCronograma;
     }
 
@@ -25,6 +26,7 @@ public class DomainToStorageConverter {
         sRevisao.setData(revisao.getData());
         sRevisao.setEscopo(revisao.getEscopo().getIntValue());
         sRevisao.setId(revisao.getId());
+        sRevisao.getAssunto().setTargetId(revisao.getIdAssunto());
         return sRevisao;
     }
 

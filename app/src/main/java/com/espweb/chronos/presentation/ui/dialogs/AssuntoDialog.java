@@ -31,7 +31,6 @@ import butterknife.OnClick;
 
 public class AssuntoDialog extends DialogFragment implements AssuntoDialogPresenter.View {
 
-    private Disciplina disciplina;
     private Assunto assunto;
 
     private AssuntoDialogPresenter presenter;
@@ -54,10 +53,9 @@ public class AssuntoDialog extends DialogFragment implements AssuntoDialogPresen
 
     }
 
-    public static AssuntoDialog newInstance(Disciplina disciplina, Assunto assunto) {
+    public static AssuntoDialog newInstance(Assunto assunto) {
         AssuntoDialog assuntoDialog = new AssuntoDialog();
         Bundle args = new Bundle();
-        args.putParcelable("disciplina", Parcels.wrap(disciplina));
         args.putParcelable("assunto", Parcels.wrap(assunto));
         assuntoDialog.setArguments(args);
         return assuntoDialog;
@@ -98,7 +96,6 @@ public class AssuntoDialog extends DialogFragment implements AssuntoDialogPresen
     private void initFromBundle() {
         Bundle arguments = getArguments();
         if(arguments != null) {
-            disciplina = Parcels.unwrap(arguments.getParcelable("disciplina"));
             assunto = Parcels.unwrap(arguments.getParcelable("assunto"));
         }
     }

@@ -62,15 +62,10 @@ public abstract class ArtefatoDialog<T extends Artefato> extends DialogFragment 
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onStart() {
         initView();
-    }
-
-    @Override
-    public void onResume() {
         ViewUtils.putDialogOnCenter(getDialog());
-        super.onResume();
+        super.onStart();
     }
 
     private void initView() {

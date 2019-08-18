@@ -12,6 +12,7 @@ import com.espweb.chronos.domain.interactors.disciplina.impl.DeleteDisciplinaInt
 import com.espweb.chronos.domain.interactors.disciplina.impl.GetAllDisciplinasInteractorImpl;
 import com.espweb.chronos.domain.repository.Repository;
 import com.espweb.chronos.presentation.converters.DomainToPresentationConverter;
+import com.espweb.chronos.presentation.converters.PresentationToDomainConverter;
 import com.espweb.chronos.presentation.model.Cronograma;
 import com.espweb.chronos.presentation.model.Disciplina;
 import com.espweb.chronos.presentation.presenters.CronogramaPresenter;
@@ -40,13 +41,13 @@ public class CronogramaPresenterImpl extends AbstractPresenter implements Cronog
     }
 
     @Override
-    public void deleteCronograma(long cronogramaId) {
+    public void deleteCronograma(Cronograma cronograma) {
         DeleteCronogramaInteractor deleteCronogramaInteractor = new DeleteCronogramaInteractorImpl(
                 executor,
                 mainThread,
                 this,
                 cronogramaRepository,
-                cronogramaId
+                PresentationToDomainConverter.convert(cronograma)
         );
         deleteCronogramaInteractor.execute();
     }
@@ -75,13 +76,13 @@ public class CronogramaPresenterImpl extends AbstractPresenter implements Cronog
     }
 
     @Override
-    public void deleteDisciplina(long disciplinaId) {
+    public void deleteDisciplina(Disciplina disciplina) {
         DeleteDisciplinaInteractor deleteDisciplinaInteractor = new DeleteDisciplinaInteractorImpl(
                 executor,
                 mainThread,
                 this,
                 disciplinaRepository,
-                disciplinaId);
+                PresentationToDomainConverter.convert(disciplina));
         deleteDisciplinaInteractor.execute();
     }
 
@@ -131,5 +132,10 @@ public class CronogramaPresenterImpl extends AbstractPresenter implements Cronog
         Cronograma pCronograma = DomainToPresentationConverter.convert(cronograma);
         view.setCronograma(pCronograma);
         view.bindCronogramaToView();
+    }
+
+    @Override
+    public void cronogramaNotFound() {
+        view.finish();
     }
 }

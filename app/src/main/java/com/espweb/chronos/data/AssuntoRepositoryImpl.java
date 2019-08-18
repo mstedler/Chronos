@@ -1,21 +1,31 @@
 package com.espweb.chronos.data;
 
 import android.content.Context;
+import android.util.Log;
 
+import androidx.work.Data;
+
+import com.espweb.chronos.domain.exceptions.NotFoundException;
 import com.espweb.chronos.domain.model.Assunto;
 import com.espweb.chronos.domain.repository.Repository;
+import com.espweb.chronos.storage.boxes.AssuntoBox;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
-import com.espweb.chronos.storage.database.ObjectBox;
-import com.espweb.chronos.storage.model.Assunto_;
+import com.espweb.chronos.workers.CreateAssuntoWorker;
+import com.espweb.chronos.workers.DeleteAssuntoWorker;
+import com.espweb.chronos.workers.UpdateAssuntoWorker;
+import com.espweb.chronos.workers.base.WorkFactory;
 
 import java.util.List;
 import java.util.UUID;
 
-import io.objectbox.Box;
-
 public class AssuntoRepositoryImpl implements Repository<Assunto> {
 
+    private static final String TAG = "AssuntoRepositoryImp";
     private Context context;
+
+    public AssuntoRepositoryImpl(Context context) {
+        this.context = context.getApplicationContext();
+    }
 
     @Override
     public long insert(Assunto assunto) {
@@ -23,43 +33,52 @@ public class AssuntoRepositoryImpl implements Repository<Assunto> {
                 UUID.randomUUID().toString(),
                 assunto.getDescricao(),
                 assunto.getIdDisciplina());
-        return getBox().put(sAssunto);
+
+        long id = AssuntoBox.put(sAssunto);
+
+        Data idData = new Data.Builder().putLong(CreateAssuntoWorker.KEY_ID_ASSUNTO, id).build();
+
+        WorkFactory.enqueue(context, idData, CreateAssuntoWorker.class);
+
+        return id;
     }
 
     @Override
     public void update(Assunto assunto) {
-        com.espweb.chronos.storage.model.Assunto sAssunto = getBox().get(assunto.getId());
-        sAssunto.setDescricao(assunto.getDescricao());
-        getBox().put(sAssunto);
+        try {
+            com.espweb.chronos.storage.model.Assunto sAssunto = AssuntoBox.get(assunto.getId());
+            sAssunto.setDescricao(assunto.getDescricao());
+            AssuntoBox.put(sAssunto);
+            Data idData = new Data.Builder().putLong(CreateAssuntoWorker.KEY_ID_ASSUNTO, assunto.getId()).build();
+            WorkFactory.enqueue(context, idData, UpdateAssuntoWorker.class);
+        } catch (NotFoundException e) {
+            Log.e(TAG, e.getLocalizedMessage());
+        }
     }
 
     @Override
     public void delete(Assunto assunto) {
-        getBox().remove(assunto.getId());
+        AssuntoBox.remove(assunto.getId());
+
+        Data idData = new Data.Builder().putString(DeleteAssuntoWorker.KEY_UUID_ASSUNTO, assunto.getUuid()).build();
+
+        WorkFactory.enqueue(context, idData, DeleteAssuntoWorker.class);
     }
 
     @Override
     public Assunto get(long id) {
-        com.espweb.chronos.storage.model.Assunto assunto = getBox().get(id);
-        Assunto assunto1 = null;
-        if(assunto != null) {
-            assunto1 = StorageToDomainConverter.convert(assunto);
+        try {
+            com.espweb.chronos.storage.model.Assunto assunto = AssuntoBox.get(id);
+            return StorageToDomainConverter.convert(assunto);
+        } catch (NotFoundException e) {
+            Log.e(TAG, e.getLocalizedMessage());
+            return null;
         }
-        return assunto1;
     }
 
     @Override
-    public List<Assunto> getAll(long parentId) {
-        List<com.espweb.chronos.storage.model.Assunto> assuntos = getBox().query().equal(Assunto_.disciplinaId, parentId).build().find();
+    public List<Assunto> getAll(long idDisciplina) {
+        List<com.espweb.chronos.storage.model.Assunto> assuntos = AssuntoBox.getAll(idDisciplina);
         return StorageToDomainConverter.convertAssuntos(assuntos);
     }
-
-    private Box<com.espweb.chronos.storage.model.Assunto> getBox() {
-        return ObjectBox.get().boxFor(com.espweb.chronos.storage.model.Assunto.class);
-    }
-
-    public AssuntoRepositoryImpl(Context context) {
-        this.context = context;
-    }
-
 }

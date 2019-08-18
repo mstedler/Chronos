@@ -5,6 +5,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class Assunto {
+    @SerializedName("assunto")
+    private Assunto assunto;
+
     @SerializedName("uuid")
     private String uuid;
     @SerializedName("descricao")
@@ -60,5 +63,13 @@ public class Assunto {
 
     public void setExercicios(List<Exercicio> exercicios) {
         this.exercicios = exercicios;
+    }
+
+    public Assunto getAssunto() {
+        return assunto;
+    }
+
+    public void setAssunto(Assunto assunto) {
+        this.assunto = assunto;
     }
 }

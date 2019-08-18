@@ -4,13 +4,15 @@ package com.espweb.chronos.data;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.work.WorkManager;
+
 import com.espweb.chronos.domain.exceptions.NotFoundException;
 import com.espweb.chronos.domain.exceptions.SignInFailedException;
 import com.espweb.chronos.domain.exceptions.SignUpFailedException;
 import com.espweb.chronos.domain.model.User;
 import com.espweb.chronos.domain.repository.SessaoRepository;
 import com.espweb.chronos.network.RestClient;
-import com.espweb.chronos.network.converters.RESTModelConverter;
+import com.espweb.chronos.network.converters.NetworkToDomainConverter;
 import com.espweb.chronos.network.model.Error;
 import com.espweb.chronos.network.model.Sessao;
 import com.espweb.chronos.network.services.SessionService;
@@ -30,7 +32,7 @@ public class SessaoRepositoryImpl implements SessaoRepository {
     private Context context;
 
     public SessaoRepositoryImpl(Context context) {
-        this.context = context;
+        this.context = context.getApplicationContext();
     }
 
     @Override
@@ -95,7 +97,7 @@ public class SessaoRepositoryImpl implements SessaoRepository {
         try {
             Response<Sessao> response = signInService.signIn(user.getEmail(), user.getPassword()).execute();
             if (response.isSuccessful()) {
-                return RESTModelConverter.convertSessaoToDomainModel(response.body());
+                return NetworkToDomainConverter.convert(response.body());
             } else {
                 Gson gson = new Gson();
                 Error error = gson.fromJson(response.errorBody().charStream(), Error.class);
@@ -109,7 +111,8 @@ public class SessaoRepositoryImpl implements SessaoRepository {
 
     @Override
     public void signOutUser() {
-        ObjectBox.deleteDB(context.getApplicationContext());
+        ObjectBox.deleteDB(context);
+        WorkManager.getInstance(context).cancelAllWork();
     }
 
     private Box<com.espweb.chronos.storage.model.Sessao> getBox() {

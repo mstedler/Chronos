@@ -36,6 +36,7 @@
         app:menu_colorPressed="@color/colorAccent"
         app:menu_colorRipple="#99FFFFFF"
         app:menu_fab_label="@string/add"
+        app:menu_icon="@drawable/fab_add"
         app:menu_fab_size="normal"
         android:layout_margin="16dp"
         app:menu_openDirection="up">

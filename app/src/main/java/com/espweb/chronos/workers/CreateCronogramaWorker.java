@@ -6,27 +6,37 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.espweb.chronos.data.CronogramaRepositoryImpl;
+import com.espweb.chronos.domain.exceptions.NotFoundException;
+import com.espweb.chronos.network.RestClient;
+import com.espweb.chronos.network.converters.DateConverter;
 import com.espweb.chronos.network.model.Cronograma;
+import com.espweb.chronos.network.services.CronogramaService;
+import com.espweb.chronos.storage.boxes.CronogramaBox;
+import com.espweb.chronos.workers.base.WebRequestWorker;
 
-public class CreateCronogramaWorker extends Worker {
+import java.io.IOException;
+
+import retrofit2.Response;
+
+public class CreateCronogramaWorker extends WebRequestWorker {
+    public final static String KEY_ID_CRONOGRAMA = "ID_CRONOGRAMA";
 
     public CreateCronogramaWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 
-    @NonNull
     @Override
-    public Result doWork() {
-        Context context = getApplicationContext();
-        CronogramaRepositoryImpl cronogramaRepository = new CronogramaRepositoryImpl(context);
-        try {
-            Cronograma cronograma = cronogramaRepository.get(1);
+    public void work() throws IOException, NullPointerException, NotFoundException {
+        long id = getInputData().getLong(KEY_ID_CRONOGRAMA, 0);
+        com.espweb.chronos.storage.model.Cronograma cronograma = CronogramaBox.get(id);
+        CronogramaService cronogramaService = RestClient.createService(CronogramaService.class);
+        Response<Cronograma> response = cronogramaService.create(cronograma.getTitulo(),
+                cronograma.getDescricao(),
+                DateConverter.format(cronograma.getInicio()),
+                DateConverter.format(cronograma.getFim())).execute();
 
-
-            return Result.success();
-        }catch (Exception e){
-            return Result.retry();
-        }
+        com.espweb.chronos.network.model.Cronograma nCronograma = response.body().getCronograma();
+        cronograma.setUuid(nCronograma.getUuid());
+        CronogramaBox.put(cronograma);
     }
 }

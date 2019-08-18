@@ -7,6 +7,9 @@ import java.util.List;
 
 public class Cronograma {
 
+    @SerializedName("cronograma")
+    private Cronograma cronograma;
+
     @SerializedName("uuid")
     private String uuid;
     @SerializedName("titulo")
@@ -22,6 +25,14 @@ public class Cronograma {
 
     public Cronograma() {
 
+    }
+
+    public Cronograma getCronograma() {
+        return cronograma;
+    }
+
+    public void setCronograma(Cronograma cronograma) {
+        this.cronograma = cronograma;
     }
 
     public String getUuid() {

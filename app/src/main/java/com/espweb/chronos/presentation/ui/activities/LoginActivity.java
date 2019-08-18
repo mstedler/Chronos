@@ -34,7 +34,7 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.View,
 
     public static Intent getCallingIntent(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
     }
 

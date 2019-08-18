@@ -11,12 +11,12 @@ public class DeleteCronogramaInteractorImpl extends AbstractInteractor implement
 
     private Repository<Cronograma> cronogramaRepository;
     private Callback callback;
-    private long cronogramaId;
+    private Cronograma cronograma;
 
     public DeleteCronogramaInteractorImpl(Executor threadExecutor, MainThread mainThread,
                                           Callback callback,
                                           Repository<Cronograma> cronogramaRepository,
-                                          long cronogramaId) {
+                                          Cronograma cronograma) {
         super(threadExecutor, mainThread);
 
         if (cronogramaRepository == null || callback == null) {
@@ -25,13 +25,11 @@ public class DeleteCronogramaInteractorImpl extends AbstractInteractor implement
 
         this.callback = callback;
         this.cronogramaRepository = cronogramaRepository;
-        this.cronogramaId = cronogramaId;
+        this.cronograma = cronograma;
     }
 
     @Override
     public void run() {
-        Cronograma cronograma = new Cronograma();
-        cronograma.setId(cronogramaId);
         cronogramaRepository.delete(cronograma);
 
         mainThread.post(() -> callback.onCronogramaDeleted());

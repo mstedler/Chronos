@@ -32,6 +32,11 @@ public class GetCronogramaInteractorImpl extends AbstractInteractor implements G
     public void run() {
         Cronograma cronograma = cronogramaRepository.get(cronogramaId);
 
-        mainThread.post(() -> callback.onCronogramaRetrieved(cronograma));
+        if(cronograma != null) {
+            mainThread.post(() -> callback.onCronogramaRetrieved(cronograma));
+        } else {
+            mainThread.post(() -> callback.cronogramaNotFound());
+        }
+
     }
 }

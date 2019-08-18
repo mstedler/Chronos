@@ -18,9 +18,15 @@
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
-    <style name="TextAppearance.Chronos.Title" parent="TextAppearance.MaterialComponents.Headline4">
-        <item name="textAllCaps">true</item>
+    <style name="TextAppearance.Chronos.Title" parent="TextAppearance.MaterialComponents.Headline3">
         <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/labelle_aurore</item>
+        <item name="android:textColor">?android:attr/colorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.Chronos.ToolbarTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/labelle_aurore</item>
         <item name="android:textColor">?android:attr/colorPrimary</item>
     </style>
 

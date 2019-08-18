@@ -11,11 +11,11 @@ public class DeleteAssuntoInteractorImpl extends AbstractInteractor implements D
 
     private Repository<Assunto> assuntoRepository;
     private Callback callback;
-    private long assuntoId;
+    private Assunto assunto;
     public DeleteAssuntoInteractorImpl(Executor threadExecutor, MainThread mainThread,
                                        Callback callback,
                                        Repository<Assunto> assuntoRepository,
-                                       long assuntoId) {
+                                       Assunto assunto) {
         super(threadExecutor, mainThread);
         if (assuntoRepository == null || callback == null) {
             throw new IllegalArgumentException("Argumentos nao podem ser nulos!");
@@ -23,13 +23,11 @@ public class DeleteAssuntoInteractorImpl extends AbstractInteractor implements D
 
         this.callback = callback;
         this.assuntoRepository = assuntoRepository;
-        this.assuntoId = assuntoId;
+        this.assunto = assunto;
     }
 
     @Override
     public void run() {
-        Assunto assunto = new Assunto();
-        assunto.setId(assuntoId);
         assuntoRepository.delete(assunto);
         mainThread.post(() -> callback.onAssuntoDeleted());
     }

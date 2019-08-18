@@ -11,7 +11,6 @@ import io.objectbox.relation.ToOne;
 
 @Entity
 public class Cronograma {
-
     @Id
     private long id;
 
@@ -22,6 +21,8 @@ public class Cronograma {
     private String descricao;
     private Date inicio;
     private Date fim;
+
+    private Date deletedAt;
 
     @Backlink(to = "cronograma")
     private ToMany<Disciplina> disciplinas;
@@ -100,5 +101,13 @@ public class Cronograma {
 
     public void setDisciplinas(ToMany<Disciplina> disciplinas) {
         this.disciplinas = disciplinas;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
     }
 }

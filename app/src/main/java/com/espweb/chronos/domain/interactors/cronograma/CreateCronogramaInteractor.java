@@ -8,4 +8,6 @@ public interface CreateCronogramaInteractor extends Interactor {
         void onCronogramaCreated(Cronograma cronograma);
         void onError(String message);
     }
+
+
 }

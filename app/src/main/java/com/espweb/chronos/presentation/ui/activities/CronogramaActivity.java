@@ -118,13 +118,13 @@ public class CronogramaActivity extends BaseActivity implements CronogramaPresen
         @Override
         public void onDeleteDisciplinaClicked(Disciplina disciplina) {
             YesNoDialog confirmDialog = YesNoDialog.newInstance(getString(R.string.delete), getString(R.string.are_you_sure));
-            confirmDialog.setListener(() -> cronogramaPresenter.deleteDisciplina(disciplina.getId()));
+            confirmDialog.setListener(() -> cronogramaPresenter.deleteDisciplina(disciplina));
             confirmDialog.show(getSupportFragmentManager(), "DELETE_DISCIPLINA_DIALOG");
         }
 
         @Override
         public void onCreateAssuntoClicked(Disciplina disciplina) {
-            showAssuntoDialog(disciplina, new Assunto(disciplina.getId()));
+            showAssuntoDialog(new Assunto(disciplina.getId()));
         }
     };
 
@@ -193,7 +193,7 @@ public class CronogramaActivity extends BaseActivity implements CronogramaPresen
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.cronograma, menu);
+        getMenuInflater().inflate(R.menu.edit_delete, menu);
         return true;
     }
 
@@ -202,7 +202,7 @@ public class CronogramaActivity extends BaseActivity implements CronogramaPresen
         if (item.getItemId() == R.id.item_edit) {
             showCronogramaDialog();
         } else if (item.getItemId() == R.id.item_delete) {
-            showYesNoDialog();
+            showDeleteDialog();
         }
         return true;
     }
@@ -245,8 +245,8 @@ public class CronogramaActivity extends BaseActivity implements CronogramaPresen
         }
     };
 
-    private void showAssuntoDialog(Disciplina disciplina, Assunto assunto) {
-        AssuntoDialog assuntoDialog = AssuntoDialog.newInstance(disciplina, assunto);
+    private void showAssuntoDialog(Assunto assunto) {
+        AssuntoDialog assuntoDialog = AssuntoDialog.newInstance( assunto);
         assuntoDialog.setAssuntoDialogListener(assuntoDialogListener);
         assuntoDialog.show(getSupportFragmentManager(), "ASSUNTO_DIALOG");
     }
@@ -254,11 +254,11 @@ public class CronogramaActivity extends BaseActivity implements CronogramaPresen
     YesNoDialog.YesNoDialogListener confirmDeleteCronograma = new YesNoDialog.YesNoDialogListener() {
         @Override
         public void yesClicked() {
-            cronogramaPresenter.deleteCronograma(cronograma.getId());
+            cronogramaPresenter.deleteCronograma(cronograma);
         }
     };
 
-    private void showYesNoDialog() {
+    private void showDeleteDialog() {
         YesNoDialog confirmDelete = YesNoDialog.newInstance(getString(R.string.delete), getString(R.string.are_you_sure));
         confirmDelete.setListener(confirmDeleteCronograma);
         confirmDelete.show(getSupportFragmentManager(), "YES_NO_DIALOG");
