@@ -24,6 +24,11 @@
         <item name="android:textColor">?android:attr/colorPrimary</item>
     </style>
 
+    <style name="TextAppearance.Chronos.CardTitle" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?android:attr/colorPrimary</item>
+    </style>
+
     <style name="TextAppearance.Chronos.ToolbarTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textStyle">bold</item>
         <item name="fontFamily">@font/labelle_aurore</item>
@@ -40,11 +45,9 @@
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
-    <style name="DialogAnimation">
-        <item name="android:windowEnterAnimation">@anim/slide_in_right</item>
-        <item name="android:windowExitAnimation">@anim/slide_out_left</item>
+    <style name="Theme.Chronos.Dialog" parent="Theme.MaterialComponents.Dialog">
+        <item name="android:background">@drawable/shape_dialog</item>
     </style>
-    
     <style name="TextAppearance.Chronos.Dialog.Title" parent="android:Widget.TextView" >
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
@@ -57,4 +60,6 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
+
+    <string name="revisoes">Revisões</string>
 </resources>

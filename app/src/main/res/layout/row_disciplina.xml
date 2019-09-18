@@ -3,125 +3,144 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="80dp"
-    android:layout_marginTop="8dp"
+    android:layout_height="140dp"
     app:cardCornerRadius="7dp"
     app:cardElevation="5dp"
-    app:cardPreventCornerOverlap="false">
+    app:cardUseCompatPadding="true"
+    android:layout_marginTop="8dp">
 
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/ll_behindviews"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-
-        android:background="#ffffff"
-        android:orientation="vertical">
-
+        android:layout_height="match_parent"
+        android:baselineAligned="false"
+        android:visibility="gone"
+        android:weightSum="1"
+        tools:visibility="visible">
 
         <LinearLayout
-            android:id="@+id/ll_behindviews"
-            android:layout_width="match_parent"
+            android:id="@+id/ll_delete_disciplina"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:baselineAligned="false"
-            android:visibility="gone"
-            android:weightSum="1"
-            tools:visibility="visible">
+            android:layout_weight="0.25"
+            android:background="@color/bg_delete"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:baselineAligned="false">
-
-                <LinearLayout
-                    android:id="@+id/ll_delete_disciplina"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:background="@color/bg_delete"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/ic_trash_can"
-                        android:contentDescription="@string/btn_delete_disciplina" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_edit_disciplina"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:background="@color/bg_edit"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/ic_edit"
-                        android:contentDescription="@string/btn_edit_disciplina" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.3" />
-
-            <LinearLayout
-                android:id="@+id/ll_add_assunto"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                android:background="@color/bg_add"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_add"
-                    android:contentDescription="@string/btn_edit_disciplina" />
-
-            </LinearLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_trash_can"
+                android:contentDescription="@string/excluir_disciplina" />
 
         </LinearLayout>
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/fl_container"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/ll_edit_disciplina"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@android:color/white"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground">
+            android:layout_weight="0.25"
+            android:background="@color/bg_edit"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center">
 
-            <TextView
-                android:id="@+id/tv_nome_disciplina"
-                style="@style/TextAppearance.Chronos.Badge"
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:background="@drawable/ic_edit"
+                android:contentDescription="@string/editar_disciplina" />
 
-            <TextView
-                android:id="@+id/tv_descricao_disciplina"
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25" />
+
+        <LinearLayout
+            android:id="@+id/ll_add_assunto"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:background="@color/bg_add"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center">
+
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="8dp"
-                android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_nome_disciplina" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </FrameLayout>
+                android:background="@drawable/ic_add"
+                android:contentDescription="@string/editar_disciplina" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
+
+        <TextView
+            android:id="@+id/tv_nome_disciplina"
+            style="@style/TextAppearance.Chronos.CardTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Disciplina I"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_descricao_disciplina"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Descricao"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_nome_disciplina" />
+
+        <TextView
+            android:id="@+id/tv_qtd_assuntos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="2 assuntos"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view" />
+
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="#AA000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_descricao_disciplina" />
+
+        <com.espweb.chronos.presentation.ui.custom.ExpandableItemIndicator
+            android:id="@+id/item_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.cardview.widget.CardView>

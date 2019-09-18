@@ -1,16 +1,14 @@
 package com.espweb.chronos.presentation.ui.dialogs.base;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.espweb.chronos.R;
 import com.espweb.chronos.data.ArtefatoRepositoryImpl;
+import com.espweb.chronos.data.factory.ArtefatoRepositoryFactory;
 import com.espweb.chronos.domain.executor.impl.ThreadExecutor;
 import com.espweb.chronos.presentation.model.Artefato;
 import com.espweb.chronos.presentation.presenters.ArtefatoDialogPresenter;
@@ -52,19 +50,9 @@ public abstract class ArtefatoDialog<T extends Artefato> extends DialogFragment 
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            artefatoDialogListener = (ArtefatoDialogListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException("ArtefatoDialogListener deve ser implementado");
-        }
-    }
-
-    @Override
     public void onStart() {
         initView();
-        ViewUtils.putDialogOnCenter(getDialog());
+        ViewUtils.putDialogOnCenter(requireDialog());
         super.onStart();
     }
 
@@ -97,7 +85,7 @@ public abstract class ArtefatoDialog<T extends Artefato> extends DialogFragment 
                 ThreadExecutor.getInstance(),
                 MainThreadImpl.getInstance(),
                 this,
-                new ArtefatoRepositoryImpl(getContext())
+                new ArtefatoRepositoryImpl(requireContext())
         );
     }
 
@@ -116,5 +104,9 @@ public abstract class ArtefatoDialog<T extends Artefato> extends DialogFragment 
     @OnClick(R.id.btn_cancelar)
     void onCancelarClick() {
         dismiss();
+    }
+
+    public void setListener(ArtefatoDialogListener artefatoDialogListener) {
+        this.artefatoDialogListener = artefatoDialogListener;
     }
 }

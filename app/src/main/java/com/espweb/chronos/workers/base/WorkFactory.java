@@ -1,4 +1,4 @@
-package com.espweb.chronos.workers;
+package com.espweb.chronos.workers.base;
 
 import android.content.Context;
 
@@ -9,6 +9,7 @@ import androidx.work.ListenableWorker;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
+
 
 public class WorkFactory {
 
@@ -22,6 +23,6 @@ public class WorkFactory {
                 .setInputData(inputData)
                 .build();
 
-        WorkManager.getInstance(context).enqueueUniqueWork("WEB_REQUEST", ExistingWorkPolicy.APPEND, workRequest);
+        WorkManager.getInstance(context).enqueueUniqueWork(WebRequestWorker.NAME, ExistingWorkPolicy.APPEND, workRequest);
     }
 }

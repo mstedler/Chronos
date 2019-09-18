@@ -20,9 +20,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CronogramaAdapter extends RecyclerView.Adapter<CronogramaAdapter.CronogramaViewHolder> {
+
     public void addCronograma(Cronograma cronograma) {
         cronogramas.add(cronograma);
-        notifyItemInserted(cronogramas.size());
+        int position = cronogramas.size();
+        notifyItemInserted(position);
+    }
+
+    public void clear() {
+        cronogramas.clear();
+        notifyDataSetChanged();
     }
 
     public interface CronogramaListListener {

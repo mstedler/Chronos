@@ -63,8 +63,29 @@ public class ExercicioDialog extends ArtefatoDialog<Exercicio>  {
 
     @Override
     public void setTitle() {
-        int title = artefato.isNew() ? R.string.new_exercise : R.string.edit;
+        int title = artefato.isNew() ? R.string.novo_exercicio : R.string.editar;
         tvTitle.setText(getText(title));
+    }
+
+    @Override
+    protected boolean validate() {
+        clearErrors();
+        if(!artefato.isValid()) {
+            tilQuantidade.setError("");
+            tilAcertos.setError(getString(R.string.menor_ou_igual));
+            return false;
+        }
+        if(!artefato.isDescricaoValid()) {
+            tilDescricao.setError(getString(R.string.deve_ter_mais_que_3));
+            return false;
+        }
+        return true;
+    }
+
+    private void clearErrors() {
+        tilQuantidade.setError(null);
+        tilDescricao.setError(null);
+        tilAcertos.setError(null);
     }
 
 
@@ -75,10 +96,12 @@ public class ExercicioDialog extends ArtefatoDialog<Exercicio>  {
         String quantidade = tilQuantidade.getEditText().getText().toString();
         String acertos = tilAcertos.getEditText().getText().toString();
 
+        int iQuantidade = quantidade.isEmpty() ? 0 : Integer.valueOf(quantidade);
+        int iAcertos = acertos.isEmpty() ? 0 : Integer.valueOf(acertos);
         artefato.setData(DateUtils.parse(data));
         artefato.setDescricao(descricao);
-        artefato.setQuantidade(Integer.valueOf(quantidade));
-        artefato.setAcertos(Integer.valueOf(acertos));
+        artefato.setQuantidade(iQuantidade);
+        artefato.setAcertos(iAcertos);
     }
 
     @Override

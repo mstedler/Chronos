@@ -1,5 +1,6 @@
 package com.espweb.chronos.domain.model;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class Cronograma {
     private String descricao;
     private Date inicio;
     private Date fim;
-    private List<Disciplina> disciplinas;
+    private List<Disciplina> disciplinas = Collections.emptyList();
 
     private long idUser;
 
@@ -26,10 +27,6 @@ public class Cronograma {
         this.descricao = descricao;
         this.inicio = inicio;
         this.fim = fim;
-    }
-
-    public static Cronograma withoutId(String uuid, String titulo, String descricao, Date inicio, Date fim) {
-        return new Cronograma(-1, uuid, titulo, descricao, inicio, fim);
     }
 
     public Cronograma() {

@@ -14,7 +14,8 @@ public interface CronogramaPresenter extends BasePresenter {
         void bindCronogramaToView();
         void onDisciplinaDeleted();
         void onCronogramaDeleted();
-        void finish();
+        void navigateToMain();
+        void showEmptyView();
     }
 
     void deleteCronograma(Cronograma cronograma);

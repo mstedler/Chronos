@@ -1,5 +1,7 @@
 package com.espweb.chronos.presentation.model;
 
+import com.espweb.chronos.domain.model.EnumTipo;
+
 import org.parceler.Parcel;
 
 @Parcel(Parcel.Serialization.BEAN)
@@ -14,7 +16,6 @@ public class Exercicio extends Artefato {
     public Exercicio(long idAssunto) {
         this.idAssunto = idAssunto;
     }
-
     public int getQuantidade() {
         return quantidade;
     }
@@ -34,5 +35,9 @@ public class Exercicio extends Artefato {
     @Override
     public EnumTipo getTipo() {
         return EnumTipo.EXERCICIO;
+    }
+
+    public boolean isValid() {
+        return acertos <= quantidade;
     }
 }

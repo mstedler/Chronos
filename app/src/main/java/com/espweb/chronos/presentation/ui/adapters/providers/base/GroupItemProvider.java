@@ -4,6 +4,8 @@ package com.espweb.chronos.presentation.ui.adapters.providers.base;
 import java.util.List;
 
 public abstract class GroupItemProvider<G, I> {
+
+
     public abstract class Group {
         public abstract void set(G group);
         public abstract G get();
@@ -28,4 +30,5 @@ public abstract class GroupItemProvider<G, I> {
     public abstract Item getItem(int groupPosition, int itemPosition);
 
     public abstract void removeGroup(int position);
+    public abstract void removeItem(int groupPosition, int itemPosition);
 }

@@ -59,8 +59,17 @@ public class RevisaoDialog extends ArtefatoDialog<Revisao> {
 
     @Override
     public void setTitle() {
-        int title = artefato.isNew() ? R.string.new_review : R.string.edit;
+        int title = artefato.isNew() ? R.string.nova_revisao : R.string.editar;
         tvTitle.setText(title);
+    }
+
+    @Override
+    protected boolean validate() {
+        if(!artefato.isDescricaoValid()) {
+            tilDescricao.setError(getString(R.string.deve_ter_mais_que_3));
+            return false;
+        }
+        return true;
     }
 
     @Override

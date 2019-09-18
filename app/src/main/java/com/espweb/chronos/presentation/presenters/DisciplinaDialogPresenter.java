@@ -6,7 +6,6 @@ import com.espweb.chronos.presentation.ui.BaseView;
 
 public interface DisciplinaDialogPresenter extends BasePresenter {
     interface View extends BaseView {
-        void setNomeError(String message);
         void onDisciplinaCreated(Disciplina disciplina);
         void onDisciplinaUpdated();
     }

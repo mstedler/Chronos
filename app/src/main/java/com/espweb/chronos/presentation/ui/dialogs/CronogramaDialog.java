@@ -25,8 +25,6 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import org.parceler.Parcels;
 
-import java.util.Date;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -35,6 +33,7 @@ public class CronogramaDialog extends DialogFragment implements DatePickerDialog
 
     public interface CronogramaDialogListener {
         void onCronogramaCreated(Cronograma cronograma);
+
         void onCronogramaUpdated(Cronograma cronograma);
     }
 
@@ -78,7 +77,7 @@ public class CronogramaDialog extends DialogFragment implements DatePickerDialog
                 ThreadExecutor.getInstance(),
                 MainThreadImpl.getInstance(),
                 this,
-                new CronogramaRepositoryImpl(getActivity()));
+                new CronogramaRepositoryImpl(requireContext()));
     }
 
     @Nullable
@@ -97,12 +96,12 @@ public class CronogramaDialog extends DialogFragment implements DatePickerDialog
     }
 
     private void buildFromArguments() {
-        if(getArguments() != null)
+        if (getArguments() != null)
             cronograma = Parcels.unwrap(getArguments().getParcelable("cronograma"));
     }
 
     private void setTitle() {
-        int title = cronograma.isNew() ? R.string.new_cronograma : R.string.edit;
+        int title = cronograma.isNew() ? R.string.novo_cronograma : R.string.editar;
         tvTitle.setText(title);
     }
 
@@ -115,7 +114,7 @@ public class CronogramaDialog extends DialogFragment implements DatePickerDialog
 
     @Override
     public void onResume() {
-        ViewUtils.putDialogOnCenter(getDialog());
+        ViewUtils.putDialogOnCenter(requireDialog());
         super.onResume();
     }
 
@@ -125,9 +124,28 @@ public class CronogramaDialog extends DialogFragment implements DatePickerDialog
     }
 
     @OnClick(R.id.btn_save)
-    void saveClicked(){
+    void saveClicked() {
         buildFromForm();
-        if(cronograma.isNew()) {
+        if(validate())
+            save();
+    }
+
+    private boolean validate() {
+        clearErrors();
+        if(!cronograma.isTituloValid()) {
+            tilTitulo.setError(getString(R.string.deve_ter_mais_que_3));
+            return false;
+        }
+        return true;
+    }
+
+    private void clearErrors() {
+        tilTitulo.setError(null);
+        tilDescricao.setError(null);
+    }
+
+    private void save() {
+        if (cronograma.isNew()) {
             createCronograma();
         } else {
             updateCronograma();
@@ -169,11 +187,6 @@ public class CronogramaDialog extends DialogFragment implements DatePickerDialog
 
     }
 
-    @OnClick({R.id.til_data_inicial, R.id.til_data_final})
-    public void onClick(View v) {
-
-    }
-
     @Override
     public void dismissDialog() {
         dismiss();
@@ -182,11 +195,6 @@ public class CronogramaDialog extends DialogFragment implements DatePickerDialog
     @Override
     public void setTitleError(String errorMessage) {
         tilTitulo.setError(errorMessage);
-    }
-
-    @Override
-    public void setDescriptionError(String errorMessage) {
-        tilDescricao.setError(errorMessage);
     }
 
     @Override

@@ -13,11 +13,7 @@ import java.util.List;
 import io.objectbox.Box;
 
 public class UserRepositoryImpl implements Repository<User> {
-
-    private Context context;
-
-    public UserRepositoryImpl(Context context) {
-        this.context = context;
+    public UserRepositoryImpl() {
     }
 
     public static Box<com.espweb.chronos.storage.model.User> getBox() {
@@ -34,8 +30,8 @@ public class UserRepositoryImpl implements Repository<User> {
     }
 
     @Override
-    public void delete(User user) {
-        getBox().remove(user.getId());
+    public void delete(long id) {
+        getBox().remove(id);
     }
 
     @Override

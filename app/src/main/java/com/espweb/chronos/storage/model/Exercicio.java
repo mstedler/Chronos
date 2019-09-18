@@ -13,6 +13,9 @@ public class Exercicio extends Artefato{
 
     private ToOne<Assunto> assunto;
 
+    public Exercicio() {
+    }
+
     public Exercicio(long id, String uuid, Date data, String descricao, int quantidade, int acertos, long assuntoId) {
         this.id = id;
         this.uuid = uuid;
@@ -30,9 +33,6 @@ public class Exercicio extends Artefato{
         this.quantidade = quantidade;
         this.acertos = acertos;
         this.assunto.setTargetId(assuntoId);
-    }
-
-    public Exercicio() {
     }
 
     public int getQuantidade() {

@@ -1,5 +1,6 @@
 package com.espweb.chronos.domain.model;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class User {
 
     private Date updatedAt;
 
-    private List<Cronograma> cronogramas;
+    private List<Cronograma> cronogramas = Collections.emptyList();
 
     public User() {
     }

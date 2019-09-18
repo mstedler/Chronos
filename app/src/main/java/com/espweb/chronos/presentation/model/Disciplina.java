@@ -74,4 +74,16 @@ public class Disciplina {
     public boolean isNew() {
         return id == 0;
     }
+
+    public boolean isNomeValid() {
+        return nome.trim().length() > 3;
+    }
+
+    public boolean isDescricaoValid() {
+        return descricao.trim().length() > 3;
+    }
+
+    public int getAssuntosSize() {
+        return assuntos.size();
+    }
 }

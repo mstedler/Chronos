@@ -1,13 +1,12 @@
 package com.espweb.chronos.presentation.ui.fragments;
 
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 import com.espweb.chronos.R;
 import com.espweb.chronos.domain.executor.impl.ThreadExecutor;
 import com.espweb.chronos.domain.model.User;
-import com.espweb.chronos.domain.repository.SessaoRepository;
 import com.espweb.chronos.domain.repository.Repository;
 import com.espweb.chronos.presentation.presenters.SignUpPresenter;
 import com.espweb.chronos.presentation.presenters.impl.SignUpPresenterImpl;
@@ -49,12 +47,6 @@ public class SignUpFragment extends Fragment implements SignUpPresenter.View {
 
     private SignUpPresenter signUpPresenter;
 
-    public interface SignUpFragmentListener {
-        void showSignInFragment();
-    }
-
-    private SignUpFragmentListener signUpFragmentListener;
-
     public SignUpFragment() {
     }
 
@@ -66,9 +58,7 @@ public class SignUpFragment extends Fragment implements SignUpPresenter.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SessaoRepository sessaoRepository = new SessaoRepositoryImpl(getContext());
-        Repository<User> userRepository = new UserRepositoryImpl(getContext());
-        signUpPresenter = new SignUpPresenterImpl(ThreadExecutor.getInstance(), MainThreadImpl.getInstance(), this, sessaoRepository, userRepository);
+        signUpPresenter = new SignUpPresenterImpl(ThreadExecutor.getInstance(), MainThreadImpl.getInstance(), this, new SessaoRepositoryImpl(requireContext()));
     }
 
     @Override
@@ -80,26 +70,17 @@ public class SignUpFragment extends Fragment implements SignUpPresenter.View {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        try {
-            signUpFragmentListener = (SignUpFragmentListener) context;
-        } catch (ClassCastException e) {
-            Log.e(TAG, "Activity must implement SignUpFragmentListener");
-        }
-    }
-
-    @Override
     public void showProgress() {
+        ViewUtils.makeWindowUntouchable(requireActivity().getWindow());
         progressBar.setVisibility(View.VISIBLE);
-        ViewUtils.makeWindowUntouchable(getActivity().getWindow());
+
     }
 
     @Override
     public void hideProgress() {
+        ViewUtils.makeWindowTouchable(requireActivity().getWindow());
         progressBar.setVisibility(View.INVISIBLE);
-        ViewUtils.makeWindowTouchable(getActivity().getWindow());
+
     }
 
     @Override
@@ -109,12 +90,12 @@ public class SignUpFragment extends Fragment implements SignUpPresenter.View {
 
     @OnClick(R.id.btn_show_signIn)
     void onClick() {
-        signUpFragmentListener.showSignInFragment();
+        Navigation.findNavController(requireView()).popBackStack();
     }
 
     @Override
     public void signUpSuccess() {
-        signUpFragmentListener.showSignInFragment();
+        //Navigation.findNavController(requireView()).popBackStack();
     }
 
     @Override
@@ -124,19 +105,19 @@ public class SignUpFragment extends Fragment implements SignUpPresenter.View {
 
     @Override
     public void showNameError() {
-        tilName.setError(getString(R.string.cannot_be_empty));
+        tilName.setError(getString(R.string.nao_pode_ser_vazio));
         tilName.requestFocus();
     }
 
     @Override
     public void showEmailError() {
-        tilEmail.setError(getString(R.string.cannot_be_empty));
+        tilEmail.setError(getString(R.string.email_invalido));
         tilEmail.requestFocus();
     }
 
     @Override
     public void showPasswordError() {
-        tilPassword.setError(getString(R.string.cannot_be_empty));
+        tilPassword.setError(getString(R.string.no_minimo_6));
         tilPassword.requestFocus();
     }
 

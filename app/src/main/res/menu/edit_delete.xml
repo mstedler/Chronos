@@ -5,12 +5,12 @@
     <item
         android:id="@+id/item_edit"
         android:icon="@drawable/ic_edit"
-        android:title="@string/edit"
-        app:showAsAction="never" />
+        android:title="@string/editar"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/item_delete"
         android:icon="@drawable/ic_trash_can"
-        android:title="@string/delete"
-        app:showAsAction="never" />
+        android:title="@string/excluir"
+        app:showAsAction="ifRoom" />
 </menu>

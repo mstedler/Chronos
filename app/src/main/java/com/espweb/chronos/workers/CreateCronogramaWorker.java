@@ -3,7 +3,6 @@ package com.espweb.chronos.workers;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
-import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.espweb.chronos.domain.exceptions.NotFoundException;
@@ -27,8 +26,9 @@ public class CreateCronogramaWorker extends WebRequestWorker {
 
     @Override
     public void work() throws IOException, NullPointerException, NotFoundException {
+        CronogramaBox cronogramaBox = new CronogramaBox();
         long id = getInputData().getLong(KEY_ID_CRONOGRAMA, 0);
-        com.espweb.chronos.storage.model.Cronograma cronograma = CronogramaBox.get(id);
+        com.espweb.chronos.storage.model.Cronograma cronograma = cronogramaBox.get(id);
         CronogramaService cronogramaService = RestClient.createService(CronogramaService.class);
         Response<Cronograma> response = cronogramaService.create(cronograma.getTitulo(),
                 cronograma.getDescricao(),
@@ -37,6 +37,6 @@ public class CreateCronogramaWorker extends WebRequestWorker {
 
         com.espweb.chronos.network.model.Cronograma nCronograma = response.body().getCronograma();
         cronograma.setUuid(nCronograma.getUuid());
-        CronogramaBox.put(cronograma);
+        cronogramaBox.put(cronograma);
     }
 }

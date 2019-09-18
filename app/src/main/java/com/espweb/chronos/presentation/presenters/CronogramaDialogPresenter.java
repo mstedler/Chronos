@@ -8,7 +8,6 @@ public interface CronogramaDialogPresenter extends BasePresenter {
     interface View extends BaseView {
         void dismissDialog();
         void setTitleError(String errorMessage);
-        void setDescriptionError(String errorMessage);
         void setInitialDateError(String errorMessage);
         void setFinalDateError(String errorMessage);
         void cronogramaCreated(Cronograma cronograma);

@@ -28,7 +28,7 @@ public class DeleteAssuntoInteractorImpl extends AbstractInteractor implements D
 
     @Override
     public void run() {
-        assuntoRepository.delete(assunto);
+        assuntoRepository.delete(assunto.getId());
         mainThread.post(() -> callback.onAssuntoDeleted());
     }
 }

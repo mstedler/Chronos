@@ -1,6 +1,7 @@
 package com.espweb.chronos.data;
 
 
+import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
@@ -12,67 +13,54 @@ import com.espweb.chronos.domain.exceptions.SignUpFailedException;
 import com.espweb.chronos.domain.model.User;
 import com.espweb.chronos.domain.repository.SessaoRepository;
 import com.espweb.chronos.network.RestClient;
-import com.espweb.chronos.network.converters.NetworkToDomainConverter;
+import com.espweb.chronos.network.converters.NetworkToStorageConverter;
 import com.espweb.chronos.network.model.Error;
 import com.espweb.chronos.network.model.Sessao;
 import com.espweb.chronos.network.services.SessionService;
+import com.espweb.chronos.storage.boxes.SessaoBox;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
 import com.espweb.chronos.storage.database.ObjectBox;
-import com.espweb.chronos.storage.model.Sessao_;
+import com.espweb.chronos.workers.base.WebRequestWorker;
 import com.google.gson.Gson;
 
 import java.io.IOException;
 
-import io.objectbox.Box;
 import retrofit2.Response;
 
 public class SessaoRepositoryImpl implements SessaoRepository {
     private static final String TAG = SessaoRepositoryImpl.class.getName();
 
     private Context context;
+    private SessaoBox box;
 
     public SessaoRepositoryImpl(Context context) {
         this.context = context.getApplicationContext();
+        box = new SessaoBox();
     }
 
     @Override
     public com.espweb.chronos.domain.model.Sessao getSessao() throws NotFoundException {
         com.espweb.chronos.storage.model.Sessao sessao;
 
-        sessao = getBox().query().equal(Sessao_.active, true).build().findFirst();
+        sessao = box.getActiveSession();
 
         if(sessao == null) {
             throw new NotFoundException("Não há sessão");
         }
 
-        return StorageToDomainConverter.convertSessaoToDomainModel(sessao);
+        return StorageToDomainConverter.convert(sessao);
     }
 
     @Override
     public void refreshToken(String newToken) {
-        com.espweb.chronos.storage.model.Sessao sessao = getBox().query().equal(Sessao_.active, true).build().findFirst();
+        com.espweb.chronos.storage.model.Sessao sessao = box.getActiveSession();
         sessao.setToken(newToken);
-        getBox().put(sessao);
+        box.put(sessao);
     }
 
     @Override
     public User getUser() throws NotFoundException {
-        return getSessao().getUser();
-    }
-
-    @Override
-    public void saveSessao(com.espweb.chronos.domain.model.Sessao sessao) {
-        com.espweb.chronos.storage.model.Sessao sSessao = new com.espweb.chronos.storage.model.Sessao();
-        com.espweb.chronos.storage.model.User sUser = new com.espweb.chronos.storage.model.User();
-        sUser.setName(sessao.getUser().getName());
-        sUser.setEmail(sessao.getUser().getEmail());
-        sUser.setUpdatedAt(sessao.getUser().getUpdatedAt());
-        sUser.setCreatedAt(sessao.getUser().getCreatedAt());
-        sUser.setUuid(sessao.getUser().getUuid());
-        sSessao.setToken(sessao.getToken());
-        sSessao.setActive(true);
-        sSessao.getUser().setTarget(sUser);
-        getBox().put(sSessao);
+        return StorageToDomainConverter.convert(box.getActiveSessionUser());
     }
 
     @Override
@@ -80,10 +68,8 @@ public class SessaoRepositoryImpl implements SessaoRepository {
         SessionService signUpService = RestClient.createService(SessionService.class);
         try {
             Response<com.espweb.chronos.network.model.User> response = signUpService.signUp(user.getName(), user.getEmail(), user.getPassword()).execute();
-            if (!response.isSuccessful()) {
-                Gson gson = new Gson();
-                Error error = gson.fromJson(response.errorBody().charStream(), Error.class);
-                throw new SignUpFailedException(error.getMessage());
+            if(!response.isSuccessful()) {
+                throw new SignUpFailedException("Erro ao criar usuário, tente novamente mais tarde");
             }
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());
@@ -92,12 +78,15 @@ public class SessaoRepositoryImpl implements SessaoRepository {
     }
 
     @Override
-    public com.espweb.chronos.domain.model.Sessao signInUser(User user) throws SignInFailedException {
+    public User signInUser(User user) throws SignInFailedException {
         SessionService signInService = RestClient.createService(SessionService.class);
         try {
             Response<Sessao> response = signInService.signIn(user.getEmail(), user.getPassword()).execute();
             if (response.isSuccessful()) {
-                return NetworkToDomainConverter.convert(response.body());
+                Sessao sessao = response.body();
+                com.espweb.chronos.storage.model.Sessao sSessao = NetworkToStorageConverter.convert(sessao);
+                box.put(sSessao);
+                return StorageToDomainConverter.convert(box.getActiveSessionUser());
             } else {
                 Gson gson = new Gson();
                 Error error = gson.fromJson(response.errorBody().charStream(), Error.class);
@@ -111,11 +100,12 @@ public class SessaoRepositoryImpl implements SessaoRepository {
 
     @Override
     public void signOutUser() {
-        ObjectBox.deleteDB(context);
+        ObjectBox.deleteDB();
+        ObjectBox.init(context);
         WorkManager.getInstance(context).cancelAllWork();
+        WorkManager.getInstance(context).cancelUniqueWork(WebRequestWorker.NAME);
+        WorkManager.getInstance(context).pruneWork();
     }
 
-    private Box<com.espweb.chronos.storage.model.Sessao> getBox() {
-        return ObjectBox.get().boxFor(com.espweb.chronos.storage.model.Sessao.class);
-    }
+
 }

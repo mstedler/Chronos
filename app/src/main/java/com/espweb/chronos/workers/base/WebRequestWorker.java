@@ -1,23 +1,25 @@
 package com.espweb.chronos.workers.base;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.espweb.chronos.workers.exceptions.FailureException;
-import com.espweb.chronos.workers.exceptions.RetryException;
+import com.espweb.chronos.domain.exceptions.NotFoundException;
 
-public abstract class AbstractWorker extends Worker {
+import java.io.IOException;
+
+public abstract class WebRequestWorker extends Worker {
     public static String NAME = "WEB_REQUEST";
 
-    public AbstractWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public WebRequestWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 
-    public abstract void work() throws RetryException, FailureException;
+    public abstract void work() throws IOException, NullPointerException, NotFoundException;
 
 
     @NonNull
@@ -26,12 +28,16 @@ public abstract class AbstractWorker extends Worker {
         try {
             work();
             return Result.success();
-        } catch (RetryException e) {
+        } catch (IOException e) {
+            Log.e(NAME, e.getMessage());
             return Result.retry();
-        } catch (FailureException e) {
+        } catch (NullPointerException | NotFoundException e) {
+            Log.e(NAME, e.getMessage());
+            return Result.failure();
+        } catch (Exception e) {
             WorkManager.getInstance(getApplicationContext()).cancelUniqueWork(NAME);
             WorkManager.getInstance(getApplicationContext()).pruneWork();
-            return Result.failure();
+            return Result.success();
         }
     }
 }

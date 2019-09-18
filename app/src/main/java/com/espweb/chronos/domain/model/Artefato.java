@@ -8,7 +8,7 @@ public abstract class Artefato {
     private Date data;
     private String descricao;
 
-    private long idAssunto;
+    protected long idAssunto;
 
     public Artefato() {
     }
@@ -56,4 +56,10 @@ public abstract class Artefato {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
+    public boolean isNew() {
+        return id == 0;
+    }
+
+    public abstract EnumTipo getTipo();
 }

@@ -1,23 +1,23 @@
 package com.espweb.chronos.presentation.ui.dialogs;
 
 import android.os.Bundle;
-import android.os.Parcel;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.espweb.chronos.R;
-import com.espweb.chronos.presentation.model.Artefato;
 import com.espweb.chronos.presentation.model.Material;
 import com.espweb.chronos.presentation.ui.dialogs.base.ArtefatoDialog;
 import com.espweb.chronos.presentation.utils.DateUtils;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.parceler.Parcels;
-import org.threeten.bp.LocalTime;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +26,9 @@ public class MaterialDialog extends ArtefatoDialog<Material> {
 
     @BindView(R.id.til_minutos)
     TextInputLayout tilMinutos;
+
+    @BindView(R.id.spn_escopo)
+    Spinner spnEscopo;
 
     public MaterialDialog() {
 
@@ -39,6 +42,30 @@ public class MaterialDialog extends ArtefatoDialog<Material> {
         return view;
     }
 
+    private Spinner.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+            artefato.setEscopo(Material.Escopo.fromInt(pos+1));
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+
+        }
+    };
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(),
+                R.array.materials, android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spnEscopo.setAdapter(adapter);
+        spnEscopo.setOnItemSelectedListener(itemSelectedListener);
+    }
+
     public static MaterialDialog newInstance(Material material) {
         MaterialDialog materialDialog = new MaterialDialog();
         Bundle args = new Bundle();
@@ -49,34 +76,55 @@ public class MaterialDialog extends ArtefatoDialog<Material> {
 
     @Override
     public void buildFromArguments() {
-        if(getArguments() != null)
+        if (getArguments() != null)
             artefato = Parcels.unwrap(getArguments().getParcelable("material"));
     }
 
     @Override
     public void fillForm() {
-        tilMinutos.getEditText().setText(DateUtils.formatMinutes(artefato.getMinutos()));
+        tilMinutos.getEditText().setText(String.valueOf(artefato.getMinutos()));
         tilData.getEditText().setText(DateUtils.formatDate(artefato.getData()));
+        spnEscopo.setSelection(artefato.getEscopo().getIntValue() - 1);
         tilDescricao.getEditText().setText(artefato.getDescricao());
     }
 
     @Override
     public void setTitle() {
-        int title = artefato.isNew() ? R.string.new_material : R.string.edit;
+        int title = artefato.isNew() ? R.string.novo_material : R.string.editar;
         tvTitle.setText(title);
+    }
+
+    @Override
+    protected boolean validate() {
+        clearErrors();
+        if (!artefato.isMinutosValid()) {
+            tilMinutos.setError(getString(R.string.maior_que_0));
+            return false;
+        }
+        if (!artefato.isDescricaoValid()) {
+            tilDescricao.setError(getString(R.string.deve_ter_mais_que_3));
+            return false;
+        }
+        return true;
+    }
+
+    private void clearErrors() {
+        tilDescricao.setError(null);
+        tilMinutos.setError(null);
     }
 
     @Override
     public void buildFromForm() {
         String tempo = tilMinutos.getEditText().getText().toString();
-
-        LocalTime localTime = LocalTime.parse(tempo);
-
         String data = tilData.getEditText().getText().toString();
         String descricao = tilDescricao.getEditText().getText().toString();
         artefato.setData(DateUtils.parse(data));
         artefato.setDescricao(descricao);
-        artefato.setMinutos(DateUtils.minutesOf(localTime));
+        try {
+            artefato.setMinutos(Integer.valueOf(tempo));
+        } catch (NumberFormatException e) {
+            artefato.setMinutos(0);
+        }
     }
 
     @Override

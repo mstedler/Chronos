@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.espweb.chronos.R;
-import com.espweb.chronos.presentation.model.EnumTipo;
+import com.espweb.chronos.domain.model.EnumTipo;
 import com.espweb.chronos.presentation.ui.adapters.viewholders.ExercicioViewHolder;
 import com.espweb.chronos.presentation.ui.adapters.viewholders.MaterialViewHolder;
 import com.espweb.chronos.presentation.ui.adapters.viewholders.RevisaoViewHolder;

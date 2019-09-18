@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:1420804526457978806",
-      "lastPropertyId": "4:3342208917824528561",
+      "lastPropertyId": "5:4133501230202732326",
       "name": "Assunto",
       "properties": [
         {
@@ -25,13 +25,17 @@
           "id": "4:3342208917824528561",
           "indexId": "2:8850196003362447505",
           "name": "disciplinaId"
+        },
+        {
+          "id": "5:4133501230202732326",
+          "name": "deletedAt"
         }
       ],
       "relations": []
     },
     {
       "id": "2:1951000958973831632",
-      "lastPropertyId": "8:2625037626331537283",
+      "lastPropertyId": "9:2870464694038290880",
       "name": "Cronograma",
       "properties": [
         {
@@ -65,15 +69,15 @@
           "name": "userId"
         },
         {
-          "id": "8:2625037626331537283",
-          "name": "deleted"
+          "id": "9:2870464694038290880",
+          "name": "deletedAt"
         }
       ],
       "relations": []
     },
     {
       "id": "3:2393354886344238099",
-      "lastPropertyId": "5:5282390980468050699",
+      "lastPropertyId": "6:8983824255670718357",
       "name": "Disciplina",
       "properties": [
         {
@@ -97,13 +101,17 @@
           "id": "5:5282390980468050699",
           "indexId": "6:8613709408393165018",
           "name": "cronogramaId"
+        },
+        {
+          "id": "6:8983824255670718357",
+          "name": "deletedAt"
         }
       ],
       "relations": []
     },
     {
       "id": "4:3349561063116687309",
-      "lastPropertyId": "7:6967573500831436803",
+      "lastPropertyId": "8:7727224206189039023",
       "name": "Exercicio",
       "properties": [
         {
@@ -135,13 +143,17 @@
           "id": "7:6967573500831436803",
           "indexId": "8:8135457567834868840",
           "name": "assuntoId"
+        },
+        {
+          "id": "8:7727224206189039023",
+          "name": "deletedAt"
         }
       ],
       "relations": []
     },
     {
       "id": "5:5467916505171854677",
-      "lastPropertyId": "6:4943326451687577391",
+      "lastPropertyId": "7:6230732151945943380",
       "name": "Material",
       "properties": [
         {
@@ -169,13 +181,17 @@
           "id": "6:4943326451687577391",
           "indexId": "10:4656581020542897164",
           "name": "assuntoId"
+        },
+        {
+          "id": "7:6230732151945943380",
+          "name": "deletedAt"
         }
       ],
       "relations": []
     },
     {
       "id": "6:1243281920891778245",
-      "lastPropertyId": "6:5852459520458858996",
+      "lastPropertyId": "7:193234676672220573",
       "name": "Revisao",
       "properties": [
         {
@@ -203,6 +219,10 @@
           "id": "6:5852459520458858996",
           "indexId": "12:2143490738052222534",
           "name": "assuntoId"
+        },
+        {
+          "id": "7:193234676672220573",
+          "name": "deletedAt"
         }
       ],
       "relations": []
@@ -283,7 +303,9 @@
   "modelVersionParserMinimum": 4,
   "retiredEntityUids": [],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    2625037626331537283
+  ],
   "retiredRelationUids": [],
   "version": 1
 }

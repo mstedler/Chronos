@@ -13,19 +13,28 @@ public class Revisao extends Artefato {
             return value;
         }
 
-        Escopo(int value){
+        Escopo(int value) {
             this.value = value;
         }
+
         public static Escopo fromInt(int i) {
             for (Escopo b : Escopo.values()) {
-                if (b.getIntValue() == i) { return b; }
+                if (b.getIntValue() == i) {
+                    return b;
+                }
             }
             return null;
         }
     }
+
     private Escopo escopo;
 
     public Revisao() {
+    }
+
+    @Override
+    public EnumTipo getTipo() {
+        return EnumTipo.REVISAO;
     }
 
     public Escopo getEscopo() {

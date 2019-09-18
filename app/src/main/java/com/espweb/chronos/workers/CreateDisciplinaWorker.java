@@ -3,7 +3,6 @@ package com.espweb.chronos.workers;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
-import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.espweb.chronos.domain.exceptions.NotFoundException;
@@ -28,8 +27,9 @@ public class CreateDisciplinaWorker extends WebRequestWorker {
 
     @Override
     public void work() throws IOException, NullPointerException, NotFoundException {
+        DisciplinaBox disciplinaBox = new DisciplinaBox();
         long id = getInputData().getLong(KEY_ID_DISCIPLINA, 0);
-        Disciplina disciplina = DisciplinaBox.get(id);
+        Disciplina disciplina = disciplinaBox.get(id);
         Cronograma cronograma = disciplina.getCronograma().getTarget();
         DisciplinaService disciplinaService = RestClient.createService(DisciplinaService.class);
         Response<com.espweb.chronos.network.model.Disciplina> response = disciplinaService.create(
@@ -40,6 +40,6 @@ public class CreateDisciplinaWorker extends WebRequestWorker {
 
         com.espweb.chronos.network.model.Disciplina nDisciplina = response.body().getDisciplina();
         disciplina.setUuid(nDisciplina.getUuid());
-        DisciplinaBox.put(disciplina);
+        disciplinaBox.put(disciplina);
     }
 }

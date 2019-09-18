@@ -29,7 +29,7 @@ public class DeleteDisciplinaInteractorImpl extends AbstractInteractor implement
 
     @Override
     public void run() {
-        disciplinaRepository.delete(disciplina);
+        disciplinaRepository.delete(disciplina.getId());
         mainThread.post(() -> callback.onDisciplinaDeleted());
     }
 }

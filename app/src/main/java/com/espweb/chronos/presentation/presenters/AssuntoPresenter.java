@@ -9,10 +9,16 @@ import java.util.List;
 
 public interface AssuntoPresenter extends BasePresenter {
     void deleteAssunto(Assunto assunto);
+    void deleteArtefato(Artefato artefato);
 
     interface View extends BaseView {
         void showArtefatos(List<Artefato> artefatos);
-        void finish();
+        void navigateToCronograma();
+        void setAssunto(Assunto pAssunto);
+        void showEmptyView();
+        void onArtefatoDeleted();
+        void onArtefatoNotFound();
     }
+    void getAssunto(long id);
     void getAllArtefatos(long assuntoId);
 }

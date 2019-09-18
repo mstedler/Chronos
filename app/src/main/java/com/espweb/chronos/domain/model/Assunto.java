@@ -1,12 +1,13 @@
 package com.espweb.chronos.domain.model;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Assunto {
     private long id;
     private String uuid;
     private String descricao;
-    private List<Artefato> artefatos;
+    private List<Artefato> artefatos = Collections.emptyList();
 
     private long idDisciplina;
 

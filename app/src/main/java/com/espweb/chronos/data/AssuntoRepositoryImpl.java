@@ -22,9 +22,11 @@ public class AssuntoRepositoryImpl implements Repository<Assunto> {
 
     private static final String TAG = "AssuntoRepositoryImp";
     private Context context;
+    private AssuntoBox box;
 
     public AssuntoRepositoryImpl(Context context) {
         this.context = context.getApplicationContext();
+        box = new AssuntoBox();
     }
 
     @Override
@@ -34,7 +36,7 @@ public class AssuntoRepositoryImpl implements Repository<Assunto> {
                 assunto.getDescricao(),
                 assunto.getIdDisciplina());
 
-        long id = AssuntoBox.put(sAssunto);
+        long id = box.put(sAssunto);
 
         Data idData = new Data.Builder().putLong(CreateAssuntoWorker.KEY_ID_ASSUNTO, id).build();
 
@@ -46,9 +48,9 @@ public class AssuntoRepositoryImpl implements Repository<Assunto> {
     @Override
     public void update(Assunto assunto) {
         try {
-            com.espweb.chronos.storage.model.Assunto sAssunto = AssuntoBox.get(assunto.getId());
+            com.espweb.chronos.storage.model.Assunto sAssunto = box.get(assunto.getId());
             sAssunto.setDescricao(assunto.getDescricao());
-            AssuntoBox.put(sAssunto);
+            box.put(sAssunto);
             Data idData = new Data.Builder().putLong(CreateAssuntoWorker.KEY_ID_ASSUNTO, assunto.getId()).build();
             WorkFactory.enqueue(context, idData, UpdateAssuntoWorker.class);
         } catch (NotFoundException e) {
@@ -57,18 +59,22 @@ public class AssuntoRepositoryImpl implements Repository<Assunto> {
     }
 
     @Override
-    public void delete(Assunto assunto) {
-        AssuntoBox.remove(assunto.getId());
+    public void delete(long id) {
+        try {
+            com.espweb.chronos.storage.model.Assunto assunto = box.get(id);
+            Data idData = new Data.Builder().putString(DeleteAssuntoWorker.KEY_UUID_ASSUNTO, assunto.getUuid()).build();
+            box.remove(id);
+            WorkFactory.enqueue(context, idData, DeleteAssuntoWorker.class);
+        } catch (NotFoundException e) {
 
-        Data idData = new Data.Builder().putString(DeleteAssuntoWorker.KEY_UUID_ASSUNTO, assunto.getUuid()).build();
+        }
 
-        WorkFactory.enqueue(context, idData, DeleteAssuntoWorker.class);
     }
 
     @Override
     public Assunto get(long id) {
         try {
-            com.espweb.chronos.storage.model.Assunto assunto = AssuntoBox.get(id);
+            com.espweb.chronos.storage.model.Assunto assunto = box.get(id);
             return StorageToDomainConverter.convert(assunto);
         } catch (NotFoundException e) {
             Log.e(TAG, e.getLocalizedMessage());
@@ -78,7 +84,7 @@ public class AssuntoRepositoryImpl implements Repository<Assunto> {
 
     @Override
     public List<Assunto> getAll(long idDisciplina) {
-        List<com.espweb.chronos.storage.model.Assunto> assuntos = AssuntoBox.getAll(idDisciplina);
+        List<com.espweb.chronos.storage.model.Assunto> assuntos = box.getAll(idDisciplina);
         return StorageToDomainConverter.convertAssuntos(assuntos);
     }
 }

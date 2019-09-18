@@ -3,10 +3,13 @@ package com.espweb.chronos.network.utils;
 import com.espweb.chronos.domain.exceptions.NotFoundException;
 import com.espweb.chronos.domain.model.Sessao;
 import com.espweb.chronos.domain.repository.SessaoRepository;
+import com.espweb.chronos.events.SessionHasExpiredEvent;
 import com.espweb.chronos.network.RestClient;
 import com.espweb.chronos.network.model.TokenResponse;
 import com.espweb.chronos.network.model.Token;
 import com.espweb.chronos.network.services.SessionService;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
@@ -36,6 +39,7 @@ public class TokenAuthenticator implements Authenticator {
             return originalRequest.newBuilder().addHeader("Authorization", "Bearer " + token.getValue()).build();
         } else {
             sessaoRepository.signOutUser();
+            EventBus.getDefault().post(new SessionHasExpiredEvent());
         }
         return null;
     }

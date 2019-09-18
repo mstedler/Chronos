@@ -9,5 +9,6 @@ public interface GetAllDisciplinasInteractor extends Interactor {
     interface Callback {
         void onDisciplinasRetrieved(List<Disciplina> disciplinas);
         void onError(String message);
+        void onDisciplinasNotFound();
     }
 }

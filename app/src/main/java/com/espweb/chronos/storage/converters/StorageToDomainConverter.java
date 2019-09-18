@@ -1,5 +1,6 @@
 package com.espweb.chronos.storage.converters;
 
+import com.espweb.chronos.domain.model.Artefato;
 import com.espweb.chronos.domain.model.Assunto;
 import com.espweb.chronos.domain.model.Cronograma;
 import com.espweb.chronos.domain.model.Disciplina;
@@ -14,6 +15,15 @@ import java.util.List;
 
 public class StorageToDomainConverter {
 
+    public static Sessao convert(com.espweb.chronos.storage.model.Sessao sessao) {
+        Sessao dSessao = new Sessao();
+        dSessao.setId(sessao.getId());
+        dSessao.setUser(convert(sessao.getUser().getTarget()));
+        dSessao.setToken(sessao.getToken());
+        dSessao.setAtivo(sessao.isActive());
+        return dSessao;
+    }
+
     public static User convert(com.espweb.chronos.storage.model.User sUser) {
         User user = new User();
         user.setId(sUser.getId());
@@ -22,7 +32,16 @@ public class StorageToDomainConverter {
         user.setCreatedAt(sUser.getCreatedAt());
         user.setUpdatedAt(sUser.getUpdatedAt());
         user.setUuid(sUser.getUuid());
+        //user.setCronogramas(convertCronogramas(sUser.getCronogramas()));
         return user;
+    }
+
+    public static List<Cronograma> convertCronogramas(List<com.espweb.chronos.storage.model.Cronograma> cronogramas) {
+        List<Cronograma> dCronogramas = new ArrayList<>();
+        for (com.espweb.chronos.storage.model.Cronograma cronograma: cronogramas) {
+            dCronogramas.add(convert(cronograma));
+        }
+        return dCronogramas;
     }
 
     public static Cronograma convert(com.espweb.chronos.storage.model.Cronograma sCronograma) {
@@ -34,22 +53,8 @@ public class StorageToDomainConverter {
         cronograma.setInicio(sCronograma.getInicio());
         cronograma.setFim(sCronograma.getFim());
         cronograma.setIdUser(sCronograma.getUser().getTargetId());
+        cronograma.setDisciplinas(convertDisciplinas(sCronograma.getDisciplinas()));
         return cronograma;
-    }
-
-    public static Disciplina convert(com.espweb.chronos.storage.model.Disciplina sDisciplina) {
-        Disciplina disciplina = new Disciplina();
-        disciplina.setId(sDisciplina.getId());
-        disciplina.setNome(sDisciplina.getNome());
-        disciplina.setUuid(sDisciplina.getUuid());
-        disciplina.setDescricao(sDisciplina.getDescricao());
-        disciplina.setIdCronograma(sDisciplina.getCronograma().getTargetId());
-        List<Assunto> assuntos = new ArrayList<>();
-        for (com.espweb.chronos.storage.model.Assunto sAssunto: sDisciplina.getAssuntos()) {
-            assuntos.add(convert(sAssunto));
-        }
-        disciplina.setAssuntos(assuntos);
-        return disciplina;
     }
 
     public static List<Disciplina> convertDisciplinas(List<com.espweb.chronos.storage.model.Disciplina> disciplinas) {
@@ -60,13 +65,15 @@ public class StorageToDomainConverter {
         return dDisciplinas;
     }
 
-    public static Assunto convert(com.espweb.chronos.storage.model.Assunto assunto) {
-        Assunto dAssunto = new Assunto();
-        dAssunto.setId(assunto.getId());
-        dAssunto.setDescricao(assunto.getDescricao());
-        dAssunto.setUuid(assunto.getUuid());
-        dAssunto.setIdDisciplina(assunto.getDisciplina().getTargetId());
-        return dAssunto;
+    public static Disciplina convert(com.espweb.chronos.storage.model.Disciplina sDisciplina) {
+        Disciplina disciplina = new Disciplina();
+        disciplina.setId(sDisciplina.getId());
+        disciplina.setNome(sDisciplina.getNome());
+        disciplina.setUuid(sDisciplina.getUuid());
+        disciplina.setDescricao(sDisciplina.getDescricao());
+        disciplina.setIdCronograma(sDisciplina.getCronograma().getTargetId());
+        disciplina.setAssuntos(convertAssuntos(sDisciplina.getAssuntos()));
+        return disciplina;
     }
 
     public static List<Assunto> convertAssuntos(List<com.espweb.chronos.storage.model.Assunto> assuntos) {
@@ -75,6 +82,29 @@ public class StorageToDomainConverter {
             dAssuntos.add(convert(assunto));
         }
         return dAssuntos;
+    }
+
+    public static Assunto convert(com.espweb.chronos.storage.model.Assunto assunto) {
+        Assunto dAssunto = new Assunto();
+        dAssunto.setId(assunto.getId());
+        dAssunto.setDescricao(assunto.getDescricao());
+        dAssunto.setUuid(assunto.getUuid());
+        dAssunto.setIdDisciplina(assunto.getDisciplina().getTargetId());
+        List<Artefato> artefatos = new ArrayList<>();
+        artefatos.addAll(convertMateriais(assunto.getMateriais()));
+        artefatos.addAll(convertExercicios(assunto.getExercicios()));
+        artefatos.addAll(convertRevisoes(assunto.getRevisoes()));
+        dAssunto.setArtefatos(artefatos);
+        return dAssunto;
+    }
+
+
+    public static List<Exercicio> convertExercicios(List<com.espweb.chronos.storage.model.Exercicio> exercicios) {
+        List<Exercicio> dExercicios = new ArrayList<>();
+        for (com.espweb.chronos.storage.model.Exercicio exercicio: exercicios) {
+            dExercicios.add(convert(exercicio));
+        }
+        return dExercicios;
     }
 
     public static Exercicio convert(com.espweb.chronos.storage.model.Exercicio exercicio) {
@@ -89,12 +119,14 @@ public class StorageToDomainConverter {
         return dExercicio;
     }
 
-    public static List<Exercicio> convertExercicios(List<com.espweb.chronos.storage.model.Exercicio> exercicios) {
-        List<Exercicio> dExercicios = new ArrayList<>();
-        for (com.espweb.chronos.storage.model.Exercicio exercicio: exercicios) {
-            dExercicios.add(convert(exercicio));
+
+
+    public static List<Revisao> convertRevisoes(List<com.espweb.chronos.storage.model.Revisao> revisoes) {
+        List<Revisao> dRevisoes = new ArrayList<>();
+        for (com.espweb.chronos.storage.model.Revisao revisao: revisoes) {
+            dRevisoes.add(convert(revisao));
         }
-        return dExercicios;
+        return dRevisoes;
     }
 
     public static Revisao convert(com.espweb.chronos.storage.model.Revisao revisao) {
@@ -108,12 +140,12 @@ public class StorageToDomainConverter {
         return dRevisao;
     }
 
-    public static List<Revisao> convertRevisoes(List<com.espweb.chronos.storage.model.Revisao> revisoes) {
-        List<Revisao> dRevisoes = new ArrayList<>();
-        for (com.espweb.chronos.storage.model.Revisao revisao: revisoes) {
-            dRevisoes.add(convert(revisao));
+    public static List<Material> convertMateriais(List<com.espweb.chronos.storage.model.Material> materiais) {
+        List<Material> dMateriais = new ArrayList<>();
+        for (com.espweb.chronos.storage.model.Material material: materiais) {
+            dMateriais.add(convert(material));
         }
-        return dRevisoes;
+        return dMateriais;
     }
 
     public static Material convert(com.espweb.chronos.storage.model.Material material) {
@@ -123,33 +155,8 @@ public class StorageToDomainConverter {
         dMaterial.setMinutos(material.getMinutos());
         dMaterial.setData(material.getData());
         dMaterial.setUuid(material.getUuid());
+        dMaterial.setEscopo(Material.Escopo.fromInt(material.getEscopo()));
         dMaterial.setIdAssunto(material.getAssunto().getTargetId());
         return dMaterial;
-    }
-
-    public static List<Material> convertMateriais(List<com.espweb.chronos.storage.model.Material> materiais) {
-        List<Material> dMateriais = new ArrayList<>();
-        for (com.espweb.chronos.storage.model.Material material: materiais) {
-            dMateriais.add(convert(material));
-        }
-        return dMateriais;
-    }
-
-    public static List<Cronograma> convertCronogramas(List<com.espweb.chronos.storage.model.Cronograma> cronogramas) {
-        List<Cronograma> dCronogramas = new ArrayList<>();
-        for (com.espweb.chronos.storage.model.Cronograma cronograma: cronogramas) {
-            dCronogramas.add(convert(cronograma));
-        }
-        return dCronogramas;
-    }
-
-
-    public static Sessao convertSessaoToDomainModel(com.espweb.chronos.storage.model.Sessao sessao) {
-        Sessao dSessao = new Sessao();
-        dSessao.setId(sessao.getId());
-        dSessao.setUser(convert(sessao.getUser().getTarget()));
-        dSessao.setToken(sessao.getToken());
-        dSessao.setActive(sessao.isActive());
-        return dSessao;
     }
 }

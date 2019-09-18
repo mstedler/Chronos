@@ -8,6 +8,11 @@ public class Exercicio extends Artefato{
 
     }
 
+    @Override
+    public EnumTipo getTipo() {
+        return EnumTipo.EXERCICIO;
+    }
+
     public int getQuantidade() {
         return quantidade;
     }

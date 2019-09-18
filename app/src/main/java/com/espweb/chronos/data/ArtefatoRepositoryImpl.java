@@ -1,20 +1,21 @@
 package com.espweb.chronos.data;
 
 import android.content.Context;
-import android.util.Log;
+
+import androidx.work.Data;
 
 import com.espweb.chronos.data.factory.ArtefatoRepositoryFactory;
 import com.espweb.chronos.domain.exceptions.InvalidArtefatoException;
-import com.espweb.chronos.domain.exceptions.NotFoundException;
 import com.espweb.chronos.domain.model.Artefato;
 import com.espweb.chronos.domain.repository.ArtefatoRepository;
-import com.espweb.chronos.domain.repository.Repository;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
 import com.espweb.chronos.storage.database.ObjectBox;
 import com.espweb.chronos.storage.model.Assunto;
 import com.espweb.chronos.storage.model.Exercicio;
 import com.espweb.chronos.storage.model.Material;
 import com.espweb.chronos.storage.model.Revisao;
+import com.espweb.chronos.workers.DeleteRevisaoWorker;
+import com.espweb.chronos.workers.base.WorkFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,21 +33,20 @@ public class ArtefatoRepositoryImpl implements ArtefatoRepository<Artefato> {
 
     @Override
     public long insert(Artefato artefato) throws InvalidArtefatoException {
-        ArtefatoRepository artefatoRepository = ArtefatoRepositoryFactory.repositoryFor(artefato);
+        ArtefatoRepository artefatoRepository = ArtefatoRepositoryFactory.createRepository(artefato.getTipo(), context);
         return artefatoRepository.insert(artefato);
-
     }
 
     @Override
     public void update(Artefato artefato) throws InvalidArtefatoException {
-        ArtefatoRepository artefatoRepository = ArtefatoRepositoryFactory.repositoryFor(artefato);
+        ArtefatoRepository artefatoRepository = ArtefatoRepositoryFactory.createRepository(artefato.getTipo(), context);
         artefatoRepository.update(artefato);
 
     }
 
     @Override
     public void delete(Artefato artefato) throws InvalidArtefatoException {
-        ArtefatoRepository artefatoRepository = ArtefatoRepositoryFactory.repositoryFor(artefato);
+        ArtefatoRepository artefatoRepository = ArtefatoRepositoryFactory.createRepository(artefato.getTipo(), context);
         artefatoRepository.delete(artefato);
     }
 

@@ -10,6 +10,8 @@ public class Revisao {
     private String uuid;
     @SerializedName("data")
     private Date data;
+    @SerializedName("descricao")
+    private String descricao;
 
     public enum Escopo {
         @SerializedName("0")
@@ -20,6 +22,16 @@ public class Revisao {
         QUINZENAL,
         @SerializedName("3")
         MENSAL;
+
+        public static Escopo fromInt(int escopo) {
+            switch (escopo) {
+                case 0: return DIARIA;
+                case 1: return SEMANAL;
+                case 2: return QUINZENAL;
+                case 3: return MENSAL;
+            }
+            return DIARIA;
+        }
 
         public int getValue(){
             switch (this){
@@ -39,6 +51,17 @@ public class Revisao {
     }
     @SerializedName("escopo")
     private Escopo escopo;
+
+    @SerializedName("assunto_uuid")
+    private String assuntoUuid;
+
+    public String getAssuntoUuid() {
+        return assuntoUuid;
+    }
+
+    public void setAssuntoUuid(String assuntoUuid) {
+        this.assuntoUuid = assuntoUuid;
+    }
 
     public String getUuid() {
         return uuid;
@@ -65,5 +88,13 @@ public class Revisao {
 
     public void setEscopo(Escopo escopo) {
         this.escopo = escopo;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }

@@ -9,7 +9,7 @@
         android:id="@+id/til_titulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/title">
+        android:hint="@string/Nome">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -21,12 +21,16 @@
         android:id="@+id/til_descricao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/description">
+        android:hint="@string/descricao">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textCapSentences" />
+            android:gravity="start|top"
+            android:inputType="textMultiLine|textCapSentences"
+            android:lines="3"
+            android:maxLines="3"
+            android:minLines="3" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
@@ -43,7 +47,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="@string/initial_date">
+            android:hint="@string/data_inicial">
 
             <com.espweb.chronos.presentation.ui.custom.DateEditText
                 android:layout_width="match_parent"
@@ -55,7 +59,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="@string/final_date">
+            android:hint="@string/data_final">
 
             <com.espweb.chronos.presentation.ui.custom.DateEditText
                 android:layout_width="match_parent"

@@ -32,10 +32,6 @@ public class Cronograma {
         this.fim = fim;
     }
 
-    public static Cronograma withoutId(String uuid, String titulo, String descricao, Date inicio, Date fim) {
-        return new Cronograma(-1, uuid, titulo, descricao, inicio, fim);
-    }
-
     public Cronograma() {
 
     }
@@ -106,5 +102,9 @@ public class Cronograma {
 
     public boolean isNew() {
         return id == 0;
+    }
+
+    public boolean isTituloValid() {
+        return titulo.trim().length() > 3;
     }
 }

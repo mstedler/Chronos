@@ -3,13 +3,13 @@ package com.espweb.chronos.workers;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
-import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.espweb.chronos.domain.exceptions.NotFoundException;
 import com.espweb.chronos.network.RestClient;
 import com.espweb.chronos.network.converters.DateConverter;
 import com.espweb.chronos.network.services.DisciplinaService;
+import com.espweb.chronos.storage.boxes.CronogramaBox;
 import com.espweb.chronos.storage.boxes.DisciplinaBox;
 import com.espweb.chronos.storage.model.Cronograma;
 import com.espweb.chronos.storage.model.Disciplina;
@@ -27,8 +27,9 @@ public class UpdateDisciplinaWorker extends WebRequestWorker {
 
     @Override
     public void work() throws IOException, NullPointerException, NotFoundException {
+        DisciplinaBox disciplinaBox = new DisciplinaBox();
         long id = getInputData().getLong(KEY_ID_DISCIPLINA, 0);
-        Disciplina disciplina = DisciplinaBox.get(id);
+        Disciplina disciplina = disciplinaBox.get(id);
         Cronograma cronograma = disciplina.getCronograma().getTarget();
         DisciplinaService disciplinaService = RestClient.createService(DisciplinaService.class);
         disciplinaService.update(disciplina.getUuid(), disciplina.getNome(), disciplina.getDescricao(), cronograma.getUuid(), DateConverter.format(cronograma.getFim())).execute();

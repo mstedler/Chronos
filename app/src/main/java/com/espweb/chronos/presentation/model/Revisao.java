@@ -1,5 +1,7 @@
 package com.espweb.chronos.presentation.model;
 
+import com.espweb.chronos.domain.model.EnumTipo;
+
 import org.parceler.Parcel;
 
 @Parcel(Parcel.Serialization.BEAN)

@@ -20,7 +20,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hits"
+                android:hint="@string/acertos"
                 android:inputType="numberSigned|number" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -34,7 +34,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/quantity"
+                android:hint="@string/quantidade"
                 android:inputType="numberSigned" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>

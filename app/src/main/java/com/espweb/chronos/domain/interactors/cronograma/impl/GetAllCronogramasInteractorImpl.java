@@ -23,7 +23,6 @@ public class GetAllCronogramasInteractorImpl extends AbstractInteractor implemen
                                            long userId) {
         super(threadExecutor, mainThread);
 
-
         if (cronogramaRepository == null || callback == null) {
             throw new IllegalArgumentException("Argumentos nao podem ser nulos!");
         }

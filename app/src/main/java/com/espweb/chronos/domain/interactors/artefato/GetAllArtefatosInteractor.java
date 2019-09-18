@@ -8,6 +8,6 @@ import java.util.List;
 public interface GetAllArtefatosInteractor extends Interactor {
     interface Callback {
         void onArtefatosRetrieved(List<Artefato> artefatos);
-        void onError(String message);
+        void onArtefatoNotFound();
     }
 }

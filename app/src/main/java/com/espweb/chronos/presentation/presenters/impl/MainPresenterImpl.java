@@ -4,39 +4,39 @@ import com.espweb.chronos.domain.executor.Executor;
 import com.espweb.chronos.domain.executor.MainThread;
 import com.espweb.chronos.domain.interactors.cronograma.GetAllCronogramasInteractor;
 import com.espweb.chronos.domain.interactors.cronograma.impl.GetAllCronogramasInteractorImpl;
-import com.espweb.chronos.domain.interactors.session.GetActiveUserInteractor;
-import com.espweb.chronos.domain.interactors.session.SignOutInteractor;
-import com.espweb.chronos.domain.interactors.session.impl.GetActiveUserInteractorImpl;
-import com.espweb.chronos.domain.interactors.session.impl.SignOutInteractorImpl;
+import com.espweb.chronos.domain.interactors.sessao.GetActiveUserInteractor;
+import com.espweb.chronos.domain.interactors.sessao.impl.GetActiveUserInteractorImpl;
+import com.espweb.chronos.domain.model.User;
 import com.espweb.chronos.domain.repository.Repository;
 import com.espweb.chronos.domain.repository.SessaoRepository;
 import com.espweb.chronos.presentation.converters.DomainToPresentationConverter;
 import com.espweb.chronos.presentation.model.Cronograma;
-import com.espweb.chronos.presentation.model.User;
 import com.espweb.chronos.presentation.presenters.base.AbstractPresenter;
 import com.espweb.chronos.presentation.presenters.MainPresenter;
+import com.espweb.chronos.presentation.viewmodels.MainViewModel;
 
 import java.util.List;
 
 public class MainPresenterImpl extends AbstractPresenter implements MainPresenter,
         GetAllCronogramasInteractor.Callback,
-        SignOutInteractor.Callback,
         GetActiveUserInteractor.Callback {
 
     private MainPresenter.View view;
     private Repository<com.espweb.chronos.domain.model.Cronograma> cronogramaRepository;
     private SessaoRepository sessaoRepository;
+    private MainViewModel mainViewModel;
 
     public MainPresenterImpl(Executor executor,
                              MainThread mainThread,
                              View view,
                              Repository<com.espweb.chronos.domain.model.Cronograma> cronogramaRepository,
-                             SessaoRepository sessaoRepository) {
+                             SessaoRepository sessaoRepository, MainViewModel mainViewModel) {
         super(executor, mainThread);
 
         this.sessaoRepository = sessaoRepository;
         this.cronogramaRepository = cronogramaRepository;
         this.view = view;
+        this.mainViewModel = mainViewModel;
     }
 
     @Override
@@ -59,22 +59,14 @@ public class MainPresenterImpl extends AbstractPresenter implements MainPresente
     }
 
     @Override
-    public void onUserSignOut() {
-        view.navigateToLogin();
-        view.showError("Usuário descontectado.");
-    }
-
-    @Override
-    public void onUserRetrieved(com.espweb.chronos.domain.model.User user) {
-        User pUser = DomainToPresentationConverter.convert(user);
-        view.setUser(pUser);
-        getAllCronogramas(user.getId());
+    public void onUserRetrieved(User user) {
+        com.espweb.chronos.presentation.model.User pUser = DomainToPresentationConverter.convert(user);
+        getAllCronogramas(pUser.getId());
     }
 
     @Override
     public void onUserNotFound() {
         view.navigateToLogin();
-        view.showError("Algo deu errado, tente logar novamente.");
     }
 
     @Override
@@ -84,8 +76,7 @@ public class MainPresenterImpl extends AbstractPresenter implements MainPresente
 
     @Override
     public void onCronogramasRetrieved(List<com.espweb.chronos.domain.model.Cronograma> cronogramas) {
-        List<Cronograma> pCronogramas = DomainToPresentationConverter.convert(cronogramas);
-        view.showCronogramas(pCronogramas);
+       mainViewModel.setCronogramas(DomainToPresentationConverter.convertCronogramas(cronogramas));
     }
 
     @Override
@@ -101,12 +92,6 @@ public class MainPresenterImpl extends AbstractPresenter implements MainPresente
                 this,
                 sessaoRepository);
         getActiveUserInteractor.execute();
-    }
-
-    @Override
-    public void logout() {
-        SignOutInteractor signOutInteractor = new SignOutInteractorImpl(executor, mainThread, this, sessaoRepository);
-        signOutInteractor.execute();
     }
 
     @Override

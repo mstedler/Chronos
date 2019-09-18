@@ -19,12 +19,10 @@ public class ObjectBox {
         return boxStore;
     }
 
-    public static void deleteDB(Context applicationContext) {
+    public static void deleteDB() {
         if(!boxStore.isClosed())
             boxStore.close();
 
         boxStore.deleteAllFiles();
-
-        init(applicationContext);
     }
 }

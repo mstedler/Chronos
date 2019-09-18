@@ -1,8 +1,6 @@
 package com.espweb.chronos.presentation.ui.dialogs;
 
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,6 @@ import com.espweb.chronos.R;
 import com.espweb.chronos.data.AssuntoRepositoryImpl;
 import com.espweb.chronos.domain.executor.impl.ThreadExecutor;
 import com.espweb.chronos.presentation.model.Assunto;
-import com.espweb.chronos.presentation.model.Disciplina;
 import com.espweb.chronos.presentation.presenters.AssuntoDialogPresenter;
 import com.espweb.chronos.presentation.presenters.impl.AssuntoDialogPresenterImpl;
 import com.espweb.chronos.presentation.utils.ViewUtils;
@@ -89,7 +86,7 @@ public class AssuntoDialog extends DialogFragment implements AssuntoDialogPresen
     }
 
     private void setTitle() {
-        int title = assunto.isNew() ? R.string.new_topic : R.string.edit_topic;
+        int title = assunto.isNew() ? R.string.novo_assunto : R.string.editar_assunto;
         tvTitle.setText(getString(title));
     }
 
@@ -113,7 +110,15 @@ public class AssuntoDialog extends DialogFragment implements AssuntoDialogPresen
     @OnClick(R.id.btn_save)
     public void onSaveClick() {
         buildAssunto();
-        if(assunto.isNew()) {
+        if(assunto.isValid()) {
+            save();
+        } else {
+            tilDescricao.setError(getString(R.string.deve_ter_mais_que_3));
+        }
+    }
+
+    private void save() {
+        if (assunto.isNew()) {
             createAssunto();
         } else {
             updateAssunto();

@@ -1,5 +1,7 @@
 package com.espweb.chronos.presentation.model;
 
+import com.espweb.chronos.domain.model.EnumTipo;
+
 import java.util.Date;
 
 public abstract class Artefato {
@@ -61,5 +63,11 @@ public abstract class Artefato {
         return id == 0;
     }
 
+    public boolean isDescricaoValid() {
+        return descricao.trim().length() > 3;
+    }
+
     public abstract EnumTipo getTipo();
+
+
 }

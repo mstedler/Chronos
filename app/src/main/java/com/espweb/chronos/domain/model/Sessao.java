@@ -4,18 +4,18 @@ public class Sessao {
     private long id;
     private String token;
     private User user;
-    private boolean active;
+    private boolean ativo;
 
     public Sessao() {
 
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isAtivo() {
+        return ativo;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
 
     public long getId() {

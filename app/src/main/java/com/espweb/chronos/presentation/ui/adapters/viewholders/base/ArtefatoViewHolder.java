@@ -6,9 +6,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import com.espweb.chronos.presentation.model.Artefato;
-import com.espweb.chronos.presentation.ui.adapters.ArtefatoAdapter;
+import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemState;
+import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractSwipeableItemViewHolder;
 
-public abstract class ArtefatoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public abstract class ArtefatoViewHolder extends AbstractSwipeableItemViewHolder implements View.OnClickListener {
+
+    public abstract void bind(Artefato artefato);
+    public abstract void hideBehindViews();
+    public abstract void showBehindViews();
 
     public interface ArtefatoListListener {
         void onArtefatoClicked(int row, Artefato artefato);
@@ -24,6 +29,4 @@ public abstract class ArtefatoViewHolder extends RecyclerView.ViewHolder impleme
     public void setArtefatoListListener(ArtefatoListListener artefatoListListener) {
         this.artefatoListListener = artefatoListListener;
     }
-
-    public abstract void bind(Artefato artefato);
 }

@@ -27,13 +27,14 @@ public class CreateAssuntoWorker extends WebRequestWorker {
 
     @Override
     public void work() throws IOException, NotFoundException, NullPointerException {
+        AssuntoBox assuntoBox = new AssuntoBox();
         long id = getInputData().getLong(CreateAssuntoWorker.KEY_ID_ASSUNTO, 0);
-        Assunto assunto = AssuntoBox.get(id);
+        Assunto assunto = assuntoBox.get(id);
         Disciplina disciplina = assunto.getDisciplina().getTarget();
         AssuntoService assuntoService = RestClient.createService(AssuntoService.class);
         Response<com.espweb.chronos.network.model.Assunto> response = assuntoService.create(assunto.getDescricao(), "wtf", disciplina.getUuid()).execute();
         com.espweb.chronos.network.model.Assunto nAssunto = response.body().getAssunto();
         assunto.setUuid(nAssunto.getUuid());
-        AssuntoBox.put(assunto);
+        assuntoBox.put(assunto);
     }
 }

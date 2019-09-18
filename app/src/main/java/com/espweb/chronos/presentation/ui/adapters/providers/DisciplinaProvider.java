@@ -1,4 +1,5 @@
 package com.espweb.chronos.presentation.ui.adapters.providers;
+
 import androidx.core.util.Pair;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,8 +10,10 @@ import com.espweb.chronos.presentation.ui.adapters.providers.base.GroupItemProvi
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.espweb.chronos.presentation.ui.adapters.DisciplinaAdapter.NOT_PINNED;
 
@@ -28,25 +31,33 @@ public class DisciplinaProvider extends GroupItemProvider<Disciplina, Assunto> {
 
     @Override
     public int getItemCount(int groupPosition) {
-        return data.get(groupPosition).second.size();
+        return getGroupDisciplinaListPair(groupPosition).second.size();
     }
 
-    public void setData(List<Disciplina> disciplinas){
+    private Pair<GroupDisciplina, List<ItemAssunto>> getGroupDisciplinaListPair(int groupPosition) {
+        return data.get(groupPosition);
+    }
+
+    public void setData(List<Disciplina> disciplinas) {
         data.clear();
-        for (Disciplina disciplina: disciplinas) {
+
+        disciplinas = disciplinas.stream().sorted(Comparator.comparingInt(Disciplina::getAssuntosSize).reversed()).collect(Collectors.toList());
+
+        for (Disciplina disciplina : disciplinas) {
             GroupDisciplina groupDisciplina = new GroupDisciplina(disciplina);
             final List<ItemAssunto> assuntos = new ArrayList<>();
 
-            for (Assunto assunto: disciplina.getAssuntos()) {
+            for (Assunto assunto : disciplina.getAssuntos()) {
                 assuntos.add(new ItemAssunto(assunto));
             }
             data.add(new Pair<>(groupDisciplina, assuntos));
         }
+        disciplinas =  null;
     }
 
     @Override
     public void updateGroup(Disciplina disciplina, int position) {
-        GroupDisciplina groupDisciplina = data.get(position).first;
+        GroupDisciplina groupDisciplina = getGroupDisciplinaListPair(position).first;
         groupDisciplina.set(disciplina);
     }
 
@@ -57,30 +68,39 @@ public class DisciplinaProvider extends GroupItemProvider<Disciplina, Assunto> {
 
     @Override
     public void addItem(Assunto assunto, int groupPosition, int childPosition) {
-        data.get(groupPosition).second.add(childPosition, new ItemAssunto(assunto));
+        Pair<GroupDisciplina, List<ItemAssunto>> pair = getGroupDisciplinaListPair(groupPosition);
+        pair.second.add(childPosition, new ItemAssunto(assunto));
+        pair.first.incrementItemSize();
     }
 
     @Override
     public GroupDisciplina getGroup(int position) {
-        return data.get(position).first;
+        return getGroupDisciplinaListPair(position).first;
     }
 
     @Override
     public ItemAssunto getItem(int groupPosition, int childPosition) {
-        return data.get(groupPosition).second.get(childPosition);
+        return getGroupDisciplinaListPair(groupPosition).second.get(childPosition);
     }
 
     @Override
-    public void removeGroup(int position)    {
+    public void removeGroup(int position) {
         data.remove(position);
+    }
+
+    @Override
+    public void removeItem(int groupPosition, int itemPosition) {
+        data.get(groupPosition).second.remove(itemPosition);
     }
 
     public class GroupDisciplina extends Group implements DisciplinaAdapter.Pinnable {
         private Disciplina disciplina;
+        private int itemSize;
         private int pinDirection;
 
-        GroupDisciplina(Disciplina disciplina){
+        GroupDisciplina(Disciplina disciplina) {
             this.disciplina = disciplina;
+            itemSize = disciplina.getAssuntos().size();
         }
 
         @Override
@@ -110,7 +130,15 @@ public class DisciplinaProvider extends GroupItemProvider<Disciplina, Assunto> {
 
         @Override
         public int getId() {
-            return (int)disciplina.getId();
+            return (int) disciplina.getId();
+        }
+
+        public int getItemSize() {
+            return itemSize;
+        }
+
+        public void incrementItemSize() {
+            itemSize = itemSize + 1;
         }
     }
 
@@ -133,7 +161,7 @@ public class DisciplinaProvider extends GroupItemProvider<Disciplina, Assunto> {
 
         @Override
         public int getId() {
-            return (int)assunto.getId();
+            return (int) assunto.getId();
         }
     }
 }

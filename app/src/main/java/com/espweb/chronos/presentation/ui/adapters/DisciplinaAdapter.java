@@ -57,8 +57,8 @@ public class DisciplinaAdapter extends AbstractExpandableItemAdapter<DisciplinaV
 
     private int lastActionPosition;
 
-    public DisciplinaAdapter(Context context, RecyclerViewExpandableItemManager expandableItemManager, DisciplinaProvider disciplinaProvider) {
-        this.disciplinaProvider = disciplinaProvider;
+    public DisciplinaAdapter(Context context, RecyclerViewExpandableItemManager expandableItemManager) {
+        disciplinaProvider = new DisciplinaProvider();
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.expandableItemManager = expandableItemManager;
 
@@ -201,7 +201,7 @@ public class DisciplinaAdapter extends AbstractExpandableItemAdapter<DisciplinaV
 
     @Override
     public void onSwipeChildItemStarted(@NonNull AssuntoViewHolder holder, int groupPosition, int childPosition) {
-        expandableItemManager.notifyGroupItemChanged(groupPosition, childPosition);
+
     }
 
     @Override
@@ -276,6 +276,7 @@ public class DisciplinaAdapter extends AbstractExpandableItemAdapter<DisciplinaV
         int childPosition = disciplinaProvider.getItemCount(groupPosition);
         disciplinaProvider.addItem(assunto, groupPosition, childPosition);
         expandableItemManager.notifyChildItemInserted(groupPosition, childPosition);
+        expandableItemManager.notifyGroupItemChanged(groupPosition);
         expandableItemManager.expandGroup(groupPosition);
     }
 

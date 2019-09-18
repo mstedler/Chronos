@@ -4,10 +4,12 @@ import com.espweb.chronos.domain.repository.SessaoRepository;
 import com.espweb.chronos.network.utils.ResponseInterceptor;
 import com.espweb.chronos.network.utils.TokenAuthenticator;
 import com.espweb.chronos.network.utils.TokenInterceptor;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Dispatcher;
@@ -33,6 +35,7 @@ public class RestClient {
                 .addInterceptor(tokenInterceptor)
                 .authenticator(tokenAuthenticator)
                 .addInterceptor(responseInterceptor)
+                .addNetworkInterceptor(new StethoInterceptor())
                 .dispatcher(dispatcher)
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .writeTimeout(5, TimeUnit.SECONDS)
@@ -40,9 +43,9 @@ public class RestClient {
                 .build();
 
         Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd kk:mm:ss")
+                .setDateFormat("yyyy-MM-dd")
                 .setLenient()
-                .serializeNulls()
+                //.serializeNulls()
                 .create();
 
         retrofit = new Retrofit.Builder()

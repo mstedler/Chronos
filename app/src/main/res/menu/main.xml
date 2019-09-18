@@ -2,8 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/logout"
-        android:title="@string/logout"
-        
-        app:showAsAction="never" />
+        android:id="@+id/profile_dest"
+        android:title="@string/perifl"
+        android:icon="@drawable/ic_person_white"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/main_dest"
+        android:title="@string/cronogramas"
+        android:icon="@drawable/ic_schedule_book"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/graphs_dest"
+        android:title="@string/andamento"
+        android:icon="@drawable/ic_analytics"
+        app:showAsAction="ifRoom" />
+
 </menu>

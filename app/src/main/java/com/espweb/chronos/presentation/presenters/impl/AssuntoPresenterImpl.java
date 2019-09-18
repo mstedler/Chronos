@@ -5,7 +5,9 @@ import com.espweb.chronos.domain.executor.MainThread;
 import com.espweb.chronos.domain.interactors.artefato.GetAllArtefatosInteractor;
 import com.espweb.chronos.domain.interactors.artefato.impl.GetAllArtefatosInteractorImpl;
 import com.espweb.chronos.domain.interactors.assunto.DeleteAssuntoInteractor;
+import com.espweb.chronos.domain.interactors.assunto.GetAssuntoInteractor;
 import com.espweb.chronos.domain.interactors.assunto.impl.DeleteAssuntoInteractorImpl;
+import com.espweb.chronos.domain.interactors.assunto.impl.GetAssuntoInteractorImpl;
 import com.espweb.chronos.domain.model.Artefato;
 import com.espweb.chronos.domain.model.Assunto;
 import com.espweb.chronos.domain.repository.ArtefatoRepository;
@@ -19,7 +21,7 @@ import java.util.List;
 
 public class AssuntoPresenterImpl extends AbstractPresenter implements AssuntoPresenter,
         GetAllArtefatosInteractor.Callback,
-        DeleteAssuntoInteractor.Callback{
+        DeleteAssuntoInteractor.Callback, GetAssuntoInteractor.Callback {
 
     private View view;
     private ArtefatoRepository artefatoRepository;
@@ -36,6 +38,12 @@ public class AssuntoPresenterImpl extends AbstractPresenter implements AssuntoPr
     public void deleteAssunto(com.espweb.chronos.presentation.model.Assunto assunto) {
         DeleteAssuntoInteractor deleteAssuntoInteractor = new DeleteAssuntoInteractorImpl(executor, mainThread, this, assuntoRepository, PresentationToDomainConverter.convert(assunto));
         deleteAssuntoInteractor.execute();
+    }
+
+    @Override
+    public void getAssunto(long id) {
+        GetAssuntoInteractor getAssuntoInteractor = new GetAssuntoInteractorImpl(executor, mainThread, this, assuntoRepository, id);
+        getAssuntoInteractor.execute();
     }
 
     @Override
@@ -74,11 +82,23 @@ public class AssuntoPresenterImpl extends AbstractPresenter implements AssuntoPr
 
     @Override
     public void onAssuntoDeleted() {
-        view.finish();
+        view.navigateToCronograma();
     }
 
     @Override
     public void onError(String message) {
         view.showError(message);
+    }
+
+    @Override
+    public void onAssuntoRetrieved(Assunto assunto) {
+        com.espweb.chronos.presentation.model.Assunto pAssunto = DomainToPresentationConverter.convert(assunto);
+        view.setAssunto(pAssunto);
+        view.showArtefatos(pAssunto.getArtefatos());
+    }
+
+    @Override
+    public void onAssuntoNotFound() {
+
     }
 }

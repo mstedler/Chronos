@@ -22,7 +22,7 @@ public class User {
 
     private Date updatedAt;
 
-    private List<Cronograma> cronogramas = Collections.emptyList();
+    private List<Cronograma> cronogramas;
 
     public User() {
     }

@@ -1,11 +1,6 @@
 package com.espweb.chronos.storage.converters;
 
-import com.espweb.chronos.storage.model.Artefato;
-import com.espweb.chronos.storage.model.Cronograma;
-import com.espweb.chronos.storage.model.Revisao;
-import com.espweb.chronos.storage.model.User;
-
-import java.util.Collection;
+import com.espweb.chronos.domain.model.User;
 
 public class DomainToStorageConverter {
 
@@ -30,8 +25,8 @@ public class DomainToStorageConverter {
         return sRevisao;
     }
 
-    public static User convert(com.espweb.chronos.domain.model.User user) {
-        User sUser = new User();
+    public static com.espweb.chronos.storage.model.User convert(User user) {
+        com.espweb.chronos.storage.model.User sUser = new com.espweb.chronos.storage.model.User();
         sUser.setId(user.getId());
         sUser.setName(user.getName());
         sUser.setEmail(user.getEmail());

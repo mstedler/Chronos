@@ -3,7 +3,6 @@ package com.espweb.chronos.workers;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
-import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.espweb.chronos.domain.exceptions.NotFoundException;
@@ -16,8 +15,6 @@ import com.espweb.chronos.workers.base.WebRequestWorker;
 
 import java.io.IOException;
 
-import retrofit2.Response;
-
 public class UpdateAssuntoWorker extends WebRequestWorker {
     public UpdateAssuntoWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -25,8 +22,9 @@ public class UpdateAssuntoWorker extends WebRequestWorker {
 
     @Override
     public void work() throws IOException, NullPointerException, NotFoundException {
+        AssuntoBox assuntoBox = new AssuntoBox();
         long id = getInputData().getLong(CreateAssuntoWorker.KEY_ID_ASSUNTO, 0);
-        Assunto assunto = AssuntoBox.get(id);
+        Assunto assunto = assuntoBox.get(id);
         Disciplina disciplina = assunto.getDisciplina().getTarget();
         AssuntoService assuntoService = RestClient.createService(AssuntoService.class);
         assuntoService.update(assunto.getUuid(), assunto.getDescricao(), "wtf", disciplina.getUuid()).execute();

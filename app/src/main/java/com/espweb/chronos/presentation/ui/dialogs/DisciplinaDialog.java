@@ -98,19 +98,43 @@ public class DisciplinaDialog extends DialogFragment implements DisciplinaDialog
     }
 
     private void setTitle() {
-        int title = disciplina.isNew() ? R.string.new_subject : R.string.edit;
+        int title = disciplina.isNew() ? R.string.nova_disciplina : R.string.editar;
         tvTitle.setText(title);
     }
 
     @Override
     public void onResume() {
-        ViewUtils.putDialogOnCenter(getDialog());
+        ViewUtils.putDialogOnCenter(requireDialog());
         super.onResume();
     }
 
     @OnClick(R.id.btn_save)
     void onSaveClick() {
         buildDisciplina();
+        if(validate())
+            save();
+    }
+
+    private boolean validate() {
+        clearErrors();
+        if(!disciplina.isNomeValid()) {
+            tilNome.setError(getString(R.string.deve_ter_mais_que_3));
+            return false;
+        }
+
+        if(!disciplina.isDescricaoValid()) {
+            tilDescricao.setError(getString(R.string.deve_ter_mais_que_3));
+            return false;
+        }
+        return true;
+    }
+
+    private void clearErrors() {
+        tilDescricao.setError(null);
+        tilNome.setError(null);
+    }
+
+    private void save() {
         if(disciplina.isNew()) {
             createDisciplina();
         } else {
@@ -136,11 +160,6 @@ public class DisciplinaDialog extends DialogFragment implements DisciplinaDialog
     @OnClick(R.id.btn_cancelar)
     public void cancel() {
         getDialog().dismiss();
-    }
-
-    @Override
-    public void setNomeError(String message) {
-        tilNome.setError(message);
     }
 
     @Override

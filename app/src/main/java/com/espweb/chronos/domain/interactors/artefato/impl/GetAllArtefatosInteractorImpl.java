@@ -37,7 +37,7 @@ public class GetAllArtefatosInteractorImpl extends AbstractInteractor implements
         if(artefatos.size() > 0) {
             mainThread.post(() -> callback.onArtefatosRetrieved(artefatos));
         } else {
-            mainThread.post(() -> callback.onError("Não há artefatos."));
+            mainThread.post(() -> callback.onArtefatoNotFound());
         }
     }
 }

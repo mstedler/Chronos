@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graphs"
+    app:startDestination="@id/splash_dest">
+    <fragment
+        android:id="@+id/signin_dest"
+        android:name="com.espweb.chronos.presentation.ui.fragments.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/action_signin_to_signup"
+            app:destination="@id/signup_dest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_signin_to_main"
+            app:destination="@+id/main_dest"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@+id/signin_dest"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/signup_dest"
+        android:name="com.espweb.chronos.presentation.ui.fragments.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
+    <fragment
+        android:id="@+id/main_dest"
+        android:name="com.espweb.chronos.presentation.ui.fragments.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_main_to_cronograma"
+            app:destination="@+id/cronograma_dest"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@+id/main_dest" />
+    </fragment>
+    <fragment
+        android:id="@+id/cronograma_dest"
+        android:name="com.espweb.chronos.presentation.ui.fragments.CronogramaFragment"
+        android:label="CronogramaFragment"
+        tools:layout="@layout/fragment_cronograma" >
+        <action
+            android:id="@+id/action_cronograma_to_assunto"
+            app:destination="@id/assunto_dest"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+        <argument
+            android:name="id_cronograma"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
+    <fragment
+        android:id="@+id/assunto_dest"
+        tools:layout="@layout/fragment_assunto"
+        android:name="com.espweb.chronos.presentation.ui.fragments.AssuntoFragment"
+        android:label="AssuntoFragment" >
+        <argument
+            android:name="id_assunto"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
+    <fragment
+        android:id="@+id/profile_dest"
+        android:name="com.espweb.chronos.presentation.ui.fragments.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profile_to_signin"
+            app:destination="@+id/signin_dest"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@+id/signin_dest"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/graphs_dest"
+        android:name="com.espweb.chronos.presentation.ui.fragments.ReportsFragment"
+        android:label="fragment_graphs"
+        tools:layout="@layout/fragment_reports" />
+    <fragment
+        android:id="@+id/splash_dest"
+        android:name="com.espweb.chronos.presentation.ui.fragments.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splash_to_main"
+            app:destination="@id/main_dest"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@+id/splash_dest"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splash_to_sign_in"
+            app:destination="@id/signin_dest"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@+id/splash_dest"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+</navigation>

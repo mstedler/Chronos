@@ -32,7 +32,7 @@ public class GetAllDisciplinasInteractorImpl extends AbstractInteractor implemen
         if(disciplinas.size() > 0) {
             mainThread.post(() -> callback.onDisciplinasRetrieved(disciplinas));
         } else {
-            mainThread.post(() -> callback.onError("Erro ao listar disciplinas"));
+            mainThread.post(() -> callback.onDisciplinasNotFound());
         }
     }
 }

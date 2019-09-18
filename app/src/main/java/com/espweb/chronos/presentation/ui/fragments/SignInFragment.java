@@ -1,27 +1,29 @@
 package com.espweb.chronos.presentation.ui.fragments;
 
 
-import android.content.Context;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.espweb.chronos.R;
 import com.espweb.chronos.domain.executor.impl.ThreadExecutor;
 import com.espweb.chronos.domain.model.User;
-import com.espweb.chronos.domain.repository.SessaoRepository;
 import com.espweb.chronos.presentation.presenters.SignInPresenter;
 import com.espweb.chronos.presentation.presenters.impl.SignInPresenterImpl;
 import com.espweb.chronos.data.SessaoRepositoryImpl;
-import com.espweb.chronos.presentation.utils.ViewUtils;
+import com.espweb.chronos.presentation.viewmodels.MainViewModel;
 import com.espweb.chronos.threading.MainThreadImpl;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -42,29 +44,21 @@ public class SignInFragment extends Fragment implements SignInPresenter.View {
     @BindView(R.id.progress)
     ProgressBar progressBar;
 
-    public interface SignInFragmentListener {
-        void showSignUpFragment();
-        void showMainActivity();
-    }
+    @BindView(R.id.btn_sign_in)
+    Button btnSignIn;
 
-    private SignInFragmentListener signInFragmentListener;
+    @BindView(R.id.btn_show_signUp)
+    Button btnShowSignUp;
+
+
+    private MainViewModel mainViewModel;
+
     private SignInPresenter signInPresenter;
-
-
-    public SignInFragment() {
-        // Required empty public constructor
-    }
-
-    public static Fragment newInstance() {
-        Fragment signInFragment = new SignInFragment();
-        return signInFragment;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SessaoRepository sessaoRepository = new SessaoRepositoryImpl(getContext());
-        signInPresenter = new SignInPresenterImpl(ThreadExecutor.getInstance(), MainThreadImpl.getInstance(), this, sessaoRepository);
+        mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
     }
 
     @Override
@@ -75,34 +69,38 @@ public class SignInFragment extends Fragment implements SignInPresenter.View {
         return view;
     }
 
-
-
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            signInFragmentListener = (SignInFragmentListener) context;
-        } catch (ClassCastException e) {
-            Log.e(TAG, "Activity must implement SignInFragmentListener");
-        }
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        signInPresenter = new SignInPresenterImpl(ThreadExecutor.getInstance(), MainThreadImpl.getInstance(), this, new SessaoRepositoryImpl(requireContext()), mainViewModel);
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),
+                new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+                        requireActivity().finish();
+                    }
+                });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        signInPresenter.resume();
+    public void blockClick() {
+        btnShowSignUp.setClickable(false);
+        btnSignIn.setClickable(false);
+    }
+
+    public void allowClick(){
+        btnShowSignUp.setClickable(true);
+        btnSignIn.setClickable(true);
     }
 
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
-        ViewUtils.makeWindowUntouchable(getActivity().getWindow());
+
     }
 
     @Override
     public void hideProgress() {
         progressBar.setVisibility(View.INVISIBLE);
-        ViewUtils.makeWindowTouchable(getActivity().getWindow());
     }
 
     @Override
@@ -111,19 +109,14 @@ public class SignInFragment extends Fragment implements SignInPresenter.View {
     }
 
     @Override
-    public void showMainActivity() {
-        signInFragmentListener.showMainActivity();
-    }
-
-    @Override
     public void setEmailError() {
-        tilEmail.setError(getString(R.string.cannot_be_empty));
+        tilEmail.setError(getString(R.string.email_invalido));
         tilEmail.requestFocus();
     }
 
     @Override
     public void setPasswordError() {
-        tilPassword.setError(getString(R.string.cannot_be_empty));
+        tilPassword.setError(getString(R.string.no_minimo_6));
         tilPassword.requestFocus();
     }
 
@@ -139,7 +132,7 @@ public class SignInFragment extends Fragment implements SignInPresenter.View {
 
     @OnClick(R.id.btn_show_signUp)
     void onClick(){
-        signInFragmentListener.showSignUpFragment();
+        Navigation.findNavController(requireView()).navigate(R.id.action_signin_to_signup);
     }
 
     @OnClick(R.id.btn_sign_in)
@@ -147,5 +140,10 @@ public class SignInFragment extends Fragment implements SignInPresenter.View {
         String email = tilEmail.getEditText().getText().toString();
         String password = tilPassword.getEditText().getText().toString();
         signInPresenter.signInUser(email, password);
+    }
+
+    @Override
+    public void showMain() {
+        Navigation.findNavController(requireView()).navigate(R.id.action_signin_to_main);
     }
 }

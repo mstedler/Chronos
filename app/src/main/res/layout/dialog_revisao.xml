@@ -15,28 +15,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/daily" />
+            android:text="@string/diaria" />
 
         <RadioButton
             android:id="@+id/rb_semanal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/weekly" />
+            android:text="@string/semanal" />
 
         <RadioButton
             android:id="@+id/rb_quinzenal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/biweekly" />
+            android:text="@string/quinzenal" />
 
         <RadioButton
             android:id="@+id/rb_mensal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/monthly" />
+            android:text="@string/mensal" />
     </RadioGroup>
 
 </com.espweb.chronos.presentation.ui.custom.ArtefatoDialogTemplate>

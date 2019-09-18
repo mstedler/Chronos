@@ -29,14 +29,14 @@ public class Cronograma {
 
     private ToOne<User> user;
 
-    public Cronograma(long id, String uuid, String titulo, String descricao, Date inicio, Date fim, long idUser) {
+    public Cronograma(long id, String uuid, String titulo, String descricao, Date inicio, Date fim, long userId) {
         this.id = id;
         this.uuid = uuid;
         this.titulo = titulo;
         this.descricao = descricao;
         this.inicio = inicio;
         this.fim = fim;
-        this.user.setTargetId(idUser);
+        this.user.setTargetId(userId);
     }
 
     public Cronograma() {

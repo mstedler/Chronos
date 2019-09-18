@@ -2,17 +2,19 @@
 
 buildscript {
     ext.objectboxVersion = '2.3.4'
-
+    ext.nav_version = "2.2.0-alpha01"
     repositories {
         google()
         jcenter()
         
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath 'com.android.tools.build:gradle:3.5.0'
 
         //storage
         classpath "io.objectbox:objectbox-gradle-plugin:$objectboxVersion"
+
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
     }
 }
 
@@ -20,7 +22,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
     }
 }
 

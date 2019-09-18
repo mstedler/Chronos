@@ -1,7 +1,7 @@
 package com.espweb.chronos.network.utils;
 
 import com.espweb.chronos.domain.repository.SessaoRepository;
-import com.espweb.chronos.events.LogoutEvent;
+import com.espweb.chronos.events.SessionHasExpiredEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -31,9 +31,9 @@ public class ResponseInterceptor implements Interceptor {
                 token = token.replace("Bearer ", "");
                 sessaoRepository.refreshToken(token);
             }
-        } else if(response.code() == 500) {
-            EventBus.getDefault().post(new LogoutEvent());
+        } else if(response.code() == 500){
             sessaoRepository.signOutUser();
+            EventBus.getDefault().post(new SessionHasExpiredEvent());
         }
 
         return response;

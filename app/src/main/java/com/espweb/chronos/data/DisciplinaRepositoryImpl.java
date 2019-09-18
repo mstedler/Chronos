@@ -22,9 +22,10 @@ public class DisciplinaRepositoryImpl implements Repository<Disciplina> {
 
     private static final String TAG = "DisciplinaRepository";
     private Context context;
-
+    private DisciplinaBox box;
     public DisciplinaRepositoryImpl(Context context) {
         this.context = context;
+        box = new DisciplinaBox();
     }
 
     @Override
@@ -36,7 +37,7 @@ public class DisciplinaRepositoryImpl implements Repository<Disciplina> {
                         disciplina.getDescricao(),
                         disciplina.getIdCronograma());
 
-        long id = DisciplinaBox.put(sDisciplina);
+        long id = box.put(sDisciplina);
 
         Data data = new Data.Builder().putLong(CreateDisciplinaWorker.KEY_ID_DISCIPLINA, id).build();
 
@@ -49,10 +50,10 @@ public class DisciplinaRepositoryImpl implements Repository<Disciplina> {
     public void update(Disciplina disciplina) {
         try {
             long id = disciplina.getId();
-            com.espweb.chronos.storage.model.Disciplina sDisciplina = DisciplinaBox.get(id);
+            com.espweb.chronos.storage.model.Disciplina sDisciplina = box.get(id);
             sDisciplina.setNome(disciplina.getNome());
             sDisciplina.setDescricao(disciplina.getDescricao());
-            DisciplinaBox.put(sDisciplina);
+            box.put(sDisciplina);
             Data data = new Data.Builder().putLong(CreateDisciplinaWorker.KEY_ID_DISCIPLINA, id).build();
             WorkFactory.enqueue(context, data, UpdateDisciplinaWorker.class);
         } catch (NotFoundException e) {
@@ -61,16 +62,21 @@ public class DisciplinaRepositoryImpl implements Repository<Disciplina> {
     }
 
     @Override
-    public void delete(Disciplina disciplina) {
-        DisciplinaBox.remove(disciplina.getId());
-        Data data = new Data.Builder().putString(DeleteDisciplinaWorker.KEY_UUID_DISCIPLINA, disciplina.getUuid()).build();
-        WorkFactory.enqueue(context, data, DeleteDisciplinaWorker.class);
+    public void delete(long id) {
+        try {
+            com.espweb.chronos.storage.model.Disciplina disciplina = box.get(id);
+            box.remove(id);
+            Data data = new Data.Builder().putString(DeleteDisciplinaWorker.KEY_UUID_DISCIPLINA, disciplina.getUuid()).build();
+            WorkFactory.enqueue(context, data, DeleteDisciplinaWorker.class);
+        } catch (NotFoundException e) {
+            Log.e(TAG, e.getLocalizedMessage());
+        }
     }
 
     @Override
     public Disciplina get(long id) {
         try {
-            com.espweb.chronos.storage.model.Disciplina sDisciplina = DisciplinaBox.get(id);
+            com.espweb.chronos.storage.model.Disciplina sDisciplina = box.get(id);
             return StorageToDomainConverter.convert(sDisciplina);
         } catch (NotFoundException e) {
             Log.e(TAG, e.getLocalizedMessage());
@@ -80,7 +86,7 @@ public class DisciplinaRepositoryImpl implements Repository<Disciplina> {
 
     @Override
     public List<Disciplina> getAll(long idCronograma) {
-        List<com.espweb.chronos.storage.model.Disciplina> disciplinas = DisciplinaBox.getAll(idCronograma);
+        List<com.espweb.chronos.storage.model.Disciplina> disciplinas = box.getAll(idCronograma);
         return StorageToDomainConverter.convertDisciplinas(disciplinas);
     }
 

@@ -16,6 +16,19 @@ public class Exercicio {
     @SerializedName("acertos")
     private int acertos;
 
+    @SerializedName("escopo")
+    private int escopo = 0;
+
+    @SerializedName("assunto_uuid")
+    private String assuntoUuid;
+
+    public String getAssuntoUuid() {
+        return assuntoUuid;
+    }
+
+    public void setAssuntoUuid(String assuntoUuid) {
+        this.assuntoUuid = assuntoUuid;
+    }
 
     public Exercicio() {
     }
@@ -58,5 +71,13 @@ public class Exercicio {
 
     public void setAcertos(int acertos) {
         this.acertos = acertos;
+    }
+
+    public int getEscopo() {
+        return escopo;
+    }
+
+    public void setEscopo(int escopo) {
+        this.escopo = escopo;
     }
 }

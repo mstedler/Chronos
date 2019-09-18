@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="escopos">
-        <item>@string/daily</item>
-        <item>@string/weekly</item>
-        <item>@string/biweekly</item>
-        <item>@string/monthly</item>
+        <item>@string/diaria</item>
+        <item>@string/semanal</item>
+        <item>@string/quinzenal</item>
+        <item>@string/mensal</item>
     </string-array>
 
     <string-array name="artefatos">
-        <item>@string/exercise</item>
         <item>@string/material</item>
-        <item>@string/review</item>
+        <item>@string/revisao</item>
+        <item>@string/exercicio</item>
+    </string-array>
+
+    <string-array name="artefatosplural">
+        <item>@string/materiais</item>
+        <item>@string/revisoes</item>
+        <item>@string/exercicios</item>
+    </string-array>
+
+    <string-array name="materials">
+        <item>Vídeo aula</item>
+        <item>Livros</item>
+        <item>Internet / Artigos / Posts</item>
     </string-array>
 </resources>

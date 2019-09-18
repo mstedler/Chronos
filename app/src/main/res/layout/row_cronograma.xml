@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
     app:cardCornerRadius="7dp"
     app:cardElevation="5dp"
     app:cardUseCompatPadding="true">
@@ -11,16 +10,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="8dp">
+        android:background="?attr/selectableItemBackground"
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/tv_cronograma_title"
+            style="@style/TextAppearance.Chronos.CardTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-            android:textColor="@color/colorPrimary"
-            android:textSize="24sp"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,15 +25,9 @@
             android:id="@+id/tv_cronograma_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_cronograma_title" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
 
         <TextView
             android:id="@+id/tv_data_inicio"
@@ -48,6 +39,7 @@
             android:gravity="center_vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_text_inicio" />
+
 
         <TextView
             android:id="@+id/tv_data_fim"
@@ -66,35 +58,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/initial_date"
+            android:text="@string/data_inicial"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_cronograma_description" />
+            app:layout_constraintTop_toBottomOf="@id/view" />
 
         <TextView
             android:id="@+id/tv_text_fim"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@string/final_date"
+            android:text="@string/data_final"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/center_horizontal"
             app:layout_constraintTop_toTopOf="@+id/tv_text_inicio" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/center_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.5" />
-
         <View
+            android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginTop="8dp"
             android:background="#AA000000"
-            app:layout_constraintBottom_toTopOf="@id/center_vertical"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_cronograma_description" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

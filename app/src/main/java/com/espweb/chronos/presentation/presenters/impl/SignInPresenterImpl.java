@@ -2,23 +2,27 @@ package com.espweb.chronos.presentation.presenters.impl;
 
 import com.espweb.chronos.domain.executor.Executor;
 import com.espweb.chronos.domain.executor.MainThread;
-import com.espweb.chronos.domain.interactors.session.SignInInteractor;
-import com.espweb.chronos.domain.interactors.session.impl.SignInInteractorImpl;
+import com.espweb.chronos.domain.interactors.sessao.SignInInteractor;
+import com.espweb.chronos.domain.interactors.sessao.impl.SignInInteractorImpl;
 import com.espweb.chronos.domain.model.User;
 import com.espweb.chronos.domain.repository.SessaoRepository;
+import com.espweb.chronos.presentation.converters.DomainToPresentationConverter;
 import com.espweb.chronos.presentation.presenters.base.AbstractPresenter;
 import com.espweb.chronos.presentation.presenters.SignInPresenter;
+import com.espweb.chronos.presentation.viewmodels.MainViewModel;
 
 public class SignInPresenterImpl extends AbstractPresenter implements SignInPresenter,
         SignInInteractor.Callback {
 
     private View view;
     private SessaoRepository sessaoRepository;
+    private MainViewModel mainViewModel;
 
-    public SignInPresenterImpl(Executor executor, MainThread mainThread, View view, SessaoRepository sessaoRepository) {
+    public SignInPresenterImpl(Executor executor, MainThread mainThread, View view, SessaoRepository sessaoRepository, MainViewModel mainViewModel) {
         super(executor, mainThread);
         this.view = view;
         this.sessaoRepository = sessaoRepository;
+        this.mainViewModel = mainViewModel;
     }
 
     @Override
@@ -43,15 +47,16 @@ public class SignInPresenterImpl extends AbstractPresenter implements SignInPres
 
     @Override
     public void onError(String message) {
+        view.allowClick();
         view.hideProgress();
         view.showError(message);
     }
 
     @Override
     public void onSignInSuccess(User user) {
-        view.hideProgress();
+        mainViewModel.setUser(DomainToPresentationConverter.convert(user));
         view.showWelcomeMessage(user);
-        view.showMainActivity();
+        view.showMain();
     }
 
     @Override
@@ -64,7 +69,7 @@ public class SignInPresenterImpl extends AbstractPresenter implements SignInPres
             view.setPasswordError();
             return;
         }
-
+        view.blockClick();
         view.showProgress();
 
         SignInInteractor signInInteractor = new SignInInteractorImpl(executor, mainThread, this, sessaoRepository,  email, password);

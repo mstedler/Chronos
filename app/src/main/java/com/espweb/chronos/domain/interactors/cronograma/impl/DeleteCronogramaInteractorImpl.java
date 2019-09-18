@@ -30,7 +30,7 @@ public class DeleteCronogramaInteractorImpl extends AbstractInteractor implement
 
     @Override
     public void run() {
-        cronogramaRepository.delete(cronograma);
+        cronogramaRepository.delete(cronograma.getId());
 
         mainThread.post(() -> callback.onCronogramaDeleted());
     }
