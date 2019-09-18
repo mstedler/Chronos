@@ -9,6 +9,7 @@ import com.espweb.chronos.domain.repository.SessaoRepository;
 import com.espweb.chronos.presentation.converters.DomainToPresentationConverter;
 import com.espweb.chronos.presentation.presenters.base.AbstractPresenter;
 import com.espweb.chronos.presentation.presenters.SignInPresenter;
+import com.espweb.chronos.presentation.utils.EmailValidator;
 import com.espweb.chronos.presentation.viewmodels.MainViewModel;
 
 public class SignInPresenterImpl extends AbstractPresenter implements SignInPresenter,
@@ -62,10 +63,10 @@ public class SignInPresenterImpl extends AbstractPresenter implements SignInPres
     @Override
     public void signInUser(String email, String password) {
         view.clearErrors();
-        if(email.isEmpty()) {
+        if(!EmailValidator.isValid(email)) {
             view.setEmailError();
             return;
-        } else if(password.isEmpty()) {
+        } else if(password.trim().length() < 6) {
             view.setPasswordError();
             return;
         }

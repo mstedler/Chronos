@@ -71,6 +71,13 @@ public abstract class ArtefatoDialog<T extends Artefato> extends DialogFragment 
     @OnClick(R.id.btn_save)
     void onSaveClick(){
         buildFromForm();
+        if(validate())
+            save();
+    }
+
+    protected abstract boolean validate();
+
+    private void save() {
         if(artefato.isNew()) {
             artefatoDialogPresenter.createArtefato(artefato.getIdAssunto(), artefato);
         } else {

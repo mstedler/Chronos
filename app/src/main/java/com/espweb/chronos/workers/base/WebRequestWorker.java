@@ -33,7 +33,7 @@ public abstract class WebRequestWorker extends Worker {
             return Result.retry();
         } catch (NullPointerException | NotFoundException e) {
             Log.e(NAME, e.getMessage());
-            return Result.failure();
+            return Result.success();
         } catch (Exception e) {
             WorkManager.getInstance(getApplicationContext()).cancelUniqueWork(NAME);
             WorkManager.getInstance(getApplicationContext()).pruneWork();

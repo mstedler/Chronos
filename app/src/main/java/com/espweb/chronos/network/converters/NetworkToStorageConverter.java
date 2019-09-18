@@ -50,67 +50,88 @@ public class NetworkToStorageConverter {
     public static List<Disciplina> convertDisciplinas(List<com.espweb.chronos.network.model.Disciplina> disciplinas) {
         List<Disciplina> sDisciplinas = new ArrayList<>();
         for (com.espweb.chronos.network.model.Disciplina disciplina : disciplinas) {
-            Disciplina sDisciplina = new Disciplina();
-            sDisciplina.setNome(disciplina.getNome());
-            sDisciplina.setUuid(disciplina.getUuid());
-            sDisciplina.setDescricao(disciplina.getDescricao());
-            sDisciplina.getAssuntos().addAll(convertAssuntos(disciplina.getAssuntos()));
-            sDisciplinas.add(sDisciplina);
+            sDisciplinas.add(convert(disciplina));
         }
         return sDisciplinas;
+    }
+
+    private static Disciplina convert(com.espweb.chronos.network.model.Disciplina disciplina) {
+        Disciplina sDisciplina = new Disciplina();
+        sDisciplina.setNome(disciplina.getNome());
+        sDisciplina.setUuid(disciplina.getUuid());
+        sDisciplina.setDescricao(disciplina.getDescricao());
+        sDisciplina.getAssuntos().addAll(convertAssuntos(disciplina.getAssuntos()));
+        return sDisciplina;
     }
 
     private static List<Assunto> convertAssuntos(List<com.espweb.chronos.network.model.Assunto> assuntos) {
         List<Assunto> sAssuntos = new ArrayList<>();
         for (com.espweb.chronos.network.model.Assunto assunto : assuntos) {
-            Assunto sAssunto = new Assunto();
-            sAssunto.setDescricao(assunto.getDescricao());
-            sAssunto.setUuid(assunto.getUuid());
-            sAssunto.getExercicios().addAll(convertExercicios(assunto.getExercicios()));
-            sAssunto.getMateriais().addAll(convertMateriais(assunto.getMateriais()));
-            sAssunto.getRevisoes().addAll(convertRevisoes(assunto.getRevisoes()));
-            sAssuntos.add(sAssunto);
+            sAssuntos.add(convert(assunto));
         }
         return sAssuntos;
+    }
+
+    private static Assunto convert(com.espweb.chronos.network.model.Assunto assunto) {
+        Assunto sAssunto = new Assunto();
+        sAssunto.setDescricao(assunto.getDescricao());
+        sAssunto.setUuid(assunto.getUuid());
+        sAssunto.getExercicios().addAll(convertExercicios(assunto.getExercicios()));
+        sAssunto.getMateriais().addAll(convertMateriais(assunto.getMateriais()));
+        sAssunto.getRevisoes().addAll(convertRevisoes(assunto.getRevisoes()));
+        return sAssunto;
     }
 
     private static List<Revisao> convertRevisoes(List<com.espweb.chronos.network.model.Revisao> revisoes) {
         List<Revisao> sRevisoes = new ArrayList<>();
         for (com.espweb.chronos.network.model.Revisao revisao : revisoes) {
-            Revisao sRevisao = new Revisao();
-            sRevisao.setEscopo(revisao.getEscopo().getValue());
-            sRevisao.setUuid(revisao.getUuid());
-            sRevisao.setData(revisao.getData());
-            sRevisoes.add(sRevisao);
+            sRevisoes.add(convert(revisao));
         }
         return sRevisoes;
+    }
+
+    private static Revisao convert(com.espweb.chronos.network.model.Revisao revisao) {
+        Revisao sRevisao = new Revisao();
+        sRevisao.setEscopo(revisao.getEscopo().getValue());
+        sRevisao.setUuid(revisao.getUuid());
+        sRevisao.setData(revisao.getData());
+        return sRevisao;
     }
 
     private static List<Material> convertMateriais(List<com.espweb.chronos.network.model.Material> materiais) {
         List<Material> sMateriais = new ArrayList<>();
         for (com.espweb.chronos.network.model.Material material : materiais) {
-            Material sMaterial = new Material();
-            sMaterial.setDescricao(material.getDescricao());
-            sMaterial.setMinutos(material.getTime());
-            sMaterial.setUuid(material.getUuid());
-            sMaterial.setData(material.getData());
-            sMateriais.add(sMaterial);
+            sMateriais.add(convert(material));
         }
         return sMateriais;
+    }
+
+    private static Material convert(com.espweb.chronos.network.model.Material material) {
+        Material sMaterial = new Material();
+        sMaterial.setDescricao(material.getDescricao());
+        sMaterial.setMinutos(material.getTime());
+        sMaterial.setUuid(material.getUuid());
+        sMaterial.setEscopo(material.getEscopo().getValue());
+        sMaterial.setData(material.getData());
+        return sMaterial;
     }
 
     private static List<Exercicio> convertExercicios(List<com.espweb.chronos.network.model.Exercicio> exercicios) {
         List<Exercicio> sExercicios = new ArrayList<>();
         for (com.espweb.chronos.network.model.Exercicio exercicio : exercicios) {
-            Exercicio sExercicio = new Exercicio();
-            sExercicio.setAcertos(exercicio.getAcertos());
-            sExercicio.setDescricao(exercicio.getDescricao());
-            sExercicio.setQuantidade(exercicio.getQuantidade());
-            sExercicio.setUuid(exercicio.getUuid());
-            sExercicio.setData(exercicio.getData());
-            sExercicios.add(sExercicio);
+            sExercicios.add(convert(exercicio));
         }
         return sExercicios;
+    }
+
+    private static Exercicio convert(com.espweb.chronos.network.model.Exercicio exercicio) {
+        Exercicio sExercicio = new Exercicio();
+        sExercicio.setAcertos(exercicio.getAcertos());
+        sExercicio.setDescricao(exercicio.getDescricao());
+        sExercicio.setQuantidade(exercicio.getQuantidade());
+        sExercicio.setUuid(exercicio.getUuid());
+        sExercicio.setData(exercicio.getData());
+        return sExercicio;
     }
 
 }

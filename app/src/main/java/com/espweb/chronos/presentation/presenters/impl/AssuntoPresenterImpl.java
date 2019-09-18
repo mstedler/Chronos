@@ -2,7 +2,9 @@ package com.espweb.chronos.presentation.presenters.impl;
 
 import com.espweb.chronos.domain.executor.Executor;
 import com.espweb.chronos.domain.executor.MainThread;
+import com.espweb.chronos.domain.interactors.artefato.DeleteArtefatoInteractor;
 import com.espweb.chronos.domain.interactors.artefato.GetAllArtefatosInteractor;
+import com.espweb.chronos.domain.interactors.artefato.impl.DeleteArtefatoInteractorImpl;
 import com.espweb.chronos.domain.interactors.artefato.impl.GetAllArtefatosInteractorImpl;
 import com.espweb.chronos.domain.interactors.assunto.DeleteAssuntoInteractor;
 import com.espweb.chronos.domain.interactors.assunto.GetAssuntoInteractor;
@@ -21,7 +23,7 @@ import java.util.List;
 
 public class AssuntoPresenterImpl extends AbstractPresenter implements AssuntoPresenter,
         GetAllArtefatosInteractor.Callback,
-        DeleteAssuntoInteractor.Callback, GetAssuntoInteractor.Callback {
+        DeleteAssuntoInteractor.Callback, GetAssuntoInteractor.Callback, DeleteArtefatoInteractor.Callback {
 
     private View view;
     private ArtefatoRepository artefatoRepository;
@@ -38,6 +40,12 @@ public class AssuntoPresenterImpl extends AbstractPresenter implements AssuntoPr
     public void deleteAssunto(com.espweb.chronos.presentation.model.Assunto assunto) {
         DeleteAssuntoInteractor deleteAssuntoInteractor = new DeleteAssuntoInteractorImpl(executor, mainThread, this, assuntoRepository, PresentationToDomainConverter.convert(assunto));
         deleteAssuntoInteractor.execute();
+    }
+
+    @Override
+    public void deleteArtefato(com.espweb.chronos.presentation.model.Artefato artefato) {
+        DeleteArtefatoInteractor deleteArtefatoInteractor = new DeleteArtefatoInteractorImpl(executor, mainThread, this, artefatoRepository, PresentationToDomainConverter.convert(artefato));
+        deleteArtefatoInteractor.execute();
     }
 
     @Override
@@ -81,6 +89,12 @@ public class AssuntoPresenterImpl extends AbstractPresenter implements AssuntoPr
     }
 
     @Override
+    public void onArtefatoNotFound() {
+        view.showEmptyView();
+        view.onArtefatoNotFound();
+    }
+
+    @Override
     public void onAssuntoDeleted() {
         view.navigateToCronograma();
     }
@@ -94,11 +108,24 @@ public class AssuntoPresenterImpl extends AbstractPresenter implements AssuntoPr
     public void onAssuntoRetrieved(Assunto assunto) {
         com.espweb.chronos.presentation.model.Assunto pAssunto = DomainToPresentationConverter.convert(assunto);
         view.setAssunto(pAssunto);
-        view.showArtefatos(pAssunto.getArtefatos());
+        if(pAssunto.getArtefatos().isEmpty())
+            view.showEmptyView();
+        else
+            view.showArtefatos(pAssunto.getArtefatos());
     }
 
     @Override
     public void onAssuntoNotFound() {
+
+    }
+
+    @Override
+    public void onArtefatoDeleted() {
+        view.onArtefatoDeleted();
+    }
+
+    @Override
+    public void onArtefatoNotValid() {
 
     }
 }

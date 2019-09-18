@@ -9,22 +9,20 @@ import com.espweb.chronos.domain.repository.SessaoRepository;
 import com.espweb.chronos.domain.repository.Repository;
 import com.espweb.chronos.presentation.presenters.base.AbstractPresenter;
 import com.espweb.chronos.presentation.presenters.SignUpPresenter;
+import com.espweb.chronos.presentation.utils.EmailValidator;
 
 public class SignUpPresenterImpl extends AbstractPresenter implements SignUpPresenter, SignUpInteractor.Callback {
 
     private View view;
     private SessaoRepository sessaoRepository;
-    private Repository<User> userRepository;
 
     public SignUpPresenterImpl(Executor executor,
                                MainThread mainThread,
                                View view,
-                               SessaoRepository sessaoRepository,
-                               Repository<User> userRepository) {
+                               SessaoRepository sessaoRepository) {
         super(executor, mainThread);
         this.view = view;
         this.sessaoRepository = sessaoRepository;
-        this.userRepository = userRepository;
     }
 
     @Override
@@ -65,10 +63,10 @@ public class SignUpPresenterImpl extends AbstractPresenter implements SignUpPres
         if(name.isEmpty()) {
             view.showNameError();
             return;
-        } else if(email.isEmpty()){
+        } else if(!EmailValidator.isValid(email)){
             view.showEmailError();
             return;
-        } else if(password.isEmpty()) {
+        } else if(password.length() < 6) {
             view.showPasswordError();
             return;
         }

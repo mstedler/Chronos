@@ -1,9 +1,9 @@
-package com.espweb.chronos.domain.interactors.session.impl;
+package com.espweb.chronos.domain.interactors.sessao.impl;
 
 import com.espweb.chronos.domain.executor.Executor;
 import com.espweb.chronos.domain.executor.MainThread;
 import com.espweb.chronos.domain.interactors.base.AbstractInteractor;
-import com.espweb.chronos.domain.interactors.session.SignOutInteractor;
+import com.espweb.chronos.domain.interactors.sessao.SignOutInteractor;
 import com.espweb.chronos.domain.repository.SessaoRepository;
 
 public class SignOutInteractorImpl extends AbstractInteractor implements SignOutInteractor {

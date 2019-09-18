@@ -128,10 +128,16 @@ public class CronogramaPresenterImpl extends AbstractPresenter implements Cronog
     }
 
     @Override
+    public void onDisciplinasNotFound() {
+        view.showEmptyView();
+    }
+
+    @Override
     public void onCronogramaRetrieved(com.espweb.chronos.domain.model.Cronograma cronograma) {
         Cronograma pCronograma = DomainToPresentationConverter.convert(cronograma);
         view.setCronograma(pCronograma);
-        view.showDisciplinas(pCronograma.getDisciplinas());
+        if(!pCronograma.getDisciplinas().isEmpty())
+            view.showDisciplinas(pCronograma.getDisciplinas());
         view.bindCronogramaToView();
     }
 

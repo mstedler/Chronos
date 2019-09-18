@@ -1,10 +1,10 @@
-package com.espweb.chronos.domain.interactors.session.impl;
+package com.espweb.chronos.domain.interactors.sessao.impl;
 
 import com.espweb.chronos.domain.exceptions.NotFoundException;
 import com.espweb.chronos.domain.executor.Executor;
 import com.espweb.chronos.domain.executor.MainThread;
 import com.espweb.chronos.domain.interactors.base.AbstractInteractor;
-import com.espweb.chronos.domain.interactors.session.GetActiveUserInteractor;
+import com.espweb.chronos.domain.interactors.sessao.GetActiveUserInteractor;
 import com.espweb.chronos.domain.model.User;
 import com.espweb.chronos.domain.repository.SessaoRepository;
 

@@ -15,6 +15,8 @@ import com.espweb.chronos.presentation.presenters.base.AbstractPresenter;
 import com.espweb.chronos.presentation.presenters.MainPresenter;
 import com.espweb.chronos.presentation.viewmodels.MainViewModel;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainPresenterImpl extends AbstractPresenter implements MainPresenter,
@@ -81,7 +83,8 @@ public class MainPresenterImpl extends AbstractPresenter implements MainPresente
 
     @Override
     public void onCronogramasNotFound() {
-
+        mainViewModel.setCronogramas(null);
+        view.showEmptyView();
     }
 
 
