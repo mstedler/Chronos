@@ -37,7 +37,7 @@ public class GetAllCronogramasTest {
 
         when(cronogramaRepository.getAll(1)).thenReturn(cronogramas);
 
-        GetAllCronogramasInteractorImpl getAllCronogramasInteractor = new GetAllCronogramasInteractorImpl(executor, mainThread, callback, cronogramaRepository, 1);
+        GetAllCronogramasInteractorImpl getAllCronogramasInteractor = new GetAllCronogramasInteractorImpl(executor, mainThread, callback, cronogramaRepository, 1, freshStart);
         getAllCronogramasInteractor.run();
 
         Mockito.verify(cronogramaRepository).getAll(1);

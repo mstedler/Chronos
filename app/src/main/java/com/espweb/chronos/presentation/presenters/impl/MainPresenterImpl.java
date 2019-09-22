@@ -7,16 +7,14 @@ import com.espweb.chronos.domain.interactors.cronograma.impl.GetAllCronogramasIn
 import com.espweb.chronos.domain.interactors.sessao.GetActiveUserInteractor;
 import com.espweb.chronos.domain.interactors.sessao.impl.GetActiveUserInteractorImpl;
 import com.espweb.chronos.domain.model.User;
+import com.espweb.chronos.domain.repository.CronogramaRepository;
 import com.espweb.chronos.domain.repository.Repository;
 import com.espweb.chronos.domain.repository.SessaoRepository;
 import com.espweb.chronos.presentation.converters.DomainToPresentationConverter;
-import com.espweb.chronos.presentation.model.Cronograma;
 import com.espweb.chronos.presentation.presenters.base.AbstractPresenter;
 import com.espweb.chronos.presentation.presenters.MainPresenter;
 import com.espweb.chronos.presentation.viewmodels.MainViewModel;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MainPresenterImpl extends AbstractPresenter implements MainPresenter,
@@ -24,14 +22,14 @@ public class MainPresenterImpl extends AbstractPresenter implements MainPresente
         GetActiveUserInteractor.Callback {
 
     private MainPresenter.View view;
-    private Repository<com.espweb.chronos.domain.model.Cronograma> cronogramaRepository;
+    private CronogramaRepository cronogramaRepository;
     private SessaoRepository sessaoRepository;
     private MainViewModel mainViewModel;
 
     public MainPresenterImpl(Executor executor,
                              MainThread mainThread,
                              View view,
-                             Repository<com.espweb.chronos.domain.model.Cronograma> cronogramaRepository,
+                             CronogramaRepository cronogramaRepository,
                              SessaoRepository sessaoRepository, MainViewModel mainViewModel) {
         super(executor, mainThread);
 
@@ -63,7 +61,6 @@ public class MainPresenterImpl extends AbstractPresenter implements MainPresente
     @Override
     public void onUserRetrieved(User user) {
         com.espweb.chronos.presentation.model.User pUser = DomainToPresentationConverter.convert(user);
-        getAllCronogramas(pUser.getId());
     }
 
     @Override
@@ -98,9 +95,9 @@ public class MainPresenterImpl extends AbstractPresenter implements MainPresente
     }
 
     @Override
-    public void getAllCronogramas(long userId) {
+    public void getAllCronogramas(long userId, boolean freshStart) {
         GetAllCronogramasInteractor getAllCronogramasInteractor =
-                new GetAllCronogramasInteractorImpl(executor, mainThread, this, cronogramaRepository, userId);
+                new GetAllCronogramasInteractorImpl(executor, mainThread, this, cronogramaRepository, userId, freshStart);
 
         getAllCronogramasInteractor.execute();
     }

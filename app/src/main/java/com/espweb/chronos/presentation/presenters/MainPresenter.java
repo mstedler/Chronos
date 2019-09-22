@@ -1,7 +1,6 @@
 package com.espweb.chronos.presentation.presenters;
 
 import com.espweb.chronos.presentation.model.Cronograma;
-import com.espweb.chronos.presentation.model.User;
 import com.espweb.chronos.presentation.presenters.base.BasePresenter;
 import com.espweb.chronos.presentation.ui.BaseView;
 
@@ -15,5 +14,5 @@ public interface MainPresenter extends BasePresenter {
         void showEmptyView();
     }
     void getUser();
-    void getAllCronogramas(long userId);
+    void getAllCronogramas(long userId, boolean freshStart);
 }

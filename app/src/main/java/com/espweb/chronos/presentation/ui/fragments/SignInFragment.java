@@ -144,6 +144,8 @@ public class SignInFragment extends Fragment implements SignInPresenter.View {
 
     @Override
     public void showMain() {
-        Navigation.findNavController(requireView()).navigate(R.id.action_signin_to_main);
+        SignInFragmentDirections.ActionSigninToMain actionSigninToMain = SignInFragmentDirections.actionSigninToMain();
+        actionSigninToMain.setFreshStart(true);
+        Navigation.findNavController(requireView()).navigate(actionSigninToMain);
     }
 }

@@ -68,17 +68,16 @@ public class SplashFragment extends Fragment implements SplashPresenter.View {
 
     @Override
     public void navigateToMain() {
-        navigateTo(R.id.action_splash_to_main);
+        SplashFragmentDirections.ActionSplashToMain actionSplashToMain= SplashFragmentDirections.actionSplashToMain();
+        actionSplashToMain.setFreshStart(true);
+        Navigation.findNavController(requireView()).navigate(actionSplashToMain);
     }
 
     @Override
     public void navigateToLogin() {
-        navigateTo(R.id.action_splash_to_sign_in);
+        Navigation.findNavController(requireView()).navigate(R.id.action_splash_to_sign_in);
     }
 
-    private void navigateTo(int action) {
-        Navigation.findNavController(requireView()).navigate(action);
-    }
 
     @Override
     public void showProgress() {

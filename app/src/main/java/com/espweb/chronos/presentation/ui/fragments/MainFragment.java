@@ -20,7 +20,7 @@ import com.espweb.chronos.R;
 import com.espweb.chronos.data.CronogramaRepositoryImpl;
 import com.espweb.chronos.data.SessaoRepositoryImpl;
 import com.espweb.chronos.domain.executor.impl.ThreadExecutor;
-import com.espweb.chronos.domain.repository.Repository;
+import com.espweb.chronos.domain.repository.CronogramaRepository;
 import com.espweb.chronos.presentation.model.Cronograma;
 import com.espweb.chronos.presentation.presenters.MainPresenter;
 import com.espweb.chronos.presentation.presenters.impl.MainPresenterImpl;
@@ -70,10 +70,10 @@ public class MainFragment extends Fragment implements MainPresenter.View {
         initPresenter();
         initAdapter();
         initRecyclerView();
-
+        boolean freshStart = MainFragmentArgs.fromBundle(requireArguments()).getFreshStart();
         mainViewModel.getUser().observe(this, user -> {
             userId = user.getId();
-            mainPresenter.getAllCronogramas(userId);
+            mainPresenter.getAllCronogramas(userId, freshStart);
         });
 
         mainViewModel.getCronogramas().observe(this, cronogramas -> {
@@ -94,7 +94,7 @@ public class MainFragment extends Fragment implements MainPresenter.View {
     }
 
     private void initPresenter() {
-        Repository<com.espweb.chronos.domain.model.Cronograma> cronogramaRepository = new CronogramaRepositoryImpl(requireContext());
+        CronogramaRepository cronogramaRepository = new CronogramaRepositoryImpl(requireContext());
         mainPresenter = new MainPresenterImpl(
                 ThreadExecutor.getInstance(),
                 MainThreadImpl.getInstance(), this,

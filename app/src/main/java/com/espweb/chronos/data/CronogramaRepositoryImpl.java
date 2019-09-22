@@ -7,6 +7,7 @@ import androidx.work.Data;
 
 import com.espweb.chronos.domain.exceptions.NotFoundException;
 import com.espweb.chronos.domain.model.Cronograma;
+import com.espweb.chronos.domain.repository.CronogramaRepository;
 import com.espweb.chronos.domain.repository.Repository;
 import com.espweb.chronos.network.RestClient;
 import com.espweb.chronos.network.converters.NetworkToStorageConverter;
@@ -29,7 +30,7 @@ import java.util.UUID;
 
 import retrofit2.Response;
 
-public class CronogramaRepositoryImpl implements Repository<Cronograma> {
+public class CronogramaRepositoryImpl implements CronogramaRepository {
 
     private static final String TAG = "CronogramaRepository";
     private Context context;
@@ -93,14 +94,20 @@ public class CronogramaRepositoryImpl implements Repository<Cronograma> {
     @Override
     public List<Cronograma> getAll(long userId) {
         List<com.espweb.chronos.storage.model.Cronograma> sCronogramas = box.getAll(userId);
-        if (Connection.isOnline()) {
+        return new ArrayList<>(StorageToDomainConverter.convertCronogramas(sCronogramas));
+
+    }
+
+    @Override
+    public List<Cronograma> getAll(long userId, boolean fetchFromWeb) {
+        List<com.espweb.chronos.storage.model.Cronograma> sCronogramas = box.getAll(userId);
+        if (fetchFromWeb && Connection.isOnline()) {
             List<com.espweb.chronos.network.model.Cronograma> nCronogramas = fetchFromWeb();
             if (nCronogramas != null) {
                 sCronogramas = replaceExisting(userId, sCronogramas, nCronogramas);
             }
         }
         return new ArrayList<>(StorageToDomainConverter.convertCronogramas(sCronogramas));
-
     }
 
     private List<com.espweb.chronos.storage.model.Cronograma> replaceExisting(long userId, List<com.espweb.chronos.storage.model.Cronograma> sCronogramas, List<com.espweb.chronos.network.model.Cronograma> nCronogramas) {
@@ -123,4 +130,6 @@ public class CronogramaRepositoryImpl implements Repository<Cronograma> {
             return null;
         }
     }
+
+
 }
