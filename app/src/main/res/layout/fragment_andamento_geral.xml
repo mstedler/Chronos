@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:elevation="5dp" />
+
+    <com.espweb.chronos.presentation.ui.custom.EmptyView
+        android:id="@+id/ev_cronogramas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:ev_icon="@drawable/ic_schedule_book"
+        app:ev_subtitle="@string/crie_plano_estudo"
+        app:ev_title="@string/voce_nao_possui_cronograma" />
+
+    <ScrollView
+        android:id="@+id/sv_charts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:padding="8dp">
+
+            <com.espweb.chronos.presentation.ui.custom.charts.ArtefatoCountBarChart
+                android:id="@+id/chart_artefato_x_cronograma"
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:layout_marginTop="32dp"
+                app:datasetLabel="Atividades x Cronograma"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chart_assunto_x_cronograma" />
+
+            <com.espweb.chronos.presentation.ui.custom.charts.AssuntoXCronogramaBarChart
+                android:id="@+id/chart_assunto_x_cronograma"
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:layout_marginTop="32dp"
+                app:datasetLabel="Assuntos x Cronograma"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chart_disciplina_x_cronograma" />
+
+            <com.espweb.chronos.presentation.ui.custom.charts.DisciplinaXCronogramaBarChart
+                android:id="@+id/chart_disciplina_x_cronograma"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="32dp"
+                android:elevation="5dp"
+                app:datasetLabel="Disciplinas x Cronograma"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</LinearLayout>

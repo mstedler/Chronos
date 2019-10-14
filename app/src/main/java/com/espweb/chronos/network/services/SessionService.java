@@ -20,4 +20,8 @@ public interface SessionService {
     @FormUrlEncoded
     @POST("user")
     Call<User> signUp(@Field("name") String name, @Field("email") String email, @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("email-reset-password")
+    Call<Void> resetPassword(@Field("email") String email);
 }

@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,10 +30,11 @@ import com.espweb.chronos.presentation.model.Revisao;
 import com.espweb.chronos.presentation.presenters.AssuntoPresenter;
 import com.espweb.chronos.presentation.presenters.impl.AssuntoPresenterImpl;
 import com.espweb.chronos.presentation.ui.adapters.ArtefatoAdapter;
-import com.espweb.chronos.presentation.ui.dialogs.AssuntoDialog;
-import com.espweb.chronos.presentation.ui.dialogs.YesNoDialog;
-import com.espweb.chronos.presentation.ui.dialogs.base.ArtefatoDialog;
-import com.espweb.chronos.presentation.ui.dialogs.factory.ArtefatoDialogFactory;
+import com.espweb.chronos.presentation.ui.custom.EmptyView;
+import com.espweb.chronos.presentation.ui.custom.dialogs.AssuntoDialog;
+import com.espweb.chronos.presentation.ui.custom.dialogs.YesNoDialog;
+import com.espweb.chronos.presentation.ui.custom.dialogs.base.ArtefatoDialog;
+import com.espweb.chronos.presentation.ui.custom.dialogs.factory.ArtefatoDialogFactory;
 import com.espweb.chronos.threading.MainThreadImpl;
 import com.github.clans.fab.FloatingActionMenu;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
@@ -55,8 +55,8 @@ public class AssuntoFragment extends Fragment implements AssuntoPresenter.View {
     @BindView(R.id.rv_artefatos)
     RecyclerView rvArtefatos;
 
-    @BindView(R.id.cl_empty_artefatos)
-    ConstraintLayout clEmptyArtefatos;
+    @BindView(R.id.ev_artefatos)
+    EmptyView evArtefatos;
 
     @BindView(R.id.fa_menu)
     FloatingActionMenu faMenu;
@@ -124,7 +124,7 @@ public class AssuntoFragment extends Fragment implements AssuntoPresenter.View {
 
         @Override
         public void onArtefatoSwiped(Artefato artefato) {
-            showDeleteDialog(() -> assuntoPresenter.deleteArtefato(artefato));
+            assuntoPresenter.deleteArtefato(artefato);
         }
     };
 
@@ -143,23 +143,6 @@ public class AssuntoFragment extends Fragment implements AssuntoPresenter.View {
         expandableItemManager.setDefaultGroupsExpandedState(true);
         RecyclerView.Adapter wrappedAdapter = expandableItemManager.createWrappedAdapter(artefatoAdapter);
         wrappedAdapter = swipeManager.createWrappedAdapter(wrappedAdapter);
-//        GridLayoutManager gridLayoutManager  = new GridLayoutManager(requireContext(), 2);
-//        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-//            @Override
-//            public int getSpanSize(int position) {
-//                long packedPosition = expandableItemManager.getExpandablePosition(position);
-//                //int groupPosition = RecyclerViewExpandableItemManager.getPackedPositionGroup(packedPosition);
-//                int childPosition = RecyclerViewExpandableItemManager.getPackedPositionChild(packedPosition);
-//
-//                if (childPosition == RecyclerView.NO_POSITION) {
-//                    return 2;
-//                } else {
-//                    return 1;
-//                }
-//            }
-//        });
-
-
 
         final GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();
 
@@ -229,7 +212,7 @@ public class AssuntoFragment extends Fragment implements AssuntoPresenter.View {
 
     @Override
     public void showEmptyView() {
-        clEmptyArtefatos.setVisibility(View.VISIBLE);
+        evArtefatos.setVisibility(View.VISIBLE);
         rvArtefatos.setVisibility(View.GONE);
     }
 
@@ -245,7 +228,7 @@ public class AssuntoFragment extends Fragment implements AssuntoPresenter.View {
 
     private void showRecyclerView() {
         rvArtefatos.setVisibility(View.VISIBLE);
-        clEmptyArtefatos.setVisibility(View.GONE);
+        evArtefatos.setVisibility(View.GONE);
     }
 
     @Override
@@ -279,14 +262,12 @@ public class AssuntoFragment extends Fragment implements AssuntoPresenter.View {
         public void onArtefatoCreated(Artefato artefato) {
             faMenu.close(false);
             assuntoPresenter.getAllArtefatos(assunto.getId());
-            //artefatoAdapter.addArtefato(artefato);
             showRecyclerView();
         }
 
         @Override
         public void onArtefatoUpdated(Artefato artefato) {
             assuntoPresenter.getAllArtefatos(assunto.getId());
-            //artefatoAdapter.updateArtefato(artefato);
         }
     };
 

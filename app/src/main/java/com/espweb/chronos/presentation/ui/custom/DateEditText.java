@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.DatePicker;
 
-import com.espweb.chronos.presentation.ui.dialogs.ChronosDatePickerDialog;
+import com.espweb.chronos.presentation.ui.custom.dialogs.ChronosDatePickerDialog;
 import com.espweb.chronos.presentation.utils.DateUtils;
 import com.google.android.material.textfield.TextInputEditText;
 

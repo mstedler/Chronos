@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,10 +28,11 @@ import com.espweb.chronos.presentation.model.Disciplina;
 import com.espweb.chronos.presentation.presenters.CronogramaPresenter;
 import com.espweb.chronos.presentation.presenters.impl.CronogramaPresenterImpl;
 import com.espweb.chronos.presentation.ui.adapters.DisciplinaAdapter;
-import com.espweb.chronos.presentation.ui.dialogs.AssuntoDialog;
-import com.espweb.chronos.presentation.ui.dialogs.CronogramaDialog;
-import com.espweb.chronos.presentation.ui.dialogs.DisciplinaDialog;
-import com.espweb.chronos.presentation.ui.dialogs.YesNoDialog;
+import com.espweb.chronos.presentation.ui.custom.EmptyView;
+import com.espweb.chronos.presentation.ui.custom.dialogs.AssuntoDialog;
+import com.espweb.chronos.presentation.ui.custom.dialogs.CronogramaDialog;
+import com.espweb.chronos.presentation.ui.custom.dialogs.DisciplinaDialog;
+import com.espweb.chronos.presentation.ui.custom.dialogs.YesNoDialog;
 import com.espweb.chronos.threading.MainThreadImpl;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
@@ -57,8 +57,8 @@ public class CronogramaFragment extends Fragment implements CronogramaPresenter.
     @BindView(R.id.fab_add_disciplina)
     FloatingActionButton fabAddDisciplina;
 
-    @BindView(R.id.cl_empty_disciplinas)
-    ConstraintLayout clEmptyView;
+    @BindView(R.id.ev_disciplinas)
+    EmptyView evDisciplinas;
 
     private CronogramaPresenter cronogramaPresenter;
     private DisciplinaAdapter disciplinaAdapter;
@@ -75,6 +75,16 @@ public class CronogramaFragment extends Fragment implements CronogramaPresenter.
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.edit_delete, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.item_edit) {
+            showCronogramaDialog();
+        } else if (item.getItemId() == R.id.item_delete) {
+            showDeleteDialog(confirmDeleteCronograma);
+        }
+        return false;
     }
 
     @Nullable
@@ -197,17 +207,6 @@ public class CronogramaFragment extends Fragment implements CronogramaPresenter.
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.item_edit) {
-            showCronogramaDialog();
-        } else if (item.getItemId() == R.id.item_delete) {
-            showDeleteDialog(confirmDeleteCronograma);
-        }
-        return false;
-    }
-
-
-    @Override
     public void onCronogramaDeleted() {
         navigateToMain();
     }
@@ -219,13 +218,13 @@ public class CronogramaFragment extends Fragment implements CronogramaPresenter.
 
     @Override
     public void showEmptyView() {
-        clEmptyView.setVisibility(View.VISIBLE);
+        evDisciplinas.setVisibility(View.VISIBLE);
         rvDisciplinas.setVisibility(View.GONE);
     }
 
     private void showRecyclerView() {
         rvDisciplinas.setVisibility(View.VISIBLE);
-        clEmptyView.setVisibility(View.GONE);
+        evDisciplinas.setVisibility(View.GONE);
     }
 
     private CronogramaDialog.CronogramaDialogListener cronogramaDialogListener = new CronogramaDialog.CronogramaDialogListener() {

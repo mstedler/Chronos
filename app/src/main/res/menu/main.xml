@@ -14,7 +14,7 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/graphs_dest"
+        android:id="@+id/andamento_dest"
         android:title="@string/andamento"
         android:icon="@drawable/ic_analytics"
         app:showAsAction="ifRoom" />

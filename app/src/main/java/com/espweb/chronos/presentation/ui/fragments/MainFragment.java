@@ -20,13 +20,13 @@ import com.espweb.chronos.R;
 import com.espweb.chronos.data.CronogramaRepositoryImpl;
 import com.espweb.chronos.data.SessaoRepositoryImpl;
 import com.espweb.chronos.domain.executor.impl.ThreadExecutor;
-import com.espweb.chronos.domain.repository.CronogramaRepository;
 import com.espweb.chronos.presentation.model.Cronograma;
 import com.espweb.chronos.presentation.presenters.MainPresenter;
 import com.espweb.chronos.presentation.presenters.impl.MainPresenterImpl;
 import com.espweb.chronos.presentation.ui.adapters.CronogramaAdapter;
-import com.espweb.chronos.presentation.ui.dialogs.CronogramaDialog;
-import com.espweb.chronos.presentation.viewmodels.MainViewModel;
+import com.espweb.chronos.presentation.ui.custom.EmptyView;
+import com.espweb.chronos.presentation.ui.custom.dialogs.CronogramaDialog;
+import com.espweb.chronos.presentation.viewmodels.UserViewModel;
 import com.espweb.chronos.threading.MainThreadImpl;
 
 import java.util.List;
@@ -43,17 +43,20 @@ public class MainFragment extends Fragment implements MainPresenter.View {
     @BindView(R.id.rv_cronogramas)
     RecyclerView rvCronogramas;
 
-    @BindView(R.id.cl_empty_cronogramas)
-    ConstraintLayout clEmptyCronogramas;
+    @BindView(R.id.ev_cronogramas)
+    EmptyView evCronogramas;
 
-    private MainViewModel mainViewModel;
+    @BindView(R.id.loading)
+    ConstraintLayout clLoading;
+
+    private UserViewModel userViewModel;
 
     private long userId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
     }
 
     @Nullable
@@ -71,17 +74,9 @@ public class MainFragment extends Fragment implements MainPresenter.View {
         initAdapter();
         initRecyclerView();
         boolean freshStart = MainFragmentArgs.fromBundle(requireArguments()).getFreshStart();
-        mainViewModel.getUser().observe(this, user -> {
+        userViewModel.getUser().observe(this, user -> {
             userId = user.getId();
             mainPresenter.getAllCronogramas(userId, freshStart);
-        });
-
-        mainViewModel.getCronogramas().observe(this, cronogramas -> {
-            if(cronogramas != null) {
-                showCronogramas(cronogramas);
-            } else {
-                cronogramaAdapter.clear();
-            }
         });
 
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),
@@ -94,12 +89,11 @@ public class MainFragment extends Fragment implements MainPresenter.View {
     }
 
     private void initPresenter() {
-        CronogramaRepository cronogramaRepository = new CronogramaRepositoryImpl(requireContext());
         mainPresenter = new MainPresenterImpl(
                 ThreadExecutor.getInstance(),
                 MainThreadImpl.getInstance(), this,
-                cronogramaRepository,
-                new SessaoRepositoryImpl(requireContext()), mainViewModel);
+                new CronogramaRepositoryImpl(requireContext()),
+                new SessaoRepositoryImpl(requireContext()));
     }
 
     private void initAdapter() {
@@ -121,12 +115,14 @@ public class MainFragment extends Fragment implements MainPresenter.View {
 
     @Override
     public void showProgress() {
-
+        clLoading.setVisibility(View.VISIBLE);
+        evCronogramas.setVisibility(View.GONE);
+        rvCronogramas.setVisibility(View.GONE);
     }
 
     @Override
     public void hideProgress() {
-
+        clLoading.setVisibility(View.GONE);
     }
 
     @Override
@@ -137,17 +133,17 @@ public class MainFragment extends Fragment implements MainPresenter.View {
     @Override
     public void showCronogramas(List<Cronograma> cronogramas) {
         cronogramaAdapter.setCronogramas(cronogramas);
-        showRecyclerView();
     }
 
-    private void showRecyclerView() {
-        clEmptyCronogramas.setVisibility(View.GONE);
+    @Override
+    public void showRecyclerView() {
+        evCronogramas.setVisibility(View.GONE);
         rvCronogramas.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showEmptyView() {
-        clEmptyCronogramas.setVisibility(View.VISIBLE);
+        evCronogramas.setVisibility(View.VISIBLE);
         rvCronogramas.setVisibility(View.GONE);
     }
 

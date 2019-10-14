@@ -13,4 +13,5 @@ public interface SessaoRepository {
     Sessao getSessao() throws NotFoundException;
     void refreshToken(String newToken);
     User getUser() throws NotFoundException;
+    void resetPassword(String email) throws Exception;
 }

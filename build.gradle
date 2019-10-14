@@ -6,11 +6,9 @@ buildscript {
     repositories {
         google()
         jcenter()
-        
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0'
-
         //storage
         classpath "io.objectbox:objectbox-gradle-plugin:$objectboxVersion"
 
@@ -22,6 +20,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
 }
 

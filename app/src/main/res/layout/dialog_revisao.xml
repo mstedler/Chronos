@@ -7,8 +7,8 @@
     <RadioGroup
         android:id="@+id/rg_escopo"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <RadioButton
             android:id="@+id/rb_diario"

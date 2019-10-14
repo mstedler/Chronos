@@ -23,7 +23,7 @@ import com.espweb.chronos.domain.model.User;
 import com.espweb.chronos.presentation.presenters.SignInPresenter;
 import com.espweb.chronos.presentation.presenters.impl.SignInPresenterImpl;
 import com.espweb.chronos.data.SessaoRepositoryImpl;
-import com.espweb.chronos.presentation.viewmodels.MainViewModel;
+import com.espweb.chronos.presentation.viewmodels.UserViewModel;
 import com.espweb.chronos.threading.MainThreadImpl;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -51,14 +51,14 @@ public class SignInFragment extends Fragment implements SignInPresenter.View {
     Button btnShowSignUp;
 
 
-    private MainViewModel mainViewModel;
+    private UserViewModel userViewModel;
 
     private SignInPresenter signInPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class SignInFragment extends Fragment implements SignInPresenter.View {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        signInPresenter = new SignInPresenterImpl(ThreadExecutor.getInstance(), MainThreadImpl.getInstance(), this, new SessaoRepositoryImpl(requireContext()), mainViewModel);
+        signInPresenter = new SignInPresenterImpl(ThreadExecutor.getInstance(), MainThreadImpl.getInstance(), this, new SessaoRepositoryImpl(requireContext()), userViewModel);
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),
                 new OnBackPressedCallback(true) {
                     @Override
@@ -140,6 +140,11 @@ public class SignInFragment extends Fragment implements SignInPresenter.View {
         String email = tilEmail.getEditText().getText().toString();
         String password = tilPassword.getEditText().getText().toString();
         signInPresenter.signInUser(email, password);
+    }
+
+    @OnClick(R.id.btn_forgot_passsword)
+    void onForgotPasswordClick() {
+        Navigation.findNavController(requireView()).navigate(R.id.action_signin_to_resetpassword);
     }
 
     @Override

@@ -65,4 +65,8 @@ public class CronogramaBox {
             getBox().remove(sCronogramas);
         //});
     }
+
+    public int getCount(long userId) {
+        return (int)getBox().count();
+    }
 }

@@ -47,6 +47,7 @@ public class SignUpPresenterImpl extends AbstractPresenter implements SignUpPres
 
     @Override
     public void onSignUpSuccess() {
+        view.hideProgress();
         view.signUpSuccess();
     }
 

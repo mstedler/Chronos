@@ -29,7 +29,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_show_signIn"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -105,12 +105,12 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_sign_up"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/cadastrar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/til_password"
+        app:layout_constraintStart_toStartOf="@+id/til_password"
         app:layout_constraintTop_toBottomOf="@+id/til_password" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,7 +32,7 @@ public class StorageToDomainConverter {
         user.setCreatedAt(sUser.getCreatedAt());
         user.setUpdatedAt(sUser.getUpdatedAt());
         user.setUuid(sUser.getUuid());
-        //user.setCronogramas(convertCronogramas(sUser.getCronogramas()));
+        //user.setDisciplinas(convertCronogramas(sUser.getDisciplinas()));
         return user;
     }
 

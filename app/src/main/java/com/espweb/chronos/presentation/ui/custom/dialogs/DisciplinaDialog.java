@@ -121,11 +121,7 @@ public class DisciplinaDialog extends DialogFragment implements DisciplinaDialog
             tilNome.setError(getString(R.string.deve_ter_mais_que_3));
             return false;
         }
-
-        if(!disciplina.isDescricaoValid()) {
-            tilDescricao.setError(getString(R.string.deve_ter_mais_que_3));
-            return false;
-        }
+        
         return true;
     }
 

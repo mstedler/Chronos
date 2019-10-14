@@ -112,4 +112,8 @@ public class User {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public boolean isNomeValid() {
+        return name.trim().length() > 0;
+    }
 }

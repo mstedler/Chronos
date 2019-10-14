@@ -14,7 +14,7 @@ public class ChronosDatePickerDialog {
     public ChronosDatePickerDialog(Context context, DatePickerDialog.OnDateSetListener onDateSetListener) {
         LocalDateTime localDateTime = LocalDateTime.now();
         datePickerDialog = new DatePickerDialog(context, onDateSetListener, localDateTime.getYear(), localDateTime.getMonthValue() - 1, localDateTime.getDayOfMonth());
-        ZonedDateTime zonedDateTime = localDateTime.minusMonths(1).atZone(ZoneId.systemDefault());
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
         datePickerDialog.getDatePicker().setMinDate(zonedDateTime.toInstant().toEpochMilli());
     }
 

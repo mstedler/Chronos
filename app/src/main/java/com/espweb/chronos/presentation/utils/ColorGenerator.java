@@ -1,13 +1,18 @@
 package com.espweb.chronos.presentation.utils;
 
-/**
- * Created by Mateus on 2/14/2016.
- */
-public class ColorUtil {
+import java.util.Random;
 
-    public static final double GOLDEN_RATIO = 0.618033988749895;
+public class ColorGenerator {
 
-    public static int HSBtoColor(float h, float s, float b) {
+    private final double GOLDEN_RATIO = 0.618033988749895;
+    private float h;
+
+    public ColorGenerator() {
+        Random r = new Random();
+        h = r.nextFloat();
+    }
+
+    private int HSBtoColor(float h, float s, float b) {
         h = constrain(h, 0.0f, 1.0f);
         s = constrain(s, 0.0f, 1.0f);
         b = constrain(b, 0.0f, 1.0f);
@@ -60,12 +65,14 @@ public class ColorUtil {
                 (((int) (green * 255.0f)) << 8) | ((int) (blue * 255.0f));
     }
 
-    private static float constrain(float amount, float low, float high) {
+    private float constrain(float amount, float low, float high) {
         return amount < low ? low : (amount > high ? high : amount);
     }
 
-    public static Integer generateColor(float h) {
+    public Integer generateColor() {
         h %= 1;
-        return HSBtoColor(h, (float) 0.7, (float) 0.7);
+        Integer color = HSBtoColor(h, (float) 0.7, (float) 0.7);
+        h += GOLDEN_RATIO;
+        return color;
     }
 }

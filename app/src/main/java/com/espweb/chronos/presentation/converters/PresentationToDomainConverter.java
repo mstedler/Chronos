@@ -7,6 +7,7 @@ import com.espweb.chronos.domain.model.Disciplina;
 import com.espweb.chronos.domain.model.Exercicio;
 import com.espweb.chronos.domain.model.Material;
 import com.espweb.chronos.domain.model.Revisao;
+import com.espweb.chronos.domain.model.User;
 
 public class PresentationToDomainConverter {
     public static Artefato convert(com.espweb.chronos.presentation.model.Artefato artefato) {
@@ -84,5 +85,16 @@ public class PresentationToDomainConverter {
         dDisciplina.setUuid(disciplina.getUuid());
         dDisciplina.setIdCronograma(disciplina.getIdCronograma());
         return dDisciplina;
+    }
+
+    public static User convert(com.espweb.chronos.presentation.model.User pUser) {
+        User dUser = new User();
+        dUser.setId(pUser.getId());
+        dUser.setName(pUser.getName());
+        dUser.setEmail(pUser.getEmail());
+        dUser.setCreatedAt(pUser.getCreatedAt());
+        dUser.setUpdatedAt(pUser.getUpdatedAt());
+        dUser.setUuid(pUser.getUuid());
+        return dUser;
     }
 }

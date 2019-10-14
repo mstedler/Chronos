@@ -1,5 +1,7 @@
 package com.espweb.chronos.presentation.model;
 
+import androidx.annotation.NonNull;
+
 import org.parceler.Parcel;
 
 import java.util.Collections;
@@ -106,5 +108,11 @@ public class Cronograma {
 
     public boolean isTituloValid() {
         return titulo.trim().length() > 3;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return titulo;
     }
 }

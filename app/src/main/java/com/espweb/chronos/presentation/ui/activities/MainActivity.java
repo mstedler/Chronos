@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements ViewModelStoreOwn
     NavController.OnDestinationChangedListener onDestinationChangedListener = (controller, destination, arguments) -> {
         int id = destination.getId();
 
-        if (id == R.id.main_dest || id == R.id.profile_dest || id == R.id.graphs_dest) {
+        if (id == R.id.main_dest || id == R.id.profile_dest || id == R.id.andamento_dest) {
             bottomNavigationView.setVisibility(View.VISIBLE);
         } else {
             bottomNavigationView.setVisibility(View.GONE);

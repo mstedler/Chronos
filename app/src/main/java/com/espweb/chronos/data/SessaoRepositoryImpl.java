@@ -17,6 +17,7 @@ import com.espweb.chronos.network.converters.NetworkToStorageConverter;
 import com.espweb.chronos.network.model.Error;
 import com.espweb.chronos.network.model.Sessao;
 import com.espweb.chronos.network.services.SessionService;
+import com.espweb.chronos.network.utils.Connection;
 import com.espweb.chronos.storage.boxes.SessaoBox;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
 import com.espweb.chronos.storage.database.ObjectBox;
@@ -61,6 +62,15 @@ public class SessaoRepositoryImpl implements SessaoRepository {
     @Override
     public User getUser() throws NotFoundException {
         return StorageToDomainConverter.convert(box.getActiveSessionUser());
+    }
+
+    @Override
+    public void resetPassword(String email) throws Exception {
+        if(!Connection.isOnline()) {
+            throw new Exception("Não há conexão com a internet.");
+        }
+        SessionService sessionService = RestClient.createService(SessionService.class);
+        sessionService.resetPassword(email).execute();
     }
 
     @Override

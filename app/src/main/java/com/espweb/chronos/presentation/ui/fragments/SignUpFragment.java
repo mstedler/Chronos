@@ -95,7 +95,8 @@ public class SignUpFragment extends Fragment implements SignUpPresenter.View {
 
     @Override
     public void signUpSuccess() {
-        //Navigation.findNavController(requireView()).popBackStack();
+        Toast.makeText(requireContext(), "Usuário criado com sucesso", Toast.LENGTH_SHORT).show();
+        Navigation.findNavController(requireView()).popBackStack();
     }
 
     @Override

@@ -22,7 +22,7 @@ public class DomainToPresentationConverter {
         user.setCreatedAt(dUser.getCreatedAt());
         user.setUpdatedAt(dUser.getUpdatedAt());
         user.setUuid(dUser.getUuid());
-        //user.setCronogramas(convertCronogramas(dUser.getCronogramas()));
+        //user.setDisciplinas(convertCronogramas(dUser.getDisciplinas()));
         return user;
     }
 

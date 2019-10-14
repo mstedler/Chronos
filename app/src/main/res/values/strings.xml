@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <plurals name="tempo">
+        <item quantity="one">%d minuto</item>
+        <item quantity="other">%d minutos</item>
+    </plurals>
+    <plurals name="assunto">
+        <item quantity="one">%d assunto</item>
+        <item quantity="other">%d assuntos</item>
+    </plurals>
+    <plurals name="cronograma">
+        <item quantity="one">Cronograma</item>
+        <item quantity="other">Cronogramas</item>
+    </plurals>
     <string name="app_name">Chronos</string>
     <string name="cronograma_nao_encontrado">Cronograma não encontrado!</string>
     <string name="disciplina_nao_encontrada">Disciplina não encontrada!</string>
@@ -23,7 +35,7 @@
     <string name="novo_cronograma">Novo cronograma</string>
     <string name="bem_vindo">Seja bem-vindo!</string>
     <string name="login_para_continuar">Faça login para continuar</string>
-    <string name="criar_conta">Criar conta grátis</string>
+    <string name="criar_conta">Criar conta</string>
     <string name="senha">Senha</string>
     <string name="login">Entrar</string>
     <string name="ja_tenho_conta">Já possuo conta</string>
@@ -59,24 +71,26 @@
     <string name="maior_que_0">Deve ser maior que 0!</string>
     <string name="email_invalido">Email inválido.</string>
     <string name="no_minimo_6">Deve ter no mínimo 6 caracteres.</string>
-    <string name="voce_nao_possui_cronograma">Você ainda não Cronograma.</string>
-    <string name="crie_plano_estudo">Comece criando seu plano de estudos!</string>
 
+    <string name="voce_nao_possui_cronograma">Você ainda não possui Cronogramas.</string>
+    <string name="crie_plano_estudo">Comece criando seu plano de estudos!</string>
     <string name="voce_nao_possui_disciplinas">Você não possui disciplinas.</string>
     <string name="voce_nao_possui_artefatos">Você não possui atividades.</string>
     <string name="materiais">Materiais</string>
     <string name="exercicios">Exercícios</string>
-    <string name="crie_artefatos">Você pode escolher entre Revisões, Materiais de Estudo ou Lista de Exercícios</string>
+    <string name="crie_artefatos">Você pode escolher entre Revisões, Materiais de Estudo ou Lista de Exercícios.</string>
+
     <string name="crie_disciplinas">Adicione disciplinas para podermos começar!</string>
+
     <string name="andamento">Andamento</string>
+    <string name="disciplinas">Disciplinas</string>
+    <string name="geral">Geral</string>
+    <string name="por_cronograma">Por Cronograma</string>
+    <string name="video_aula">Vídeo aula</string>
+    <string name="livros">Livros</string>
+    <string name="internet_artigo_post">Internet / Artigos / Posts</string>
+    <string name="minutos">%d min.</string>
 
-    <plurals name="tempo">
-        <item quantity="one">%d minuto</item>
-        <item quantity="other">%d minutos</item>
-    </plurals>
-
-    <plurals name="assunto">
-        <item quantity="one">%d assunto</item>
-        <item quantity="other">%d assuntos</item>
-    </plurals>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

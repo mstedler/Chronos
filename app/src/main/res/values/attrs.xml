@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><!--1-->
+<resources>
+    <declare-styleable name="GenericBarChart">
+        <attr name="datasetLabel" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="EmptyView">
+        <attr name="ev_title" format="reference" />
+        <attr name="ev_subtitle" format="reference" />
+        <attr name="ev_icon" format="reference" />
+    </declare-styleable>
+</resources>

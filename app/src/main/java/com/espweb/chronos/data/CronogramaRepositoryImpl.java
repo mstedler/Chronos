@@ -25,8 +25,10 @@ import com.espweb.chronos.workers.base.WorkFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import retrofit2.Response;
 
@@ -107,7 +109,12 @@ public class CronogramaRepositoryImpl implements CronogramaRepository {
                 sCronogramas = replaceExisting(userId, sCronogramas, nCronogramas);
             }
         }
-        return new ArrayList<>(StorageToDomainConverter.convertCronogramas(sCronogramas));
+        return StorageToDomainConverter.convertCronogramas(sCronogramas).stream().sorted(Comparator.comparing(Cronograma::getInicio)).collect(Collectors.toList());
+    }
+
+    @Override
+    public int getCronogramasCount(long userId) {
+        return box.getCount(userId);
     }
 
     private List<com.espweb.chronos.storage.model.Cronograma> replaceExisting(long userId, List<com.espweb.chronos.storage.model.Cronograma> sCronogramas, List<com.espweb.chronos.network.model.Cronograma> nCronogramas) {

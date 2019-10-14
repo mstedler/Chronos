@@ -4,18 +4,17 @@ import android.util.SparseArray;
 
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
-import java.util.HashMap;
+public class LabelFormatter extends ValueFormatter {
 
-public class CronogramaFormatter extends ValueFormatter {
+    private SparseArray<String> labels;
 
-    private SparseArray<String> cronogramaPos;
-
-    public CronogramaFormatter(SparseArray<String> cronogramaPos) {
-        this.cronogramaPos = cronogramaPos;
+    public LabelFormatter(SparseArray<String> labels) {
+        this.labels = labels;
     }
 
     @Override
     public String getFormattedValue(float value) {
-        return cronogramaPos.get((int) value);
+        String label = labels.get((int) value);
+        return label == null ? "" : label;
     }
 }

@@ -59,6 +59,56 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="andamento_dest">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-841" />
+                            <option name="y" value="-334" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_andamento_to_charts_cronograma">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_andamento_to_charts_disciplina">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="andamento_geral_dest">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-845" />
+                            <option name="y" value="-675" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="andamento_por_cronograma_dest">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-1041" />
+                            <option name="y" value="-672" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="assunto_dest">
                     <value>
                       <LayoutPositions>
@@ -66,18 +116,6 @@
                           <Point>
                             <option name="x" value="-338" />
                             <option name="y" value="-665" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="assunto_x_disciplina_chart_dest">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-1042" />
-                            <option name="y" value="-334" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -100,18 +138,6 @@
                               </value>
                             </entry>
                           </map>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="graphs_dest">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-858" />
-                            <option name="y" value="-332" />
-                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -158,6 +184,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="reset_password_dest">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-102" />
+                            <option name="y" value="-147" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="signin_dest">
                     <value>
                       <LayoutPositions>
@@ -170,6 +208,11 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_signin_to_main">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_signin_to_resetpassword">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -189,8 +232,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-153" />
-                            <option name="y" value="25" />
+                            <option name="x" value="-96" />
+                            <option name="y" value="213" />
                           </Point>
                         </option>
                       </LayoutPositions>

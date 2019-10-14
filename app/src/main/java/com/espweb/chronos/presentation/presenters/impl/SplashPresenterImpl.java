@@ -10,21 +10,21 @@ import com.espweb.chronos.presentation.converters.DomainToPresentationConverter;
 import com.espweb.chronos.presentation.model.User;
 import com.espweb.chronos.presentation.presenters.base.AbstractPresenter;
 import com.espweb.chronos.presentation.presenters.SplashPresenter;
-import com.espweb.chronos.presentation.viewmodels.MainViewModel;
+import com.espweb.chronos.presentation.viewmodels.UserViewModel;
 
 public class SplashPresenterImpl extends AbstractPresenter implements SplashPresenter, GetSessaoInteractor.Callback {
 
     private View view;
     private SessaoRepository sessaoRepository;
 
-    private MainViewModel mainViewModel;
+    private UserViewModel userViewModel;
 
 
-    public SplashPresenterImpl(Executor executor, MainThread mainThread, View view, SessaoRepository sessaoRepository, MainViewModel mainViewModel) {
+    public SplashPresenterImpl(Executor executor, MainThread mainThread, View view, SessaoRepository sessaoRepository, UserViewModel userViewModel) {
         super(executor, mainThread);
         this.view = view;
         this.sessaoRepository = sessaoRepository;
-        this.mainViewModel = mainViewModel;
+        this.userViewModel = userViewModel;
     }
 
 
@@ -62,7 +62,7 @@ public class SplashPresenterImpl extends AbstractPresenter implements SplashPres
     @Override
     public void onSessaoRetrieved(Sessao sessao) {
         final User user = DomainToPresentationConverter.convert(sessao.getUser());
-        mainViewModel.setUser(user);
+        userViewModel.setUser(user);
         view.navigateToMain();
     }
 

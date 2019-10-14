@@ -6,7 +6,6 @@ import com.espweb.chronos.domain.interactors.cronograma.GetAllCronogramasInterac
 import com.espweb.chronos.domain.interactors.base.AbstractInteractor;
 import com.espweb.chronos.domain.model.Cronograma;
 import com.espweb.chronos.domain.repository.CronogramaRepository;
-import com.espweb.chronos.domain.repository.Repository;
 
 import java.util.List;
 
@@ -16,12 +15,12 @@ public class GetAllCronogramasInteractorImpl extends AbstractInteractor implemen
     private CronogramaRepository cronogramaRepository;
 
     private long userId;
-    private boolean freshStart;
+    private boolean fromWeb;
     public GetAllCronogramasInteractorImpl(Executor threadExecutor,
                                            MainThread mainThread,
                                            Callback callback,
                                            CronogramaRepository cronogramaRepository,
-                                           long userId, boolean freshStart) {
+                                           long userId, boolean fromWeb) {
         super(threadExecutor, mainThread);
 
         if (cronogramaRepository == null || callback == null) {
@@ -31,13 +30,13 @@ public class GetAllCronogramasInteractorImpl extends AbstractInteractor implemen
         this.callback = callback;
         this.cronogramaRepository = cronogramaRepository;
         this.userId = userId;
-        this.freshStart = freshStart;
+        this.fromWeb = fromWeb;
     }
 
     @Override
     public void run() {
         try {
-            final List<Cronograma> cronogramas = cronogramaRepository.getAll(userId, freshStart);
+            final List<Cronograma> cronogramas = cronogramaRepository.getAll(userId, fromWeb);
             if (cronogramas.size() > 0) {
                 mainThread.post(() -> callback.onCronogramasRetrieved(cronogramas));
             } else {

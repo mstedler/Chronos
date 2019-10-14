@@ -11,8 +11,11 @@ public interface MainPresenter extends BasePresenter {
     interface View extends BaseView {
         void showCronogramas(List<Cronograma> cronogramas);
         void navigateToLogin();
+
+        void showRecyclerView();
+
         void showEmptyView();
     }
     void getUser();
-    void getAllCronogramas(long userId, boolean freshStart);
+    void getAllCronogramas(long userId, boolean fromWeb);
 }

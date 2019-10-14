@@ -19,7 +19,7 @@ import com.espweb.chronos.data.SessaoRepositoryImpl;
 import com.espweb.chronos.domain.executor.impl.ThreadExecutor;
 import com.espweb.chronos.presentation.presenters.SplashPresenter;
 import com.espweb.chronos.presentation.presenters.impl.SplashPresenterImpl;
-import com.espweb.chronos.presentation.viewmodels.MainViewModel;
+import com.espweb.chronos.presentation.viewmodels.UserViewModel;
 import com.espweb.chronos.threading.MainThreadImpl;
 
 /**
@@ -28,7 +28,7 @@ import com.espweb.chronos.threading.MainThreadImpl;
 public class SplashFragment extends Fragment implements SplashPresenter.View {
 
     private static int SPLASH_TIME_OUT = 1000;
-    private MainViewModel mainViewModel;
+    private UserViewModel userViewModel;
 
     private SplashPresenter splashPresenter;
     public SplashFragment() {
@@ -38,7 +38,7 @@ public class SplashFragment extends Fragment implements SplashPresenter.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class SplashFragment extends Fragment implements SplashPresenter.View {
                 MainThreadImpl.getInstance(),
                 this,
                 new SessaoRepositoryImpl(requireContext()),
-                mainViewModel);
+                userViewModel);
     }
 
     @Override

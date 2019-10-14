@@ -20,8 +20,8 @@
     </string-array>
 
     <string-array name="materials">
-        <item>Vídeo aula</item>
-        <item>Livros</item>
-        <item>Internet / Artigos / Posts</item>
+        <item>@string/video_aula</item>
+        <item>@string/livros</item>
+        <item>@string/internet_artigo_post</item>
     </string-array>
 </resources>

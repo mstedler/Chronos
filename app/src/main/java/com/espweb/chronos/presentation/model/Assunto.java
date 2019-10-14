@@ -33,6 +33,10 @@ public class Assunto {
         return artefatos;
     }
 
+    public int getArtefatosSize() {
+        return artefatos.size();
+    }
+
     public long getId() {
         return id;
     }

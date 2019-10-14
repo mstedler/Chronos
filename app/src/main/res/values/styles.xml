@@ -6,6 +6,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorError">@color/colorError</item>
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:fontFamily">@font/merriweather_regular</item>
     </style>
 
     <style name="Theme.Chronos.Splash" parent="Theme.Chronos">
@@ -13,26 +14,38 @@
     </style>
 
     <style name="Widget.Chronos.Toolbar" parent="Widget.AppCompat.Toolbar">
-        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:background">@color/colorPrimary</item>
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
-    <style name="TextAppearance.Chronos.Title" parent="TextAppearance.MaterialComponents.Headline3">
-        <item name="android:textStyle">bold</item>
-        <item name="fontFamily">@font/labelle_aurore</item>
+    <style name="TextAppearance.Chronos.Title" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="fontFamily">@font/lato</item>
+        <item name="android:fontFamily">@font/lato</item>
         <item name="android:textColor">?android:attr/colorPrimary</item>
     </style>
 
     <style name="TextAppearance.Chronos.CardTitle" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/lato</item>
+        <item name="android:fontFamily">@font/lato</item>
         <item name="android:textColor">?android:attr/colorPrimary</item>
     </style>
 
     <style name="TextAppearance.Chronos.ToolbarTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textStyle">bold</item>
-        <item name="fontFamily">@font/labelle_aurore</item>
+        <item name="fontFamily">@font/lato</item>
+        <item name="android:fontFamily">@font/lato</item>
         <item name="android:textColor">?android:attr/colorPrimary</item>
+    </style>
+
+    <style name="Widget.Chronos.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="itemTextAppearanceActive">@style/TextAppearance.Chronos.BottomNavigationView</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.Chronos.BottomNavigationView</item>
+    </style>
+
+    <style name="TextAppearance.Chronos.BottomNavigationView" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:fontFamily">@font/lato</item>
+        <item name="fontFamily">@font/lato</item>
     </style>
 
     <style name="Widget.Chronos.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -51,6 +64,7 @@
     <style name="TextAppearance.Chronos.Dialog.Title" parent="android:Widget.TextView" >
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/lato</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>

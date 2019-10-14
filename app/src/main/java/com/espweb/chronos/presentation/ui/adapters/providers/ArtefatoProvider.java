@@ -13,10 +13,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ArtefatoProvider extends GroupItemProvider<EnumTipo, Artefato> {
-    private List<Pair<GroupTipo, List<ItemArtefato>>> data;
+    private List<Pair<GroupTipo, List<ItemArtefato>>> dados;
 
     public ArtefatoProvider() {
-        data = new ArrayList<>();
+        dados = new ArrayList<>();
     }
 
     public void setArtefatos(List<Artefato> artefatos) {
@@ -26,18 +26,18 @@ public class ArtefatoProvider extends GroupItemProvider<EnumTipo, Artefato> {
             GroupTipo groupTipo = new GroupTipo(enumTipo.getKey());
             List<ItemArtefato> artefatoItens = new ArrayList<>();
             enumTipo.getValue().stream().sorted(Comparator.comparing(Artefato::getData).reversed()).forEach(artefato -> artefatoItens.add(new ItemArtefato(artefato)));
-            data.add(new Pair<>(groupTipo, artefatoItens));
+            dados.add(new Pair<>(groupTipo, artefatoItens));
         });
     }
 
     @Override
     public int getGroupCount() {
-        return data.size();
+        return dados.size();
     }
 
     @Override
     public int getItemCount(int groupPosition) {
-        return data.get(groupPosition).second.size();
+        return dados.get(groupPosition).second.size();
     }
 
     @Override
@@ -57,12 +57,12 @@ public class ArtefatoProvider extends GroupItemProvider<EnumTipo, Artefato> {
 
     @Override
     public GroupTipo getGroup(int position) {
-        return data.get(position).first;
+        return dados.get(position).first;
     }
 
     @Override
     public ItemArtefato getItem(int groupPosition, int itemPosition) {
-        return data.get(groupPosition).second.get(itemPosition);
+        return dados.get(groupPosition).second.get(itemPosition);
     }
 
     @Override
@@ -72,14 +72,14 @@ public class ArtefatoProvider extends GroupItemProvider<EnumTipo, Artefato> {
 
     @Override
     public void removeItem(int groupPosition, int itemPosition) {
-        data.get(groupPosition).second.remove(itemPosition);
-//        if(data.get(groupPosition).second.isEmpty()) {
-//            data.remove(groupPosition);
+        dados.get(groupPosition).second.remove(itemPosition);
+//        if(dados.get(groupPosition).second.isEmpty()) {
+//            dados.remove(groupPosition);
 //        }
     }
 
     public void clear() {
-        data.clear();
+        dados.clear();
     }
 
     public class GroupTipo extends Group {
