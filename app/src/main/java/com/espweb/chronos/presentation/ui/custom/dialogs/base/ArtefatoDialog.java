@@ -1,4 +1,4 @@
-package com.espweb.chronos.presentation.ui.dialogs.base;
+package com.espweb.chronos.presentation.ui.custom.dialogs.base;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -8,7 +8,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.espweb.chronos.R;
 import com.espweb.chronos.data.ArtefatoRepositoryImpl;
-import com.espweb.chronos.data.factory.ArtefatoRepositoryFactory;
 import com.espweb.chronos.domain.executor.impl.ThreadExecutor;
 import com.espweb.chronos.presentation.model.Artefato;
 import com.espweb.chronos.presentation.presenters.ArtefatoDialogPresenter;

@@ -1,4 +1,4 @@
-package com.espweb.chronos.presentation.ui.dialogs;
+package com.espweb.chronos.presentation.ui.custom.dialogs;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -33,7 +33,6 @@ public class CronogramaDialog extends DialogFragment implements DatePickerDialog
 
     public interface CronogramaDialogListener {
         void onCronogramaCreated(Cronograma cronograma);
-
         void onCronogramaUpdated(Cronograma cronograma);
     }
 

@@ -5,10 +5,6 @@ import android.util.AttributeSet;
 import android.util.SparseArray;
 
 import com.espweb.chronos.domain.model.EnumTipo;
-import com.espweb.chronos.presentation.model.Artefato;
-import com.espweb.chronos.presentation.model.Assunto;
-import com.espweb.chronos.presentation.model.Cronograma;
-import com.espweb.chronos.presentation.model.Disciplina;
 import com.espweb.chronos.presentation.ui.custom.charts.formatters.LabelFormatter;
 import com.espweb.chronos.presentation.utils.ColorGenerator;
 import com.github.mikephil.charting.charts.BarChart;
@@ -19,27 +15,25 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
-import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-public class ArtefatoXCronogramaBarChart extends BarChart {
+public class ArtefatoCountBarChart extends BarChart {
 
-    public ArtefatoXCronogramaBarChart(Context context) {
+    public ArtefatoCountBarChart(Context context) {
         super(context);
         build();
     }
 
-    public ArtefatoXCronogramaBarChart(Context context, AttributeSet attrs) {
+    public ArtefatoCountBarChart(Context context, AttributeSet attrs) {
         super(context, attrs);
         build();
     }
 
-    public ArtefatoXCronogramaBarChart(Context context, AttributeSet attrs, int defStyle) {
+    public ArtefatoCountBarChart(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         build();
     }
@@ -63,7 +57,7 @@ public class ArtefatoXCronogramaBarChart extends BarChart {
         l.setTextSize(8f);
     }
 
-    public void buildChart(Map<String, Map<EnumTipo, Long>> cronogramas) {
+    public void buildChart(Map<String, Map<EnumTipo, Long>> mapArtefatoGroupCount) {
         SparseArray<String> xAxisLabels = new SparseArray<>();
         List<BarEntry> exercicios = new ArrayList<>();
         List<BarEntry> materiais = new ArrayList<>();
@@ -74,10 +68,10 @@ public class ArtefatoXCronogramaBarChart extends BarChart {
         float barWidth = 0.1f;
         // (0.1 + 0.05) * 3 + 0.55 = 1.00 -> intervalo por "grupo"
 
-        int groupCount = cronogramas.size();
+        int groupCount = mapArtefatoGroupCount.size();
         int i = 0;
 
-        for(Map.Entry<String, Map<EnumTipo, Long>> entry : cronogramas.entrySet()) {
+        for(Map.Entry<String, Map<EnumTipo, Long>> entry : mapArtefatoGroupCount.entrySet()) {
             exercicios.add(new BarEntry(i, entry.getValue().getOrDefault(EnumTipo.EXERCICIO, 0L)));
             revisoes.add(new BarEntry(i, entry.getValue().getOrDefault(EnumTipo.REVISAO, 0L)));
             materiais.add(new BarEntry(i, entry.getValue().getOrDefault(EnumTipo.MATERIAL, 0L)));

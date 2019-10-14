@@ -1,4 +1,4 @@
-package com.espweb.chronos.presentation.ui.custom.charts.formatters;
+package com.espweb.chronos.presentation.ui.custom.charts;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -1,9 +1,8 @@
-package com.espweb.chronos.presentation.ui.dialogs;
+package com.espweb.chronos.presentation.ui.custom.dialogs;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
 
-import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;

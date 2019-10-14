@@ -1,4 +1,4 @@
-package com.espweb.chronos.presentation.ui.dialogs;
+package com.espweb.chronos.presentation.ui.custom.dialogs;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package com.espweb.chronos.presentation.ui.dialogs;
+package com.espweb.chronos.presentation.ui.custom.dialogs;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.espweb.chronos.R;
 import com.espweb.chronos.presentation.model.Revisao;
-import com.espweb.chronos.presentation.ui.dialogs.base.ArtefatoDialog;
+import com.espweb.chronos.presentation.ui.custom.dialogs.base.ArtefatoDialog;
 import com.espweb.chronos.presentation.utils.DateUtils;
 
 import org.parceler.Parcels;
@@ -65,10 +65,6 @@ public class RevisaoDialog extends ArtefatoDialog<Revisao> {
 
     @Override
     protected boolean validate() {
-        if(!artefato.isDescricaoValid()) {
-            tilDescricao.setError(getString(R.string.deve_ter_mais_que_3));
-            return false;
-        }
         return true;
     }
 

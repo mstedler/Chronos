@@ -1,4 +1,4 @@
-package com.espweb.chronos.presentation.ui.dialogs;
+package com.espweb.chronos.presentation.ui.custom.dialogs;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.espweb.chronos.R;
 import com.espweb.chronos.presentation.model.Exercicio;
-import com.espweb.chronos.presentation.ui.dialogs.base.ArtefatoDialog;
+import com.espweb.chronos.presentation.ui.custom.dialogs.base.ArtefatoDialog;
 import com.espweb.chronos.presentation.utils.DateUtils;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -73,10 +73,6 @@ public class ExercicioDialog extends ArtefatoDialog<Exercicio>  {
         if(!artefato.isValid()) {
             tilQuantidade.setError("");
             tilAcertos.setError(getString(R.string.menor_ou_igual));
-            return false;
-        }
-        if(!artefato.isDescricaoValid()) {
-            tilDescricao.setError(getString(R.string.deve_ter_mais_que_3));
             return false;
         }
         return true;

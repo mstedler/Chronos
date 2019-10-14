@@ -1,4 +1,4 @@
-package com.espweb.chronos.presentation.ui.dialogs;
+package com.espweb.chronos.presentation.ui.custom.dialogs;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -121,7 +121,7 @@ public class DisciplinaDialog extends DialogFragment implements DisciplinaDialog
             tilNome.setError(getString(R.string.deve_ter_mais_que_3));
             return false;
         }
-        
+
         return true;
     }
 
