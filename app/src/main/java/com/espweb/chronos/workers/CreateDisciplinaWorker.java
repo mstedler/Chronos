@@ -12,13 +12,13 @@ import com.espweb.chronos.network.services.DisciplinaService;
 import com.espweb.chronos.storage.boxes.DisciplinaBox;
 import com.espweb.chronos.storage.model.Cronograma;
 import com.espweb.chronos.storage.model.Disciplina;
-import com.espweb.chronos.workers.base.WebRequestWorker;
+import com.espweb.chronos.workers.base.ApiWorker;
 
 import java.io.IOException;
 
 import retrofit2.Response;
 
-public class CreateDisciplinaWorker extends WebRequestWorker {
+public class CreateDisciplinaWorker extends ApiWorker {
     public static final String KEY_ID_DISCIPLINA = "ID_DISCIPLINA";
 
     public CreateDisciplinaWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {

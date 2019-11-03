@@ -12,13 +12,13 @@ import com.espweb.chronos.network.services.ArtefatoService;
 import com.espweb.chronos.storage.boxes.ExercicioBox;
 import com.espweb.chronos.storage.converters.StorageToNetworkConverter;
 import com.espweb.chronos.storage.model.Exercicio;
-import com.espweb.chronos.workers.base.WebRequestWorker;
+import com.espweb.chronos.workers.base.ApiWorker;
 
 import java.io.IOException;
 
 import retrofit2.Response;
 
-public class CreateExercicioWorker extends WebRequestWorker {
+public class CreateExercicioWorker extends ApiWorker {
     public static final String ID_EXERCICIO = "ID_EXERCICIO";
 
     public CreateExercicioWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {

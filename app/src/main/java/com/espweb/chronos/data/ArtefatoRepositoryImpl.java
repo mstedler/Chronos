@@ -2,11 +2,9 @@ package com.espweb.chronos.data;
 
 import android.content.Context;
 
-import androidx.work.Data;
-
-import com.espweb.chronos.data.factory.ArtefatoRepositoryFactory;
 import com.espweb.chronos.domain.exceptions.InvalidArtefatoException;
 import com.espweb.chronos.domain.model.Artefato;
+import com.espweb.chronos.domain.model.EnumTipo;
 import com.espweb.chronos.domain.repository.ArtefatoRepository;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
 import com.espweb.chronos.storage.database.ObjectBox;
@@ -14,10 +12,9 @@ import com.espweb.chronos.storage.model.Assunto;
 import com.espweb.chronos.storage.model.Exercicio;
 import com.espweb.chronos.storage.model.Material;
 import com.espweb.chronos.storage.model.Revisao;
-import com.espweb.chronos.workers.DeleteRevisaoWorker;
-import com.espweb.chronos.workers.base.WorkFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import io.objectbox.Box;
@@ -25,28 +22,32 @@ import io.objectbox.Box;
 public class ArtefatoRepositoryImpl implements ArtefatoRepository<Artefato> {
 
     private static final String TAG = "ArtefatoRepositoryImpl";
-    private Context context;
+    private HashMap<EnumTipo, ArtefatoRepository> artefatoRepositories;
 
     public ArtefatoRepositoryImpl(Context context) {
-        this.context = context;
+        artefatoRepositories = new HashMap<EnumTipo, ArtefatoRepository>() {{
+           put(EnumTipo.MATERIAL, new MaterialRepositoryImpl(context));
+           put(EnumTipo.REVISAO, new RevisaoRepositoryImpl(context));
+           put(EnumTipo.EXERCICIO, new ExercicioRepositoryImpl(context));
+        }};
     }
 
     @Override
     public long insert(Artefato artefato) throws InvalidArtefatoException {
-        ArtefatoRepository artefatoRepository = ArtefatoRepositoryFactory.createRepository(artefato.getTipo(), context);
+        ArtefatoRepository artefatoRepository = artefatoRepositories.get(artefato.getTipo());
         return artefatoRepository.insert(artefato);
     }
 
     @Override
     public void update(Artefato artefato) throws InvalidArtefatoException {
-        ArtefatoRepository artefatoRepository = ArtefatoRepositoryFactory.createRepository(artefato.getTipo(), context);
+        ArtefatoRepository artefatoRepository = artefatoRepositories.get(artefato.getTipo());
         artefatoRepository.update(artefato);
 
     }
 
     @Override
     public void delete(Artefato artefato) throws InvalidArtefatoException {
-        ArtefatoRepository artefatoRepository = ArtefatoRepositoryFactory.createRepository(artefato.getTipo(), context);
+        ArtefatoRepository artefatoRepository = artefatoRepositories.get(artefato.getTipo());
         artefatoRepository.delete(artefato);
     }
 

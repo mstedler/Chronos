@@ -8,11 +8,11 @@ import androidx.work.WorkerParameters;
 import com.espweb.chronos.domain.exceptions.NotFoundException;
 import com.espweb.chronos.network.RestClient;
 import com.espweb.chronos.network.services.CronogramaService;
-import com.espweb.chronos.workers.base.WebRequestWorker;
+import com.espweb.chronos.workers.base.ApiWorker;
 
 import java.io.IOException;
 
-public class DeleteCronogramaWorker extends WebRequestWorker {
+public class DeleteCronogramaWorker extends ApiWorker {
 
     public static final String KEY_UUID_CRONOGRAMA = "UUID_CRONOGRAMA";
 

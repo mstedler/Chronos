@@ -32,12 +32,16 @@ public class MainActivity extends AppCompatActivity implements ViewModelStoreOwn
     NavController.OnDestinationChangedListener onDestinationChangedListener = (controller, destination, arguments) -> {
         int id = destination.getId();
 
-        if (id == R.id.main_dest || id == R.id.profile_dest || id == R.id.andamento_dest) {
+        if (hasBottomNav(id)) {
             bottomNavigationView.setVisibility(View.VISIBLE);
         } else {
             bottomNavigationView.setVisibility(View.GONE);
         }
     };
+
+    private boolean hasBottomNav(int id) {
+        return id == R.id.main_dest || id == R.id.profile_dest || id == R.id.andamento_dest;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements ViewModelStoreOwn
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void sessionHasExpired(SessionHasExpiredEvent expiredEvent) {
-        Toast.makeText(this, R.string.sessao_expirou, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, R.string.sessao_expirou, Toast.LENGTH_SHORT).show();
         navController.navigate(R.id.signin_dest);
     }
 }

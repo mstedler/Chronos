@@ -4,11 +4,11 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
 
 import com.espweb.chronos.domain.exceptions.NotFoundException;
 import com.espweb.chronos.domain.model.Cronograma;
 import com.espweb.chronos.domain.repository.CronogramaRepository;
-import com.espweb.chronos.domain.repository.Repository;
 import com.espweb.chronos.network.RestClient;
 import com.espweb.chronos.network.converters.NetworkToStorageConverter;
 import com.espweb.chronos.network.model.Cronogramas;
@@ -19,12 +19,13 @@ import com.espweb.chronos.storage.converters.DomainToStorageConverter;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
 import com.espweb.chronos.workers.CreateCronogramaWorker;
 import com.espweb.chronos.workers.DeleteCronogramaWorker;
+import com.espweb.chronos.workers.UpdateAssuntoWorker;
 import com.espweb.chronos.workers.UpdateCronogramaWorker;
-import com.espweb.chronos.workers.base.WorkFactory;
+import com.espweb.chronos.workers.base.ApiWorkEnqueuer;
+import com.espweb.chronos.workers.base.ApiWorkRequest;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -49,8 +50,9 @@ public class CronogramaRepositoryImpl implements CronogramaRepository {
         sCronograma.setUuid(UUID.randomUUID().toString());
         long id = box.put(sCronograma);
 
-        Data idCronograma = new Data.Builder().putLong(CreateCronogramaWorker.KEY_ID_CRONOGRAMA, id).build();
-        WorkFactory.enqueue(context, idCronograma, CreateCronogramaWorker.class);
+        Data data = new Data.Builder().putLong(CreateCronogramaWorker.KEY_ID_CRONOGRAMA, id).build();
+        OneTimeWorkRequest workRequest = new ApiWorkRequest(data, CreateCronogramaWorker.class).build();
+        ApiWorkEnqueuer.enqueueUnique(context, workRequest);
         return id;
     }
 
@@ -63,8 +65,9 @@ public class CronogramaRepositoryImpl implements CronogramaRepository {
             sCronograma.setInicio(cronograma.getInicio());
             sCronograma.setFim(cronograma.getFim());
             box.put(sCronograma);
-            Data idCronograma = new Data.Builder().putLong(CreateCronogramaWorker.KEY_ID_CRONOGRAMA, cronograma.getId()).build();
-            WorkFactory.enqueue(context, idCronograma, UpdateCronogramaWorker.class);
+            Data data = new Data.Builder().putLong(UpdateCronogramaWorker.KEY_ID_CRONOGRAMA, cronograma.getId()).build();
+            OneTimeWorkRequest workRequest = new ApiWorkRequest(data, UpdateCronogramaWorker.class).build();
+            ApiWorkEnqueuer.enqueueUnique(context, workRequest);
         } catch (NotFoundException e) {
             Log.e(TAG, e.getLocalizedMessage());
         }
@@ -84,9 +87,11 @@ public class CronogramaRepositoryImpl implements CronogramaRepository {
     public void delete(long id) {
         try {
             com.espweb.chronos.storage.model.Cronograma sCronograma = box.get(id);
-            Data idCronograma = new Data.Builder().putString(DeleteCronogramaWorker.KEY_UUID_CRONOGRAMA, sCronograma.getUuid()).build();
             box.remove(sCronograma.getId());
-            WorkFactory.enqueue(context, idCronograma, DeleteCronogramaWorker.class);
+
+            Data data = new Data.Builder().putString(DeleteCronogramaWorker.KEY_UUID_CRONOGRAMA, sCronograma.getUuid()).build();
+            OneTimeWorkRequest workRequest = new ApiWorkRequest(data, DeleteCronogramaWorker.class).build();
+            ApiWorkEnqueuer.enqueueUnique(context, workRequest);
         } catch (Exception e) {
 
         }

@@ -3,24 +3,22 @@ package com.espweb.chronos.data;
 import android.content.Context;
 
 import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
 
 import com.espweb.chronos.domain.model.Exercicio;
 import com.espweb.chronos.domain.repository.ArtefatoRepository;
 import com.espweb.chronos.storage.boxes.ExercicioBox;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
-import com.espweb.chronos.storage.database.ObjectBox;
-import com.espweb.chronos.storage.model.Exercicio_;
 import com.espweb.chronos.workers.CreateExercicioWorker;
+import com.espweb.chronos.workers.CreateRevisaoWorker;
 import com.espweb.chronos.workers.DeleteExercicioWorker;
 import com.espweb.chronos.workers.DeleteRevisaoWorker;
 import com.espweb.chronos.workers.UpdateExercicioWorker;
-import com.espweb.chronos.workers.UpdateMaterialWorker;
-import com.espweb.chronos.workers.base.WorkFactory;
+import com.espweb.chronos.workers.base.ApiWorkEnqueuer;
+import com.espweb.chronos.workers.base.ApiWorkRequest;
 
 import java.util.List;
 import java.util.UUID;
-
-import io.objectbox.Box;
 
 public class ExercicioRepositoryImpl implements ArtefatoRepository<Exercicio> {
     private Context context;
@@ -45,7 +43,8 @@ public class ExercicioRepositoryImpl implements ArtefatoRepository<Exercicio> {
 
         Data data = new Data.Builder().putLong(CreateExercicioWorker.ID_EXERCICIO, id).build();
 
-        WorkFactory.enqueue(context, data, CreateExercicioWorker.class);
+        OneTimeWorkRequest workRequest = new ApiWorkRequest(data, CreateExercicioWorker.class).build();
+        ApiWorkEnqueuer.enqueueUnique(context, workRequest);
 
         return id;
     }
@@ -61,14 +60,17 @@ public class ExercicioRepositoryImpl implements ArtefatoRepository<Exercicio> {
 
         Data data = new Data.Builder().putLong(UpdateExercicioWorker.KEY_ID_EXERCICIO, model.getId()).build();
 
-        WorkFactory.enqueue(context, data, UpdateExercicioWorker.class);
+        OneTimeWorkRequest workRequest = new ApiWorkRequest(data, UpdateExercicioWorker.class).build();
+        ApiWorkEnqueuer.enqueueUnique(context, workRequest);
     }
 
     @Override
     public void delete(Exercicio exercicio) {
-        box.remove(exercicio.getId());
-        Data data = new Data.Builder().putString(DeleteRevisaoWorker.KEY_UIID_ARTEFATO, exercicio.getUuid()).build();
-        WorkFactory.enqueue(context, data, DeleteExercicioWorker.class);
+        com.espweb.chronos.storage.model.Exercicio aux = box.get(exercicio.getId());
+        box.remove(aux.getId());
+        Data data = new Data.Builder().putString(DeleteExercicioWorker.KEY_UIID_ARTEFATO, aux.getUuid()).build();
+        OneTimeWorkRequest workRequest = new ApiWorkRequest(data, DeleteExercicioWorker.class).build();
+        ApiWorkEnqueuer.enqueueUnique(context, workRequest);
     }
 
     @Override

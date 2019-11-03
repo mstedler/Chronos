@@ -7,15 +7,12 @@ import androidx.work.WorkerParameters;
 
 import com.espweb.chronos.domain.exceptions.NotFoundException;
 import com.espweb.chronos.network.RestClient;
-import com.espweb.chronos.network.model.Artefato;
 import com.espweb.chronos.network.services.ArtefatoService;
-import com.espweb.chronos.workers.base.WebRequestWorker;
+import com.espweb.chronos.workers.base.ApiWorker;
 
 import java.io.IOException;
 
-import retrofit2.Response;
-
-public class DeleteMaterialWorker extends WebRequestWorker {
+public class DeleteMaterialWorker extends ApiWorker {
     public static final String KEY_UIID_ARTEFATO = "UUID_ARTEFATO";
 
     public DeleteMaterialWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {

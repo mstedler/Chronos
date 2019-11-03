@@ -110,10 +110,11 @@ public class AssuntoFragment extends Fragment implements AssuntoPresenter.View {
     }
 
     private void initPresenter() {
-        ArtefatoRepository artefatoRepository = new ArtefatoRepositoryImpl(getContext());
-        AssuntoRepositoryImpl assuntoRepository = new AssuntoRepositoryImpl(requireContext());
         assuntoPresenter = new AssuntoPresenterImpl(ThreadExecutor.getInstance(),
-                MainThreadImpl.getInstance(), this, artefatoRepository, assuntoRepository);
+                MainThreadImpl.getInstance(),
+                this,
+                new ArtefatoRepositoryImpl(requireContext()),
+                new AssuntoRepositoryImpl(requireContext()));
     }
 
     private ArtefatoAdapter.ArtefatoListListener artefatoListListener = new ArtefatoAdapter.ArtefatoListListener() {

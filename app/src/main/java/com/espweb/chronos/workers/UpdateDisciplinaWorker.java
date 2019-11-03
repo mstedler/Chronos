@@ -9,18 +9,15 @@ import com.espweb.chronos.domain.exceptions.NotFoundException;
 import com.espweb.chronos.network.RestClient;
 import com.espweb.chronos.network.converters.DateConverter;
 import com.espweb.chronos.network.services.DisciplinaService;
-import com.espweb.chronos.storage.boxes.CronogramaBox;
 import com.espweb.chronos.storage.boxes.DisciplinaBox;
 import com.espweb.chronos.storage.model.Cronograma;
 import com.espweb.chronos.storage.model.Disciplina;
-import com.espweb.chronos.workers.base.WebRequestWorker;
+import com.espweb.chronos.workers.base.ApiWorker;
 
 import java.io.IOException;
 
-import static com.espweb.chronos.workers.CreateDisciplinaWorker.KEY_ID_DISCIPLINA;
-
-public class UpdateDisciplinaWorker extends WebRequestWorker {
-
+public class UpdateDisciplinaWorker extends ApiWorker {
+    public static final String KEY_ID_DISCIPLINA = "ID_DISCIPLINA";
     public UpdateDisciplinaWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }

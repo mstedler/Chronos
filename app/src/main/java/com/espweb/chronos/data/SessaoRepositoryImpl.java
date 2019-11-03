@@ -1,7 +1,6 @@
 package com.espweb.chronos.data;
 
 
-import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
@@ -21,7 +20,7 @@ import com.espweb.chronos.network.utils.Connection;
 import com.espweb.chronos.storage.boxes.SessaoBox;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
 import com.espweb.chronos.storage.database.ObjectBox;
-import com.espweb.chronos.workers.base.WebRequestWorker;
+import com.espweb.chronos.workers.base.ApiWorker;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -113,7 +112,7 @@ public class SessaoRepositoryImpl implements SessaoRepository {
         ObjectBox.deleteDB();
         ObjectBox.init(context);
         WorkManager.getInstance(context).cancelAllWork();
-        WorkManager.getInstance(context).cancelUniqueWork(WebRequestWorker.NAME);
+        WorkManager.getInstance(context).cancelUniqueWork(ApiWorker.NAME);
         WorkManager.getInstance(context).pruneWork();
     }
 

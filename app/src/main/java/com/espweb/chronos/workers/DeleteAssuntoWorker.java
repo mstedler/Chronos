@@ -8,12 +8,12 @@ import androidx.work.WorkerParameters;
 import com.espweb.chronos.domain.exceptions.NotFoundException;
 import com.espweb.chronos.network.RestClient;
 import com.espweb.chronos.network.services.AssuntoService;
-import com.espweb.chronos.workers.base.WebRequestWorker;
+import com.espweb.chronos.workers.base.ApiWorker;
 
 import java.io.IOException;
 
 
-public class DeleteAssuntoWorker extends WebRequestWorker {
+public class DeleteAssuntoWorker extends ApiWorker {
 
     public static String KEY_UUID_ASSUNTO = "UUID_ASSUNTO";
 

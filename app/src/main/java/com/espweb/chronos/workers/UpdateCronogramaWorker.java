@@ -11,14 +11,12 @@ import com.espweb.chronos.network.converters.DateConverter;
 import com.espweb.chronos.network.services.CronogramaService;
 import com.espweb.chronos.storage.boxes.CronogramaBox;
 import com.espweb.chronos.storage.model.Cronograma;
-import com.espweb.chronos.workers.base.WebRequestWorker;
+import com.espweb.chronos.workers.base.ApiWorker;
 
 import java.io.IOException;
 
-import static com.espweb.chronos.workers.CreateCronogramaWorker.KEY_ID_CRONOGRAMA;
-
-public class UpdateCronogramaWorker extends WebRequestWorker {
-
+public class UpdateCronogramaWorker extends ApiWorker {
+    public final static String KEY_ID_CRONOGRAMA = "ID_CRONOGRAMA";
     public UpdateCronogramaWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }

@@ -3,23 +3,25 @@ package com.espweb.chronos.data;
 import android.content.Context;
 
 import androidx.work.Data;
+import androidx.work.ExistingWorkPolicy;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.espweb.chronos.domain.model.Material;
 import com.espweb.chronos.domain.repository.ArtefatoRepository;
 import com.espweb.chronos.storage.boxes.MaterialBox;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
-import com.espweb.chronos.storage.database.ObjectBox;
-import com.espweb.chronos.storage.model.Material_;
 import com.espweb.chronos.workers.CreateMaterialWorker;
 import com.espweb.chronos.workers.DeleteMaterialWorker;
 import com.espweb.chronos.workers.DeleteRevisaoWorker;
 import com.espweb.chronos.workers.UpdateMaterialWorker;
-import com.espweb.chronos.workers.base.WorkFactory;
+import com.espweb.chronos.workers.base.ApiWorkEnqueuer;
+import com.espweb.chronos.workers.base.ApiWorkRequest;
+import com.espweb.chronos.workers.base.ApiWorker;
 
 import java.util.List;
 import java.util.UUID;
-
-import io.objectbox.Box;
 
 public class MaterialRepositoryImpl implements ArtefatoRepository<Material> {
     private Context context;
@@ -43,8 +45,8 @@ public class MaterialRepositoryImpl implements ArtefatoRepository<Material> {
         long id = box.put(sMaterial);
 
         Data data = new Data.Builder().putLong(CreateMaterialWorker.ID_MATERIAL, id).build();
-
-        WorkFactory.enqueue(context, data, CreateMaterialWorker.class);
+        OneTimeWorkRequest workRequest = new ApiWorkRequest(data, CreateMaterialWorker.class).build();
+        ApiWorkEnqueuer.enqueueUnique(context, workRequest);
 
         return id;
     }
@@ -60,14 +62,17 @@ public class MaterialRepositoryImpl implements ArtefatoRepository<Material> {
 
         Data data = new Data.Builder().putLong(UpdateMaterialWorker.KEY_ID_MATERIAL, model.getId()).build();
 
-        WorkFactory.enqueue(context, data, UpdateMaterialWorker.class);
+        OneTimeWorkRequest workRequest = new ApiWorkRequest(data, UpdateMaterialWorker.class).build();
+        ApiWorkEnqueuer.enqueueUnique(context, workRequest);
     }
 
     @Override
     public void delete(Material material) {
-        box.remove(material.getId());
-        Data data = new Data.Builder().putString(DeleteRevisaoWorker.KEY_UIID_ARTEFATO, material.getUuid()).build();
-        WorkFactory.enqueue(context, data, DeleteMaterialWorker.class);
+        com.espweb.chronos.storage.model.Material aux = box.get(material.getId());
+        box.remove(aux.getId());
+        Data data = new Data.Builder().putString(DeleteMaterialWorker.KEY_UIID_ARTEFATO, aux.getUuid()).build();
+        OneTimeWorkRequest workRequest = new ApiWorkRequest(data, DeleteMaterialWorker.class).build();
+        ApiWorkEnqueuer.enqueueUnique(context, workRequest);
     }
 
     @Override

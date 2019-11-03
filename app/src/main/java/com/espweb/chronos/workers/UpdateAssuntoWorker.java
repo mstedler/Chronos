@@ -11,11 +11,13 @@ import com.espweb.chronos.network.services.AssuntoService;
 import com.espweb.chronos.storage.boxes.AssuntoBox;
 import com.espweb.chronos.storage.model.Assunto;
 import com.espweb.chronos.storage.model.Disciplina;
-import com.espweb.chronos.workers.base.WebRequestWorker;
+import com.espweb.chronos.workers.base.ApiWorker;
 
 import java.io.IOException;
 
-public class UpdateAssuntoWorker extends WebRequestWorker {
+public class UpdateAssuntoWorker extends ApiWorker {
+    public static final String KEY_ID_ASSUNTO = "ID_ASSUNTO";
+
     public UpdateAssuntoWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
@@ -23,7 +25,7 @@ public class UpdateAssuntoWorker extends WebRequestWorker {
     @Override
     public void work() throws IOException, NullPointerException, NotFoundException {
         AssuntoBox assuntoBox = new AssuntoBox();
-        long id = getInputData().getLong(CreateAssuntoWorker.KEY_ID_ASSUNTO, 0);
+        long id = getInputData().getLong(KEY_ID_ASSUNTO, 0);
         Assunto assunto = assuntoBox.get(id);
         Disciplina disciplina = assunto.getDisciplina().getTarget();
         AssuntoService assuntoService = RestClient.createService(AssuntoService.class);

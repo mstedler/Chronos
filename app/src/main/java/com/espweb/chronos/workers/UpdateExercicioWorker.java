@@ -12,11 +12,11 @@ import com.espweb.chronos.network.services.ArtefatoService;
 import com.espweb.chronos.storage.boxes.ExercicioBox;
 import com.espweb.chronos.storage.converters.StorageToNetworkConverter;
 import com.espweb.chronos.storage.model.Exercicio;
-import com.espweb.chronos.workers.base.WebRequestWorker;
+import com.espweb.chronos.workers.base.ApiWorker;
 
 import java.io.IOException;
 
-public class UpdateExercicioWorker extends WebRequestWorker {
+public class UpdateExercicioWorker extends ApiWorker {
 
     public static String KEY_ID_EXERCICIO = "KEY_ID_EXERCICIO";
 

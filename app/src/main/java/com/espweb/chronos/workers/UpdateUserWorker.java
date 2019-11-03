@@ -10,11 +10,11 @@ import com.espweb.chronos.network.RestClient;
 import com.espweb.chronos.network.services.UserService;
 import com.espweb.chronos.storage.boxes.UserBox;
 import com.espweb.chronos.storage.model.User;
-import com.espweb.chronos.workers.base.WebRequestWorker;
+import com.espweb.chronos.workers.base.ApiWorker;
 
 import java.io.IOException;
 
-public class UpdateUserWorker extends WebRequestWorker {
+public class UpdateUserWorker extends ApiWorker {
     public static final String ID_USER = "USER_ID";
     public UpdateUserWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);

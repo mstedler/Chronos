@@ -1,7 +1,6 @@
 package com.espweb.chronos.workers;
 
 import android.content.Context;
-import android.webkit.WebResourceError;
 
 import androidx.annotation.NonNull;
 import androidx.work.WorkerParameters;
@@ -10,14 +9,14 @@ import com.espweb.chronos.domain.exceptions.NotFoundException;
 import com.espweb.chronos.storage.boxes.MaterialBox;
 import com.espweb.chronos.storage.model.Material;
 import com.espweb.chronos.network.model.Artefato;
-import com.espweb.chronos.workers.base.WebRequestWorker;
+import com.espweb.chronos.workers.base.ApiWorker;
 import com.espweb.chronos.storage.converters.StorageToNetworkConverter;
 import com.espweb.chronos.network.RestClient;
 import com.espweb.chronos.network.services.ArtefatoService;
 
 import java.io.IOException;
 
-public class UpdateMaterialWorker extends WebRequestWorker {
+public class UpdateMaterialWorker extends ApiWorker {
     public static String KEY_ID_MATERIAL = "KEY_ID_EXERCICIO";
     public UpdateMaterialWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);

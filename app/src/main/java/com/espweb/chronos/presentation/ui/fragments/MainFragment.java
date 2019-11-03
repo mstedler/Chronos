@@ -35,7 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainFragment extends Fragment implements MainPresenter.View {
+public class MainFragment extends Fragment implements MainPresenter.View, CronogramaAdapter.CronogramaListListener {
 
     private MainPresenter mainPresenter;
     private CronogramaAdapter cronogramaAdapter;
@@ -100,17 +100,11 @@ public class MainFragment extends Fragment implements MainPresenter.View {
         cronogramaAdapter = new CronogramaAdapter(requireContext());
     }
 
-    private CronogramaAdapter.CronogramaListListener cronogramaListListener = cronograma -> {
-        MainFragmentDirections.ActionMainToCronograma action = MainFragmentDirections.actionMainToCronograma();
-        action.setIdCronograma(cronograma.getId());
-        Navigation.findNavController(requireView()).navigate(action);
-    };
 
     private void initRecyclerView() {
-        cronogramaAdapter.setCronogramaListListener(cronogramaListListener);
+        cronogramaAdapter.setCronogramaListListener(this);
         rvCronogramas.setLayoutManager(new LinearLayoutManager(getContext()));
         rvCronogramas.setAdapter(cronogramaAdapter);
-        //cronogramaAdapter.registerAdapterDataObserver(new RecyclerViewDataObserver(rvCronogramas, clEmptyCronogramas));
     }
 
     @Override
@@ -173,5 +167,12 @@ public class MainFragment extends Fragment implements MainPresenter.View {
         CronogramaDialog cronogramaDialog = CronogramaDialog.newInstance(new Cronograma(userId));
         cronogramaDialog.setListener(cronogramaDialogListener);
         cronogramaDialog.show(requireFragmentManager(), "CRONOGRAMA_ADD_DIALOG");
+    }
+
+    @Override
+    public void onCronogramaClicked(Cronograma cronograma) {
+        MainFragmentDirections.ActionMainToCronograma action = MainFragmentDirections.actionMainToCronograma();
+        action.setIdCronograma(cronograma.getId());
+        Navigation.findNavController(requireView()).navigate(action);
     }
 }

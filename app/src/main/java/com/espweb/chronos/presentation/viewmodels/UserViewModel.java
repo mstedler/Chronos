@@ -11,7 +11,6 @@ import java.util.List;
 
 public class UserViewModel extends ViewModel {
     private MutableLiveData<User> user = new MutableLiveData<>();
-    //private MutableLiveData<List<Cronograma>> cronogramas = new MutableLiveData<>();
 
     public LiveData<User> getUser() {
         return user;
@@ -21,11 +20,4 @@ public class UserViewModel extends ViewModel {
         this.user.setValue(user);
     }
 
-    //public LiveData<List<Cronograma>> getCronogramas() {
-     //   return cronogramas;
-    //}
-
-    //public void setCronogramas(List<Cronograma> cronogramas) {
-    //    this.cronogramas.setValue(cronogramas);
-    //}
 }

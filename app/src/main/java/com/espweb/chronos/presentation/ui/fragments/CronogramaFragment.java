@@ -1,5 +1,6 @@
 package com.espweb.chronos.presentation.ui.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -111,14 +112,12 @@ public class CronogramaFragment extends Fragment implements CronogramaPresenter.
     }
 
     private void initPresenter() {
-        Repository<com.espweb.chronos.domain.model.Cronograma> cronogramaRepository = new CronogramaRepositoryImpl(requireContext());
-        Repository<com.espweb.chronos.domain.model.Disciplina> disciplinaRepository = new DisciplinaRepositoryImpl(requireContext());
-
+        Context context = requireContext();
         cronogramaPresenter = new CronogramaPresenterImpl(
                 ThreadExecutor.getInstance(),
                 MainThreadImpl.getInstance(), this,
-                cronogramaRepository,
-                disciplinaRepository);
+                new CronogramaRepositoryImpl(context),
+                new DisciplinaRepositoryImpl(context));
     }
 
     private void initToolbar() {
@@ -130,10 +129,7 @@ public class CronogramaFragment extends Fragment implements CronogramaPresenter.
     private void initRecyclerView() {
         RecyclerViewExpandableItemManager expandableItemManager = new RecyclerViewExpandableItemManager(null);
 
-        disciplinaAdapter = new DisciplinaAdapter(requireContext(), expandableItemManager);
-        disciplinaAdapter.setDisciplinaListListener(disciplinaListListener);
-        disciplinaAdapter.setAssuntoListListener(assuntoListListener);
-
+        buildAdapter(expandableItemManager);
 
         RecyclerView.Adapter wrappedAdapter = expandableItemManager.createWrappedAdapter(disciplinaAdapter);
         RecyclerViewSwipeManager swipeManager = new RecyclerViewSwipeManager();
@@ -163,6 +159,12 @@ public class CronogramaFragment extends Fragment implements CronogramaPresenter.
                 }
             }
         });
+    }
+
+    private void buildAdapter(RecyclerViewExpandableItemManager expandableItemManager) {
+        disciplinaAdapter = new DisciplinaAdapter(requireContext(), expandableItemManager);
+        disciplinaAdapter.setDisciplinaListListener(disciplinaListListener);
+        disciplinaAdapter.setAssuntoListListener(assuntoListListener);
     }
 
     private DisciplinaAdapter.DisciplinaListListener disciplinaListListener = new DisciplinaAdapter.DisciplinaListListener() {

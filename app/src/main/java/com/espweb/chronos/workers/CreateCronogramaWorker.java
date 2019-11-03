@@ -11,13 +11,13 @@ import com.espweb.chronos.network.converters.DateConverter;
 import com.espweb.chronos.network.model.Cronograma;
 import com.espweb.chronos.network.services.CronogramaService;
 import com.espweb.chronos.storage.boxes.CronogramaBox;
-import com.espweb.chronos.workers.base.WebRequestWorker;
+import com.espweb.chronos.workers.base.ApiWorker;
 
 import java.io.IOException;
 
 import retrofit2.Response;
 
-public class CreateCronogramaWorker extends WebRequestWorker {
+public class CreateCronogramaWorker extends ApiWorker {
     public final static String KEY_ID_CRONOGRAMA = "ID_CRONOGRAMA";
 
     public CreateCronogramaWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {

@@ -3,16 +3,18 @@ package com.espweb.chronos.data;
 import android.content.Context;
 
 import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
 
 import com.espweb.chronos.domain.model.Revisao;
 import com.espweb.chronos.domain.repository.ArtefatoRepository;
 import com.espweb.chronos.storage.boxes.RevisaoBox;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
 import com.espweb.chronos.workers.CreateRevisaoWorker;
+import com.espweb.chronos.workers.DeleteMaterialWorker;
 import com.espweb.chronos.workers.DeleteRevisaoWorker;
-import com.espweb.chronos.workers.UpdateMaterialWorker;
 import com.espweb.chronos.workers.UpdateRevisaoWorker;
-import com.espweb.chronos.workers.base.WorkFactory;
+import com.espweb.chronos.workers.base.ApiWorkEnqueuer;
+import com.espweb.chronos.workers.base.ApiWorkRequest;
 
 import java.util.List;
 import java.util.UUID;
@@ -38,8 +40,8 @@ public class RevisaoRepositoryImpl implements ArtefatoRepository<Revisao> {
         long id = box.put(sRevisao);
 
         Data data = new Data.Builder().putLong(CreateRevisaoWorker.KEY_ID_REVISAO, id).build();
-
-        WorkFactory.enqueue(context, data, CreateRevisaoWorker.class);
+        OneTimeWorkRequest workRequest = new ApiWorkRequest(data, CreateRevisaoWorker.class).build();
+        ApiWorkEnqueuer.enqueueUnique(context, workRequest);
 
         return id;
     }
@@ -50,17 +52,21 @@ public class RevisaoRepositoryImpl implements ArtefatoRepository<Revisao> {
         sRevisao.setEscopo(revisao.getEscopo().getIntValue());
         sRevisao.setData(revisao.getData());
         sRevisao.setDescricao(revisao.getDescricao());
-        box.put(sRevisao);
-        Data data = new Data.Builder().putLong(UpdateRevisaoWorker.KEY_ID_REVISAO, revisao.getId()).build();
 
-        WorkFactory.enqueue(context, data, UpdateRevisaoWorker.class);
+        box.put(sRevisao);
+
+        Data data = new Data.Builder().putLong(UpdateRevisaoWorker.KEY_ID_REVISAO, revisao.getId()).build();
+        OneTimeWorkRequest workRequest = new ApiWorkRequest(data, UpdateRevisaoWorker.class).build();
+        ApiWorkEnqueuer.enqueueUnique(context, workRequest);
     }
 
     @Override
     public void delete(Revisao revisao) {
-        box.remove(revisao.getId());
-        Data data = new Data.Builder().putString(DeleteRevisaoWorker.KEY_UIID_ARTEFATO, revisao.getUuid()).build();
-        WorkFactory.enqueue(context, data, DeleteRevisaoWorker.class);
+        com.espweb.chronos.storage.model.Revisao aux = box.get(revisao.getId());
+        box.remove(aux.getId());
+        Data data = new Data.Builder().putString(DeleteRevisaoWorker.KEY_UIID_ARTEFATO, aux.getUuid()).build();
+        OneTimeWorkRequest workRequest = new ApiWorkRequest(data, DeleteRevisaoWorker.class).build();
+        ApiWorkEnqueuer.enqueueUnique(context, workRequest);
     }
 
     @Override

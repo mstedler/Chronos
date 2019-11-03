@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
 
 import com.espweb.chronos.domain.exceptions.NotFoundException;
 import com.espweb.chronos.domain.model.Disciplina;
@@ -12,8 +13,10 @@ import com.espweb.chronos.storage.boxes.DisciplinaBox;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
 import com.espweb.chronos.workers.CreateDisciplinaWorker;
 import com.espweb.chronos.workers.DeleteDisciplinaWorker;
+import com.espweb.chronos.workers.UpdateCronogramaWorker;
 import com.espweb.chronos.workers.UpdateDisciplinaWorker;
-import com.espweb.chronos.workers.base.WorkFactory;
+import com.espweb.chronos.workers.base.ApiWorkEnqueuer;
+import com.espweb.chronos.workers.base.ApiWorkRequest;
 
 import java.util.List;
 import java.util.UUID;
@@ -41,7 +44,8 @@ public class DisciplinaRepositoryImpl implements Repository<Disciplina> {
 
         Data data = new Data.Builder().putLong(CreateDisciplinaWorker.KEY_ID_DISCIPLINA, id).build();
 
-        WorkFactory.enqueue(context, data, CreateDisciplinaWorker.class);
+        OneTimeWorkRequest workRequest = new ApiWorkRequest(data, CreateDisciplinaWorker.class).build();
+        ApiWorkEnqueuer.enqueueUnique(context, workRequest);
 
         return id;
     }
@@ -54,8 +58,9 @@ public class DisciplinaRepositoryImpl implements Repository<Disciplina> {
             sDisciplina.setNome(disciplina.getNome());
             sDisciplina.setDescricao(disciplina.getDescricao());
             box.put(sDisciplina);
-            Data data = new Data.Builder().putLong(CreateDisciplinaWorker.KEY_ID_DISCIPLINA, id).build();
-            WorkFactory.enqueue(context, data, UpdateDisciplinaWorker.class);
+            Data data = new Data.Builder().putLong(UpdateDisciplinaWorker.KEY_ID_DISCIPLINA, id).build();
+            OneTimeWorkRequest workRequest = new ApiWorkRequest(data, UpdateDisciplinaWorker.class).build();
+            ApiWorkEnqueuer.enqueueUnique(context, workRequest);
         } catch (NotFoundException e) {
             Log.e(TAG, e.getLocalizedMessage());
         }
@@ -67,7 +72,8 @@ public class DisciplinaRepositoryImpl implements Repository<Disciplina> {
             com.espweb.chronos.storage.model.Disciplina disciplina = box.get(id);
             box.remove(id);
             Data data = new Data.Builder().putString(DeleteDisciplinaWorker.KEY_UUID_DISCIPLINA, disciplina.getUuid()).build();
-            WorkFactory.enqueue(context, data, DeleteDisciplinaWorker.class);
+            OneTimeWorkRequest workRequest = new ApiWorkRequest(data, DeleteDisciplinaWorker.class).build();
+            ApiWorkEnqueuer.enqueueUnique(context, workRequest);
         } catch (NotFoundException e) {
             Log.e(TAG, e.getLocalizedMessage());
         }

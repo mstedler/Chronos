@@ -11,14 +11,14 @@ import com.espweb.chronos.network.services.AssuntoService;
 import com.espweb.chronos.storage.boxes.AssuntoBox;
 import com.espweb.chronos.storage.model.Assunto;
 import com.espweb.chronos.storage.model.Disciplina;
-import com.espweb.chronos.workers.base.WebRequestWorker;
+import com.espweb.chronos.workers.base.ApiWorker;
 
 
 import java.io.IOException;
 
 import retrofit2.Response;
 
-public class CreateAssuntoWorker extends WebRequestWorker {
+public class CreateAssuntoWorker extends ApiWorker {
     public static final String KEY_ID_ASSUNTO = "ID_ASSUNTO";
 
     public CreateAssuntoWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {

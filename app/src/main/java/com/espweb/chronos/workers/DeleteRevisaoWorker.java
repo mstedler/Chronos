@@ -8,11 +8,11 @@ import androidx.work.WorkerParameters;
 import com.espweb.chronos.domain.exceptions.NotFoundException;
 import com.espweb.chronos.network.RestClient;
 import com.espweb.chronos.network.services.ArtefatoService;
-import com.espweb.chronos.workers.base.WebRequestWorker;
+import com.espweb.chronos.workers.base.ApiWorker;
 
 import java.io.IOException;
 
-public class DeleteRevisaoWorker extends WebRequestWorker {
+public class DeleteRevisaoWorker extends ApiWorker {
     public static final String KEY_UIID_ARTEFATO = "UUID_ARTEFATO";
 
     public DeleteRevisaoWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
