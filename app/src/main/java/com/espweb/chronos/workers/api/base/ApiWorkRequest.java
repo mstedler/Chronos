@@ -1,4 +1,4 @@
-package com.espweb.chronos.workers.base;
+package com.espweb.chronos.workers.api.base;
 
 import androidx.work.Constraints;
 import androidx.work.Data;

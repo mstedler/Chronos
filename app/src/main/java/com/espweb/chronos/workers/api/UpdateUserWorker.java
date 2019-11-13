@@ -1,4 +1,4 @@
-package com.espweb.chronos.workers;
+package com.espweb.chronos.workers.api;
 
 import android.content.Context;
 
@@ -10,7 +10,7 @@ import com.espweb.chronos.network.RestClient;
 import com.espweb.chronos.network.services.UserService;
 import com.espweb.chronos.storage.boxes.UserBox;
 import com.espweb.chronos.storage.model.User;
-import com.espweb.chronos.workers.base.ApiWorker;
+import com.espweb.chronos.workers.api.base.ApiWorker;
 
 import java.io.IOException;
 

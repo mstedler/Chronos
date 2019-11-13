@@ -1,4 +1,4 @@
-package com.espweb.chronos.workers.base;
+package com.espweb.chronos.workers.api.base;
 
 import android.content.Context;
 import android.util.Log;

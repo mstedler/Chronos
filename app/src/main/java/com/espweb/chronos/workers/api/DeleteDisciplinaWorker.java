@@ -1,4 +1,4 @@
-package com.espweb.chronos.workers;
+package com.espweb.chronos.workers.api;
 
 import android.content.Context;
 
@@ -8,7 +8,7 @@ import androidx.work.WorkerParameters;
 import com.espweb.chronos.domain.exceptions.NotFoundException;
 import com.espweb.chronos.network.RestClient;
 import com.espweb.chronos.network.services.DisciplinaService;
-import com.espweb.chronos.workers.base.ApiWorker;
+import com.espweb.chronos.workers.api.base.ApiWorker;
 
 import java.io.IOException;
 
