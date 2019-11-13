@@ -1,5 +1,7 @@
 package com.espweb.chronos.network.utils;
 
+import android.util.Log;
+
 import com.espweb.chronos.domain.repository.SessaoRepository;
 import com.espweb.chronos.events.SessionHasExpiredEvent;
 
@@ -13,6 +15,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class ResponseInterceptor implements Interceptor {
+
 
     private SessaoRepository sessaoRepository;
 

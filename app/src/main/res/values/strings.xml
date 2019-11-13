@@ -4,10 +4,6 @@
         <item quantity="one">%d minuto</item>
         <item quantity="other">%d minutos</item>
     </plurals>
-    <plurals name="assunto">
-        <item quantity="one">%d assunto</item>
-        <item quantity="other">%d assuntos</item>
-    </plurals>
     <plurals name="cronograma">
         <item quantity="one">Cronograma</item>
         <item quantity="other">Cronogramas</item>
@@ -53,7 +49,7 @@
     <string name="data_invalida">Data inválida</string>
     <string name="novo_exercicio">Novo exercício</string>
     <string name="novo_material">Novo material</string>
-    <string name="tempo">Tempo</string>
+    <string name="tempo">Tempo(minutos)</string>
     <string name="nova_revisao">Nova revisão</string>
     <string name="diaria">Diária</string>
     <string name="semanal">Semanal</string>
@@ -69,10 +65,11 @@
     <string name="sessao_expirou">Sessão expirou.</string>
     <string name="menor_ou_igual">Deve ser menor ou igual.</string>
     <string name="maior_que_0">Deve ser maior que 0!</string>
+    <string name="maior_igual_0">Deve ser maior ou igual a 0!</string>
     <string name="email_invalido">Email inválido.</string>
     <string name="no_minimo_6">Deve ter no mínimo 6 caracteres.</string>
 
-    <string name="voce_nao_possui_cronograma">Você ainda não possui Cronogramas.</string>
+    <string name="voce_nao_possui_cronograma">Você não possui Cronogramas.</string>
     <string name="crie_plano_estudo">Comece criando seu plano de estudos!</string>
     <string name="voce_nao_possui_disciplinas">Você não possui disciplinas.</string>
     <string name="voce_nao_possui_artefatos">Você não possui atividades.</string>
@@ -90,7 +87,8 @@
     <string name="livros">Livros</string>
     <string name="internet_artigo_post">Internet / Artigos / Posts</string>
     <string name="minutos">%d min.</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="confirme_senha">Confirme a senha</string>
+    <string name="assunto">Assunto</string>
+    <string name="channel_name">Chronos</string>
+    <string name="channel_description">Chronos Channel</string>
 </resources>

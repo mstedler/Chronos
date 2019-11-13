@@ -11,12 +11,11 @@ import com.espweb.chronos.domain.model.Disciplina;
 import com.espweb.chronos.domain.repository.Repository;
 import com.espweb.chronos.storage.boxes.DisciplinaBox;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
-import com.espweb.chronos.workers.CreateDisciplinaWorker;
-import com.espweb.chronos.workers.DeleteDisciplinaWorker;
-import com.espweb.chronos.workers.UpdateCronogramaWorker;
-import com.espweb.chronos.workers.UpdateDisciplinaWorker;
-import com.espweb.chronos.workers.base.ApiWorkEnqueuer;
-import com.espweb.chronos.workers.base.ApiWorkRequest;
+import com.espweb.chronos.workers.api.CreateDisciplinaWorker;
+import com.espweb.chronos.workers.api.DeleteDisciplinaWorker;
+import com.espweb.chronos.workers.api.UpdateDisciplinaWorker;
+import com.espweb.chronos.workers.api.base.ApiWorkEnqueuer;
+import com.espweb.chronos.workers.api.base.ApiWorkRequest;
 
 import java.util.List;
 import java.util.UUID;

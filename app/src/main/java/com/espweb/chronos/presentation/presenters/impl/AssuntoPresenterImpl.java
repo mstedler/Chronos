@@ -101,7 +101,6 @@ public class AssuntoPresenterImpl extends AbstractPresenter implements AssuntoPr
 
     @Override
     public void onError(String message) {
-        view.showError(message);
     }
 
     @Override

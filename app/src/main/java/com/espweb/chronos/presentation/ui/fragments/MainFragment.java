@@ -74,7 +74,7 @@ public class MainFragment extends Fragment implements MainPresenter.View, Cronog
         initAdapter();
         initRecyclerView();
         boolean freshStart = MainFragmentArgs.fromBundle(requireArguments()).getFreshStart();
-        userViewModel.getUser().observe(this, user -> {
+        userViewModel.getUser().observe(getViewLifecycleOwner(), user -> {
             userId = user.getId();
             mainPresenter.getAllCronogramas(userId, freshStart);
         });
@@ -121,7 +121,6 @@ public class MainFragment extends Fragment implements MainPresenter.View, Cronog
 
     @Override
     public void showError(String message) {
-        showToast(message);
     }
 
     @Override

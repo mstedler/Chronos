@@ -12,9 +12,14 @@ import com.espweb.chronos.R;
 import com.espweb.chronos.presentation.model.Disciplina;
 import com.espweb.chronos.presentation.ui.adapters.providers.DisciplinaProvider;
 import com.espweb.chronos.presentation.ui.custom.ExpandableItemIndicator;
+import com.facebook.stetho.common.StringUtil;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemState;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemViewHolder;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractSwipeableItemViewHolder;
+
+import org.greenrobot.essentials.StringUtils;
+
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -126,10 +131,16 @@ public class DisciplinaViewHolder extends AbstractSwipeableItemViewHolder implem
 
     private void bindTexts() {
         tvNome.setText(disciplina.getNome());
-        tvDescricao.setText(disciplina.getDescricao());
+
+        String descricao = disciplina.getDescricao();
+
+        if(descricao != null && !descricao.isEmpty()) {
+            tvDescricao.setText(descricao);
+            tvDescricao.setVisibility(View.VISIBLE);
+        }
+
         int size = groupDisciplina.getItemSize();
-        String assuntos = resources.getQuantityString(R.plurals.assunto, size, size);
-        tvQtdAssuntos.setText(assuntos);
+        tvQtdAssuntos.setText(String.format(Locale.getDefault(),"Assuntos: %d", size));
     }
 
     private void adjustSwipe() {

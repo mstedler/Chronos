@@ -23,6 +23,7 @@ import com.espweb.chronos.domain.model.User;
 import com.espweb.chronos.presentation.presenters.SignInPresenter;
 import com.espweb.chronos.presentation.presenters.impl.SignInPresenterImpl;
 import com.espweb.chronos.data.SessaoRepositoryImpl;
+import com.espweb.chronos.presentation.utils.ViewUtils;
 import com.espweb.chronos.presentation.viewmodels.UserViewModel;
 import com.espweb.chronos.threading.MainThreadImpl;
 import com.google.android.material.textfield.TextInputLayout;
@@ -94,6 +95,8 @@ public class SignInFragment extends Fragment implements SignInPresenter.View {
 
     @Override
     public void showProgress() {
+        ViewUtils.hideKeyboard(requireContext(), getView());
+        ViewUtils.makeWindowUntouchable(requireActivity().getWindow());
         progressBar.setVisibility(View.VISIBLE);
 
     }
@@ -101,6 +104,7 @@ public class SignInFragment extends Fragment implements SignInPresenter.View {
     @Override
     public void hideProgress() {
         progressBar.setVisibility(View.INVISIBLE);
+        ViewUtils.makeWindowTouchable(requireActivity().getWindow());
     }
 
     @Override

@@ -48,15 +48,15 @@ public class SignInPresenterImpl extends AbstractPresenter implements SignInPres
 
     @Override
     public void onError(String message) {
+        view.showError(message);
         view.allowClick();
         view.hideProgress();
-        view.showError(message);
     }
 
     @Override
     public void onSignInSuccess(User user) {
         userViewModel.setUser(DomainToPresentationConverter.convert(user));
-        view.showWelcomeMessage(user);
+        view.hideProgress();
         view.showMain();
     }
 

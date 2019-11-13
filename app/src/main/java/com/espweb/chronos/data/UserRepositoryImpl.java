@@ -10,10 +10,9 @@ import com.espweb.chronos.domain.repository.Repository;
 import com.espweb.chronos.storage.boxes.UserBox;
 import com.espweb.chronos.storage.converters.DomainToStorageConverter;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
-import com.espweb.chronos.workers.DeleteDisciplinaWorker;
-import com.espweb.chronos.workers.UpdateUserWorker;
-import com.espweb.chronos.workers.base.ApiWorkEnqueuer;
-import com.espweb.chronos.workers.base.ApiWorkRequest;
+import com.espweb.chronos.workers.api.UpdateUserWorker;
+import com.espweb.chronos.workers.api.base.ApiWorkEnqueuer;
+import com.espweb.chronos.workers.api.base.ApiWorkRequest;
 
 import java.util.List;
 

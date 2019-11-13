@@ -5,6 +5,7 @@ import com.espweb.chronos.domain.executor.MainThread;
 import com.espweb.chronos.domain.interactors.cronograma.CreateCronogramaInteractor;
 import com.espweb.chronos.domain.interactors.cronograma.impl.CreateCronogramaInteractorImpl;
 import com.espweb.chronos.domain.model.Cronograma;
+import com.espweb.chronos.domain.repository.CronogramaRepository;
 import com.espweb.chronos.threading.TestMainThread;
 
 import org.junit.Before;
@@ -33,21 +34,22 @@ public class CreateCronogramaTest {
 
     @Test
     public void testCreateCronograma() throws Exception{
-        Cronograma cronograma = new Cronograma(UUID.randomUUID().toString(), "CronogramaActivity I",
+        long userId = 1;
+        Cronograma cronograma = new Cronograma(0, UUID.randomUUID().toString(), "CronogramaActivity I",
                 "Esse é um cronograma Teste",
                 new Date("01/01/2019"),
                 new Date("01/02/2019"));
 
         when(cronogramaRepository.insert(cronograma)).thenReturn(Long.valueOf(1));
 
+
         CreateCronogramaInteractorImpl createCronogramaInteractor = new CreateCronogramaInteractorImpl(
-                executor, mainThread, callback, cronogramaRepository, cronograma,
-                userId);
+                executor, mainThread, callback, cronogramaRepository, cronograma);
 
         createCronogramaInteractor.run();
 
         Mockito.verify(cronogramaRepository).insert(cronograma);
         Mockito.verifyNoMoreInteractions(cronogramaRepository);
-        Mockito.verify(callback).onCronogramaCreated(1);
+        Mockito.verify(callback).onCronogramaCreated(cronograma);
     }
 }

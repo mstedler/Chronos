@@ -56,8 +56,10 @@ public class ExercicioDialog extends ArtefatoDialog<Exercicio>  {
     @Override
     public void fillForm() {
         tilDescricao.getEditText().setText(artefato.getDescricao());
-        tilAcertos.getEditText().setText(artefato.getAcertos() + "");
-        tilQuantidade.getEditText().setText(artefato.getQuantidade() + "");
+        int acertos = artefato.getAcertos();
+        tilAcertos.getEditText().setText(acertos > 0 ? String.valueOf(acertos) : null);
+        int quantidade = artefato.getQuantidade();
+        tilQuantidade.getEditText().setText(quantidade > 0 ? String.valueOf(quantidade) : null);
         tilData.getEditText().setText(DateUtils.formatDate(artefato.getData()));
     }
 
@@ -70,7 +72,14 @@ public class ExercicioDialog extends ArtefatoDialog<Exercicio>  {
     @Override
     protected boolean validate() {
         clearErrors();
-        if(!artefato.isValid()) {
+        if(artefato.getAcertos() < 0) {
+            tilAcertos.setError(getString(R.string.maior_igual_0));
+            return false;
+        } else if(artefato.getQuantidade() <= 0) {
+            tilQuantidade.setError(getString(R.string.maior_que_0));
+            return false;
+        }
+        else if(!artefato.isValid()) {
             tilQuantidade.setError("");
             tilAcertos.setError(getString(R.string.menor_ou_igual));
             return false;

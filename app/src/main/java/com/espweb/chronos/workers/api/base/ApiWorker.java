@@ -12,10 +12,10 @@ import com.espweb.chronos.domain.exceptions.NotFoundException;
 
 import java.io.IOException;
 
-public abstract class WebRequestWorker extends Worker {
-    public static String NAME = "WEB_REQUEST";
+public abstract class ApiWorker extends Worker {
+    public static String NAME = "API_WORKER";
 
-    public WebRequestWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public ApiWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 

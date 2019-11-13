@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="140dp"
-    app:cardCornerRadius="7dp"
-    app:cardElevation="5dp"
-    app:cardUseCompatPadding="true"
-    android:layout_marginTop="8dp">
+    android:background="@android:color/white"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/ll_behindviews"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:baselineAligned="false"
         android:visibility="gone"
@@ -25,6 +22,7 @@
             android:layout_weight="0.25"
             android:background="@color/bg_delete"
             android:foreground="?attr/selectableItemBackground"
+            android:orientation="vertical"
             android:gravity="center">
 
             <ImageView
@@ -33,6 +31,15 @@
                 android:background="@drawable/ic_trash_can"
                 android:contentDescription="@string/excluir_disciplina" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/lato"
+                android:text="@string/excluir"
+                android:textColor="#FFFFFFFF"
+                android:textSize="12sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -41,6 +48,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.25"
             android:background="@color/bg_edit"
+            android:orientation="vertical"
             android:foreground="?attr/selectableItemBackground"
             android:gravity="center">
 
@@ -49,6 +57,16 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_edit"
                 android:contentDescription="@string/editar_disciplina" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/lato"
+                android:text="@string/editar"
+                android:textColor="#FFFFFFFF"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -63,6 +81,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.25"
             android:background="@color/bg_add"
+            android:orientation="vertical"
             android:foreground="?attr/selectableItemBackground"
             android:gravity="center">
 
@@ -71,6 +90,16 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_add"
                 android:contentDescription="@string/editar_disciplina" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/lato"
+                android:text="@string/assunto"
+                android:textColor="#FFFFFFFF"
+                android:textSize="12sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>
@@ -78,7 +107,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:clickable="true"
         android:focusable="true"
@@ -91,18 +120,20 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Disciplina I"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_descricao_disciplina"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="Descricao"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="none"
             android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/item_indicator"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_nome_disciplina" />
 
@@ -111,26 +142,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="2 assuntos"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view" />
-
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="#AA000000"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_descricao_disciplina" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_descricao_disciplina" />
 
         <com.espweb.chronos.presentation.ui.custom.ExpandableItemIndicator
             android:id="@+id/item_indicator"
@@ -139,8 +156,8 @@
             android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.cardview.widget.CardView>
+</FrameLayout>

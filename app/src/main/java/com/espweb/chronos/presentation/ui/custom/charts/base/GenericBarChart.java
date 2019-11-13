@@ -68,6 +68,7 @@ public abstract class GenericBarChart<T> extends BarChart {
         setDrawBarShadow(false);
         setDrawValueAboveBar(true);
         getDescription().setEnabled(false);
+        setNoDataText("Não há nada para mostrar");
         buildYAxis();
     }
 

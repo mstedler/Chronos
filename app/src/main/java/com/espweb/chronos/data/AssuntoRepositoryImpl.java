@@ -11,12 +11,11 @@ import com.espweb.chronos.domain.model.Assunto;
 import com.espweb.chronos.domain.repository.Repository;
 import com.espweb.chronos.storage.boxes.AssuntoBox;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
-import com.espweb.chronos.workers.CreateAssuntoWorker;
-import com.espweb.chronos.workers.CreateExercicioWorker;
-import com.espweb.chronos.workers.DeleteAssuntoWorker;
-import com.espweb.chronos.workers.UpdateAssuntoWorker;
-import com.espweb.chronos.workers.base.ApiWorkEnqueuer;
-import com.espweb.chronos.workers.base.ApiWorkRequest;
+import com.espweb.chronos.workers.api.CreateAssuntoWorker;
+import com.espweb.chronos.workers.api.DeleteAssuntoWorker;
+import com.espweb.chronos.workers.api.UpdateAssuntoWorker;
+import com.espweb.chronos.workers.api.base.ApiWorkEnqueuer;
+import com.espweb.chronos.workers.api.base.ApiWorkRequest;
 
 import java.util.List;
 import java.util.UUID;

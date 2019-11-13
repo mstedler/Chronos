@@ -40,6 +40,7 @@ public class RestClient {
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .writeTimeout(5, TimeUnit.SECONDS)
                 .readTimeout(5, TimeUnit.SECONDS)
+                .retryOnConnectionFailure(false)
                 .build();
 
         Gson gson = new GsonBuilder()

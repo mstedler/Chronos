@@ -69,7 +69,6 @@ public class MainPresenterImpl extends AbstractPresenter implements MainPresente
 
     @Override
     public void onError(String message) {
-        view.showError(message);
     }
 
     @Override

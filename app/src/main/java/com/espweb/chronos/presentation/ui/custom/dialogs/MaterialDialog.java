@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,9 @@ public class MaterialDialog extends ArtefatoDialog<Material> {
 
     @BindView(R.id.spn_escopo)
     Spinner spnEscopo;
+
+    @BindView(R.id.comecar_agora)
+    CheckBox cbComecarAgora;
 
     public MaterialDialog() {
 
@@ -82,10 +86,15 @@ public class MaterialDialog extends ArtefatoDialog<Material> {
 
     @Override
     public void fillForm() {
-        tilMinutos.getEditText().setText(String.valueOf(artefato.getMinutos()));
+        int minutos = artefato.getMinutos();
+        boolean edit = minutos > 0;
+        tilMinutos.getEditText().setText(edit ? String.valueOf(minutos) : null);
         tilData.getEditText().setText(DateUtils.formatDate(artefato.getData()));
         spnEscopo.setSelection(artefato.getEscopo().getIntValue() - 1);
         tilDescricao.getEditText().setText(artefato.getDescricao());
+        if(edit) {
+            cbComecarAgora.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -114,6 +123,9 @@ public class MaterialDialog extends ArtefatoDialog<Material> {
         String tempo = tilMinutos.getEditText().getText().toString();
         String data = tilData.getEditText().getText().toString();
         String descricao = tilDescricao.getEditText().getText().toString();
+        boolean comecarAgora = cbComecarAgora.isChecked();
+        artefato.setComecarAgora(comecarAgora);
+
         artefato.setData(DateUtils.parse(data));
         artefato.setDescricao(descricao);
         try {

@@ -9,13 +9,11 @@ import com.espweb.chronos.domain.model.Exercicio;
 import com.espweb.chronos.domain.repository.ArtefatoRepository;
 import com.espweb.chronos.storage.boxes.ExercicioBox;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
-import com.espweb.chronos.workers.CreateExercicioWorker;
-import com.espweb.chronos.workers.CreateRevisaoWorker;
-import com.espweb.chronos.workers.DeleteExercicioWorker;
-import com.espweb.chronos.workers.DeleteRevisaoWorker;
-import com.espweb.chronos.workers.UpdateExercicioWorker;
-import com.espweb.chronos.workers.base.ApiWorkEnqueuer;
-import com.espweb.chronos.workers.base.ApiWorkRequest;
+import com.espweb.chronos.workers.api.CreateExercicioWorker;
+import com.espweb.chronos.workers.api.DeleteExercicioWorker;
+import com.espweb.chronos.workers.api.UpdateExercicioWorker;
+import com.espweb.chronos.workers.api.base.ApiWorkEnqueuer;
+import com.espweb.chronos.workers.api.base.ApiWorkRequest;
 
 import java.util.List;
 import java.util.UUID;

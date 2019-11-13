@@ -37,5 +37,12 @@
 
     </LinearLayout>
 
+    <CheckBox
+        android:id="@+id/comecar_agora"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Começar agora" />
+
 
 </com.espweb.chronos.presentation.ui.custom.ArtefatoDialogTemplate>

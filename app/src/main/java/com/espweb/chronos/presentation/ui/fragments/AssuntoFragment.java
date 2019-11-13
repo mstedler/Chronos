@@ -16,6 +16,9 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.espweb.chronos.R;
 import com.espweb.chronos.data.ArtefatoRepositoryImpl;
@@ -36,6 +39,7 @@ import com.espweb.chronos.presentation.ui.custom.dialogs.YesNoDialog;
 import com.espweb.chronos.presentation.ui.custom.dialogs.base.ArtefatoDialog;
 import com.espweb.chronos.presentation.ui.custom.dialogs.factory.ArtefatoDialogFactory;
 import com.espweb.chronos.threading.MainThreadImpl;
+import com.espweb.chronos.workers.MaterialNotificationWorker;
 import com.github.clans.fab.FloatingActionMenu;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemAnimator;
@@ -43,6 +47,7 @@ import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandab
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,7 +90,7 @@ public class AssuntoFragment extends Fragment implements AssuntoPresenter.View {
         super.onViewCreated(view, savedInstanceState);
         long id = AssuntoFragmentArgs.fromBundle(requireArguments()).getIdAssunto();
 
-        if(id == 0)
+        if(id <= 0)
             navigateToCronograma();
 
         init();
@@ -97,6 +102,7 @@ public class AssuntoFragment extends Fragment implements AssuntoPresenter.View {
         initToolbar();
         initPresenter();
         initAdapter();
+        initRecyclerView();
         initRecyclerView();
     }
 
@@ -184,7 +190,7 @@ public class AssuntoFragment extends Fragment implements AssuntoPresenter.View {
     private void showDeleteDialog(YesNoDialog.YesNoDialogListener listener) {
         YesNoDialog confirmDelete = YesNoDialog.newInstance(getString(R.string.excluir), getString(R.string.tem_certeza));
         confirmDelete.setListener(listener);
-        confirmDelete.show(requireFragmentManager(), "YES_NO_DIALOG");
+        confirmDelete.show(getParentFragmentManager(), "YES_NO_DIALOG");
     }
 
     private AssuntoDialog.AssuntoDialogListener assuntoDialogListener = new AssuntoDialog.AssuntoDialogListener() {
@@ -202,7 +208,7 @@ public class AssuntoFragment extends Fragment implements AssuntoPresenter.View {
     private void showAssuntoDialog() {
         AssuntoDialog assuntoDialog = AssuntoDialog.newInstance(assunto);
         assuntoDialog.setAssuntoDialogListener(assuntoDialogListener);
-        assuntoDialog.show(requireFragmentManager(), "ASSUNTO_DIALOG");
+        assuntoDialog.show(getParentFragmentManager(), "ASSUNTO_DIALOG");
     }
 
     @Override
@@ -290,6 +296,6 @@ public class AssuntoFragment extends Fragment implements AssuntoPresenter.View {
     private void showDialogFor(Artefato artefato) {
         ArtefatoDialog artefatoDialog = ArtefatoDialogFactory.createFor(artefato);
         artefatoDialog.setListener(artefatoDialogListener);
-        artefatoDialog.show(requireFragmentManager(), "ARTEFATO_DIALOG");
+        artefatoDialog.show(getParentFragmentManager(), "ARTEFATO_DIALOG");
     }
 }

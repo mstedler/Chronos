@@ -71,6 +71,7 @@ public class SignUpFragment extends Fragment implements SignUpPresenter.View {
 
     @Override
     public void showProgress() {
+        ViewUtils.hideKeyboard(requireContext(), getView());
         ViewUtils.makeWindowUntouchable(requireActivity().getWindow());
         progressBar.setVisibility(View.VISIBLE);
 

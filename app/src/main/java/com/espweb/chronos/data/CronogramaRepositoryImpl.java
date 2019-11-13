@@ -17,12 +17,11 @@ import com.espweb.chronos.network.utils.Connection;
 import com.espweb.chronos.storage.boxes.CronogramaBox;
 import com.espweb.chronos.storage.converters.DomainToStorageConverter;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
-import com.espweb.chronos.workers.CreateCronogramaWorker;
-import com.espweb.chronos.workers.DeleteCronogramaWorker;
-import com.espweb.chronos.workers.UpdateAssuntoWorker;
-import com.espweb.chronos.workers.UpdateCronogramaWorker;
-import com.espweb.chronos.workers.base.ApiWorkEnqueuer;
-import com.espweb.chronos.workers.base.ApiWorkRequest;
+import com.espweb.chronos.workers.api.CreateCronogramaWorker;
+import com.espweb.chronos.workers.api.DeleteCronogramaWorker;
+import com.espweb.chronos.workers.api.UpdateCronogramaWorker;
+import com.espweb.chronos.workers.api.base.ApiWorkEnqueuer;
+import com.espweb.chronos.workers.api.base.ApiWorkRequest;
 
 import java.io.IOException;
 import java.util.ArrayList;

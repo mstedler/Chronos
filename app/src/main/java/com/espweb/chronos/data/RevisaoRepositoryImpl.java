@@ -9,12 +9,11 @@ import com.espweb.chronos.domain.model.Revisao;
 import com.espweb.chronos.domain.repository.ArtefatoRepository;
 import com.espweb.chronos.storage.boxes.RevisaoBox;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
-import com.espweb.chronos.workers.CreateRevisaoWorker;
-import com.espweb.chronos.workers.DeleteMaterialWorker;
-import com.espweb.chronos.workers.DeleteRevisaoWorker;
-import com.espweb.chronos.workers.UpdateRevisaoWorker;
-import com.espweb.chronos.workers.base.ApiWorkEnqueuer;
-import com.espweb.chronos.workers.base.ApiWorkRequest;
+import com.espweb.chronos.workers.api.CreateRevisaoWorker;
+import com.espweb.chronos.workers.api.DeleteRevisaoWorker;
+import com.espweb.chronos.workers.api.UpdateRevisaoWorker;
+import com.espweb.chronos.workers.api.base.ApiWorkEnqueuer;
+import com.espweb.chronos.workers.api.base.ApiWorkRequest;
 
 import java.util.List;
 import java.util.UUID;

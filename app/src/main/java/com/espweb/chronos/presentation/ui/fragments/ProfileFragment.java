@@ -72,7 +72,7 @@ public class ProfileFragment extends Fragment implements ProfilePresenter.View {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        userViewModel.getUser().observe(this, user -> {
+        userViewModel.getUser().observe(getViewLifecycleOwner(), user -> {
             this.user = user;
             updateView(user);
             profilePresenter.getCronogramaCount(user.getId());

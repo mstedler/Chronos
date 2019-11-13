@@ -34,6 +34,8 @@ public class Material extends Artefato {
 
     private Escopo escopo = Escopo.VIDEO_AULA;
 
+    private boolean comecarAgora;
+
     public Material() {
     }
 
@@ -64,5 +66,13 @@ public class Material extends Artefato {
 
     public void setEscopo(Escopo escopo) {
         this.escopo = escopo;
+    }
+
+    public boolean isComecarAgora() {
+        return comecarAgora;
+    }
+
+    public void setComecarAgora(boolean comecarAgora) {
+        this.comecarAgora = comecarAgora;
     }
 }

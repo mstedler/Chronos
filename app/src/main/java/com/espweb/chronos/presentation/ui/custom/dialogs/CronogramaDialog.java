@@ -134,6 +134,9 @@ public class CronogramaDialog extends DialogFragment implements DatePickerDialog
         if(!cronograma.isTituloValid()) {
             tilTitulo.setError(getString(R.string.deve_ter_mais_que_3));
             return false;
+        } else if(cronograma.getInicio().after(cronograma.getFim())) {
+            tilDataInicial.setError("Data inválida");
+            return false;
         }
         return true;
     }
@@ -141,6 +144,7 @@ public class CronogramaDialog extends DialogFragment implements DatePickerDialog
     private void clearErrors() {
         tilTitulo.setError(null);
         tilDescricao.setError(null);
+        tilDataInicial.setError(null);
     }
 
     private void save() {

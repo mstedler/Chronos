@@ -3,25 +3,23 @@ package com.espweb.chronos.data;
 import android.content.Context;
 
 import androidx.work.Data;
-import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 
 import com.espweb.chronos.domain.model.Material;
 import com.espweb.chronos.domain.repository.ArtefatoRepository;
 import com.espweb.chronos.storage.boxes.MaterialBox;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
-import com.espweb.chronos.workers.CreateMaterialWorker;
-import com.espweb.chronos.workers.DeleteMaterialWorker;
-import com.espweb.chronos.workers.DeleteRevisaoWorker;
-import com.espweb.chronos.workers.UpdateMaterialWorker;
-import com.espweb.chronos.workers.base.ApiWorkEnqueuer;
-import com.espweb.chronos.workers.base.ApiWorkRequest;
-import com.espweb.chronos.workers.base.ApiWorker;
+import com.espweb.chronos.workers.MaterialNotificationWorker;
+import com.espweb.chronos.workers.api.CreateMaterialWorker;
+import com.espweb.chronos.workers.api.DeleteMaterialWorker;
+import com.espweb.chronos.workers.api.UpdateMaterialWorker;
+import com.espweb.chronos.workers.api.base.ApiWorkEnqueuer;
+import com.espweb.chronos.workers.api.base.ApiWorkRequest;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class MaterialRepositoryImpl implements ArtefatoRepository<Material> {
     private Context context;
@@ -47,6 +45,23 @@ public class MaterialRepositoryImpl implements ArtefatoRepository<Material> {
         Data data = new Data.Builder().putLong(CreateMaterialWorker.ID_MATERIAL, id).build();
         OneTimeWorkRequest workRequest = new ApiWorkRequest(data, CreateMaterialWorker.class).build();
         ApiWorkEnqueuer.enqueueUnique(context, workRequest);
+
+        if(material.isComecarAgora()) {
+
+            Data materialData = new Data.Builder()
+                    .putInt("escopo", material.getEscopo().getIntValue())
+                    .putInt("minutos", material.getMinutos())
+                    .build();
+
+            OneTimeWorkRequest materialNotificationWork = new OneTimeWorkRequest
+                    .Builder(MaterialNotificationWorker.class)
+                    .setInputData(materialData)
+                    .setInitialDelay(material.getMinutos(), TimeUnit.MINUTES)
+                    .build();
+
+            WorkManager.getInstance(context).enqueue(materialNotificationWork);
+
+        }
 
         return id;
     }

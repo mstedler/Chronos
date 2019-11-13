@@ -42,6 +42,7 @@ public class PresentationToDomainConverter {
         dMaterial.setIdAssunto(material.getIdAssunto());
         dMaterial.setEscopo(Material.Escopo.fromInt(material.getEscopo().getIntValue()));
         dMaterial.setUuid(material.getUuid());
+        dMaterial.setComecarAgora(material.isComecarAgora());
         return dMaterial;
     }
 

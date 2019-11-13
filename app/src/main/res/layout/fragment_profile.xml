@@ -35,7 +35,6 @@
         android:layout_marginTop="32dp"
         android:drawablePadding="10dp"
         android:drawableTint="@color/colorPrimary"
-        android:text="Mateus Augusto Stedler"
         android:textAppearance="@style/TextAppearance.Chronos.CardTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

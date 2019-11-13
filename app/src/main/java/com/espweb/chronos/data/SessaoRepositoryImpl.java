@@ -20,7 +20,7 @@ import com.espweb.chronos.network.utils.Connection;
 import com.espweb.chronos.storage.boxes.SessaoBox;
 import com.espweb.chronos.storage.converters.StorageToDomainConverter;
 import com.espweb.chronos.storage.database.ObjectBox;
-import com.espweb.chronos.workers.base.ApiWorker;
+import com.espweb.chronos.workers.api.base.ApiWorker;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -97,9 +97,7 @@ public class SessaoRepositoryImpl implements SessaoRepository {
                 box.put(sSessao);
                 return StorageToDomainConverter.convert(box.getActiveSessionUser());
             } else {
-                Gson gson = new Gson();
-                Error error = gson.fromJson(response.errorBody().charStream(), Error.class);
-                throw new SignInFailedException(error.getMessage());
+                throw new SignInFailedException("Email ou senha inválidos.");
             }
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());

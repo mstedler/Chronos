@@ -124,7 +124,6 @@ public class CronogramaPresenterImpl extends AbstractPresenter implements Cronog
 
     @Override
     public void onError(String message) {
-        view.showError(message);
     }
 
     @Override
